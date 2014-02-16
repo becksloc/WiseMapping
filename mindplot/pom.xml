@@ -174,12 +174,14 @@
                                         <include>Icon.js</include>
                                         <include>LinkIcon.js</include>
                                         <include>NoteIcon.js</include>
+                                        <include>ImageIcon.js</include>
                                         <include>ActionIcon.js</include>
                                         <include>ImageIcon.js</include>
                                         <include>model/FeatureModel.js</include>
                                         <include>model/IconModel.js</include>
                                         <include>model/LinkModel.js</include>
                                         <include>model/NoteModel.js</include>
+                                        <include>model/ImageModel.js</include>
                                         <include>Command.js</include>
                                         <include>DesignerActionRunner.js</include>
                                         <include>DesignerUndoManager.js</include>
@@ -202,6 +204,7 @@
                                         <include>widget/ToolbarPaneItem.js</include>
                                         <include>widget/NoteEditor.js</include>
                                         <include>widget/LinkEditor.js</include>
+                                        <include>widget/ImageEditor.js</include>
                                         <include>widget/FloatingTip.js</include>
                                         <include>widget/LinkIconTooltip.js</include>
                                         <include>widget/KeyboardShortcutTooltip.js</include>
