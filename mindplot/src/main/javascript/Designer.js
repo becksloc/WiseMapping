@@ -926,6 +926,14 @@ mindplot.Designer = new Class({
             }
         },
 
+        addImage:function () {
+            var model = this.getModel();
+            var topic = model.selectedTopic();
+            if (topic) {
+                topic.showImageEditor();
+            }
+        },
+
         addNote:function () {
             var model = this.getModel();
             var topic = model.selectedTopic();

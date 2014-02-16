@@ -745,6 +745,43 @@ mindplot.Topic = new Class({
         editor.show();
     },
 
+    showImageEditor:function () {
+
+        var topicId = this.getId();
+        var model = this.getModel();
+        var editorModel = {
+            getValue:function () {
+                var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
+                var result;
+                if (links.length > 0)
+                    result = links[0].getUrl();
+
+                return result;
+            },
+
+            setValue:function (value) {
+                var dispatcher = mindplot.ActionDispatcher.getInstance();
+                var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
+                if (!$defined(value)) {
+                    var featureId = links[0].getId();
+                    dispatcher.removeFeatureFromTopic(topicId, featureId);
+                }
+                else {
+                    if (links.length > 0) {
+                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url:value});
+                    }
+                    else {
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Link.id, {url:value});
+                    }
+                }
+            }
+        };
+
+        this.closeEditors();
+        var editor = new mindplot.widget.ImageEditor(editorModel);
+        editor.show();
+    },
+
     closeEditors:function () {
         this._getTopicEventDispatcher().close(true);
     },

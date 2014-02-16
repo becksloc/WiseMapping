@@ -304,6 +304,12 @@ mindplot.widget.Menu = new Class({
         this._registerTooltip('topicNote', $msg('TOPIC_NOTE'));
 
 
+        this._addButton('topicImage', true, false, function () {
+            designer.addImage();
+        });
+        this._registerTooltip('topicImage', $msg('TOPIC_IMAGE'));
+
+
         this._addButton('fontBold', true, false, function () {
             designer.changeFontWeight();
         });
