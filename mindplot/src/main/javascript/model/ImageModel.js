@@ -33,13 +33,12 @@ mindplot.model.ImageModel = new Class({
         var fixedUrl = this._fixUrl(url);
         this.setAttribute('url', fixedUrl);
 
-        var type = fixedUrl.contains('mailto:') ? 'mail' : 'url';
-        this.setAttribute('urlType', type);
+        this.setAttribute('urlType', 'url');
     },
 
     _fixUrl:function (url) {
         var result = url;
-        if (!result.contains('http://') && !result.contains('https://') && !result.contains('mailto://')) {
+        if (!result.contains('http://') && !result.contains('https://')) {
             result = "http://" + result;
         }
         return result;
