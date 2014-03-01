@@ -751,7 +751,7 @@ mindplot.Topic = new Class({
         var model = this.getModel();
         var editorModel = {
             getValue:function () {
-                var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
+                var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 var result;
                 if (links.length > 0)
                     result = links[0].getUrl();
@@ -761,7 +761,7 @@ mindplot.Topic = new Class({
 
             setValue:function (value) {
                 var dispatcher = mindplot.ActionDispatcher.getInstance();
-                var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
+                var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 if (!$defined(value)) {
                     var featureId = links[0].getId();
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
@@ -771,7 +771,7 @@ mindplot.Topic = new Class({
                         dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url:value});
                     }
                     else {
-                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Link.id, {url:value});
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {url:value});
                     }
                 }
             }

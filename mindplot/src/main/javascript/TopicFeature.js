@@ -35,6 +35,12 @@ mindplot.TopicFeature = {
         icon:mindplot.NoteIcon
     },
 
+    Image:{
+        id:mindplot.model.ImageModel.FEATURE_TYPE,
+        model:mindplot.model.ImageModel,
+        icon:mindplot.LinkIcon
+    },
+
     isSupported:function (id) {
         return mindplot.TopicFeature._featuresMetadataById.some(function (elem) {
             return elem.id == id;
@@ -62,6 +68,6 @@ mindplot.TopicFeature = {
     }
 };
 
-mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon, mindplot.TopicFeature.Link, mindplot.TopicFeature.Note];
+mindplot.TopicFeature._featuresMetadataById = [mindplot.TopicFeature.Icon, mindplot.TopicFeature.Link, mindplot.TopicFeature.Note, mindplot.TopicFeature.Image];
 
 
