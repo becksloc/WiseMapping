@@ -128,17 +128,28 @@ mindplot.widget.ImageEditor = new Class({
         ima.inject(form);
         ima.hide();
 
+        var errorUrl = new Element('p',{text:"Invalid URL"});
+        errorUrl.setStyle('color', 'red');
+        errorUrl.inject(form);
+        errorUrl.hide();
+
         function preload(value) {
             var myImage = Asset.image(value,{
                 title: 'newImage',
 
                 onLoad: function(){
+                    errorUrl.hide();
                     ima.setProperty('src',value);
+                    ima.show();
+                },
+
+                onError: function(){
+                    ima.hide();
+                    errorUrl.show();
                 }
 
             });
 
-            ima.show();
         }
 
         // Register submit event ...
