@@ -98,21 +98,53 @@ mindplot.widget.ImageEditor = new Class({
             required:true,
             autofocus:'autofocus'
         });
-        if (model.getValue() != null)
+        if (model.getValue() != null){
             input.value = model.getValue();
+        }
 
         input.setStyles({
             width:'99%',
             margin:"10px 0px"
 
         });
+        input.addEvent('keyup', function(event){
+            setTimeout(function () {
+                if (input.value.length == 0) {
+                    input.value = input.value;
+                } else {
+                    preload(input.value);
+                }
+            }, 0);
+        });
         input.inject(form);
+
+        var ima = new Element('img', {'title':'IMAGEN', 'src':'http://images.sixrevisions.com/2009/08/18-01_imagecaption_lead_img.jpg'});
+        ima.setStyles({
+            width:'99%',
+            height:"100px",
+            margin:"10px 0px"
+        });
+
+        ima.inject(form);
+        ima.hide();
+
+        function preload(value) {
+            var myImage = Asset.image(value,{
+                title: 'newImage',
+
+                onLoad: function(){
+                    ima.setProperty('src',value);
+                }
+
+            });
+
+            ima.show();
+        }
 
         // Register submit event ...
         form.addEvent('submit', function (event) {
             event.stopPropagation();
             event.preventDefault();
-
             if (input.value != null && input.value.trim() != "") {
                 model.setValue(input.value);
             }
