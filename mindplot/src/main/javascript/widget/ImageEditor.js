@@ -109,16 +109,14 @@ mindplot.widget.ImageEditor = new Class({
         });
         input.addEvent('keyup', function(event){
             setTimeout(function () {
-                if (input.value.length == 0) {
-                    input.value = input.value;
-                } else {
+                if (input.value.length != 0) {
                     preload(input.value);
                 }
             }, 0);
         });
         input.inject(form);
 
-        var ima = new Element('img', {'title':'IMAGEN', 'src':'http://images.sixrevisions.com/2009/08/18-01_imagecaption_lead_img.jpg'});
+        var ima = new Element('img', {'title':'IMAGEN', 'src':'http://aprendeenlinea.udea.edu.co/lms/sitio/file.php/1/boletin/201212/bol27_image04.png'});
         ima.setStyles({
             width:'99%',
             height:"100px",
@@ -133,6 +131,7 @@ mindplot.widget.ImageEditor = new Class({
         errorUrl.inject(form);
         errorUrl.hide();
 
+        //preview of the image
         function preload(value) {
             var myImage = Asset.image(value,{
                 title: 'newImage',
@@ -140,6 +139,9 @@ mindplot.widget.ImageEditor = new Class({
                 onLoad: function(){
                     errorUrl.hide();
                     ima.setProperty('src',value);
+                    var resize = calculateAspectRatioFit(ima.width, ima.height, 300, 100);
+                    ima.setStyle('width', resize.width);
+                    ima.setStyle('height', resize.height);
                     ima.show();
                 },
 
@@ -150,6 +152,11 @@ mindplot.widget.ImageEditor = new Class({
 
             });
 
+        }
+        //resize the image to fit in the dialog
+        function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+            var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+            return { width: srcWidth*ratio, height: srcHeight*ratio };
         }
 
         // Register submit event ...
