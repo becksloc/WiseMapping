@@ -108,8 +108,19 @@ mindplot.widget.ImageEditor = new Class({
         });
 
         form.append(input);
+
+        var imagePreview = $('<img>').attr({
+            'title':'IMAGEN',
+            'class': 'img-thumbnail',
+            'id': 'imagePreview',
+            'src':'http://aprendeenlinea.udea.edu.co/lms/sitio/file.php/1/boletin/201212/bol27_image04.png'
+        })
+        imagePreview.hide();
+        imagePreview.css({
+            margin:"1em auto"
         });
 
+        form.append($('<div></div>').css('display', 'flex').append(imagePreview));
 
         //preview of the image
         function preload(src) {
@@ -121,10 +132,16 @@ mindplot.widget.ImageEditor = new Class({
                 me.show();
             });
 
+
         }
+
         //resize the image to fit in the dialog
         function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
             var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+            return {
+                width: srcWidth * ratio,
+                height: srcHeight * ratio
+            };
         }
 
         $(document).ready(function () {
