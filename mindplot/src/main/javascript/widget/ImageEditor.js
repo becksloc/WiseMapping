@@ -170,6 +170,7 @@ mindplot.widget.ImageEditor = new Class({
         div.append(div_upload);
         result.append(ul);
         result.append(div);
+
         return result;
 
     },
