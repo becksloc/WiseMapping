@@ -17,49 +17,20 @@
  */
 
 mindplot.widget.ImageEditor = new Class({
-    Extends:MooDialog,
+    Extends:BootstrapDialog,
+
     initialize:function (model) {
         $assert(model, "model can not be null");
-        var panel = this._buildPanel(model);
-        this.parent({
-            closeButton:true,
-            destroyOnClose:true,
-            title:$msg('Add Image'),
-            onInitialize:function (wrapper) {
-                wrapper.setStyle('opacity', 0);
-                this.fx = new Fx.Morph(wrapper, {
-                    duration:600,
-                    transition:Fx.Transitions.Bounce.easeOut
-                });
-            },
-
-            onBeforeOpen:function () {
-                this.overlay = new Overlay(this.options.inject, {
-                    duration:this.options.duration
-                });
-                if (this.options.closeOnOverlayClick)
-                    this.overlay.addEvent('click', this.close.bind(this));
-
-                this.overlay.open();
-
-                this.fx.start({
-                    'margin-top':[-200, -100],
-                    opacity:[0, 1]
-                }).chain(function () {
-                    this.fireEvent('show');
-                }.bind(this));
-            },
-
-            onBeforeClose:function () {
-                this.fx.start({
-                    'margin-top':[-100, 0],
-                    opacity:0
-                }).chain(function () {
-                    this.fireEvent('hide');
-                }.bind(this));
-                this.overlay.destroy();
-            }
+        this._model = model;
+        this.parent($msg("Add Image"), {
+            cancelButton: true,
+            closeButton: true,
+            acceptButton: true,
+            removeButton: true,
+            onRemoveClickData: {model: this._model}
         });
+        this.css({width:"600px"});
+        var panel = this._buildPanel(model);
         this.setContent(panel);
     },
 
@@ -176,7 +147,7 @@ mindplot.widget.ImageEditor = new Class({
 
     },
 
-    show:function () {
-        this.open();
+    onAcceptClick: function() {
+        $("#imageFormId").submit();
     }
 });
