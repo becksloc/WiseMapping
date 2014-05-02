@@ -132,24 +132,13 @@ mindplot.widget.ImageEditor = new Class({
         errorUrl.hide();
 
         //preview of the image
-        function preload(value) {
-            var myImage = Asset.image(value,{
-                title: 'newImage',
-
-                onLoad: function(){
-                    errorUrl.hide();
-                    ima.setProperty('src',value);
-                    var resize = calculateAspectRatioFit(ima.width, ima.height, 300, 100);
-                    ima.setStyle('width', resize.width);
-                    ima.setStyle('height', resize.height);
-                    ima.show();
-                },
-
-                onError: function(){
-                    ima.hide();
-                    errorUrl.show();
-                }
-
+        function preload(src) {
+            imagePreview.prop('src', src).load(function() {
+                var me = $(this);
+                var resize = calculateAspectRatioFit(me.width(), me.height(), 300, 100);
+                me.width(resize.width);
+                me.height(resize.height);
+                me.show();
             });
 
         }
