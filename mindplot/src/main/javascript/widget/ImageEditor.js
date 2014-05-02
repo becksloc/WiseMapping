@@ -35,7 +35,7 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function (model) {
-        var result = $('<div></div>').css("margin-bottom", "-3em"); //FIXME: remove this hack for centered preview
+        var result = $('<div></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
 
         var ul = $('<ul></ul>').attr({
             'class':'nav nav-tabs',
