@@ -30,7 +30,7 @@ var BootstrapDialog = new Class({
     _buildFooter: function() {
         var footer = null;
         if (this.options.acceptButton || this.options.removeButton || this.options.cancelButton) {
-            footer = $('<div class="modal-footer" style="paddingTop:5;textAlign:center">');
+            footer = $('<div class="modal-footer">');
         }
         if (this.options.acceptButton) {
             this.acceptButton = $('<button type="button" class="btn btn-primary" id="acceptBtn" data-dismiss="modal">'+ $msg('ACCEPT') + '</button>');
