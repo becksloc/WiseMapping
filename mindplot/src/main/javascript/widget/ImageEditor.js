@@ -35,23 +35,79 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function (model) {
+        var result = $('<div></div>').css("margin-bottom", "-3em"); //FIXME: remove this hack for centered preview
 
+        var ul = $('<ul></ul>').attr({
+            'class':'nav nav-tabs',
+            'id':'imageUlId'
+        });
 
+        var li_url = $('<li></li>').attr({'class':'active'});
+        var li_upload = $('<li></li>');
 
+        var tab1 = $('<a></a>').attr({
+            'href':'#tab-1',
+            'data-toggle':'pill'
+        });
+        tab1.html('From URL');//FIXME:cambiar a $msg('FROM_URL')
+        li_url.append(tab1);
+        var tab2 = $('<a></a>').attr({
+            'href':'#tab-2',
+            'data-toggle':'pill'
+        });
+        tab2.html('Upload'); //FIXME:cambiar a $msg('UPLOAD')
+        li_upload.append(tab2);
 
+        ul.append(li_upload);
+        ul.append(li_url);
 
+        var div = $('<div></div>').attr({
+            'class':'tab-content'
+        });
 
+        var div_url = $('<div></div>').attr({
+            'class':'tab-pane active',
+            'id':'tab-1'
+        });
+
+        var div_upload = $('<div></div>').attr({
+            'class':'tab-pane fade',
+            'id':'tab-2'
+        });
+
+        var form = $('<form></form>').attr({
+            'action': 'none',
+            'id': 'imageFormId'
+        });
 
         // Add Text
+        var text = $('<p></p>').text("Paste your link below:");
+        text.css('margin','0px 0px 20px');
+
+        form.append(text);
+
+        // Add Input
+        var input = $('<input/>').attr({
+            'placeholder': 'http://www.example.com/',
+            'type': 'url', //FIXME: THIS not work on IE, see workaround below
+            'required': 'true',
+            'autofocus': 'autofocus',
+            'class': 'form-control'
         });
+
         if (model.getValue() != null){
+            input.val(model.getValue());
         }
 
+        input.keyup(function(event){
             setTimeout(function () {
+                if (input.val().length != 0) {
+                    preload(input.val());
                 }
             }, 0);
         });
 
+        form.append(input);
         });
 
 
@@ -71,10 +127,30 @@ mindplot.widget.ImageEditor = new Class({
             var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
         }
 
+        $(document).ready(function () {
+            var me = this;
+            $(document).on('submit','#imageFormId',function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                var inputValue = input.val();
+                if (inputValue != null && inputValue.trim() != "") {
+                    model.setValue(inputValue);
+                }
+                me.close();
+            });
 
+        });
 
+        if (typeof model.getValue() != 'undefined'){
+            this.showRemoveButton();
+        }
 
+        div_url.append(form);
 
+        div.append(div_url);
+        div.append(div_upload);
+        result.append(ul);
+        result.append(div);
         return result;
 
     },
