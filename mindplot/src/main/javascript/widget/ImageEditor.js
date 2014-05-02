@@ -35,72 +35,25 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function (model) {
-        var result = new Element('div');
-        result.setStyle("padding-top", "15px");
 
-        var ul = new Element('ul', {'class':'nav nav-tabs','id':'imageUlId'});
 
-        var li_url = new Element('li', {'class':'active'});
-        var li_upload = new Element('li');
 
-        var tab1 = new Element('a', { href:'#tab-1', 'data-toggle':'tab', text:'From URL' });
-        tab1.setStyle('text-decoration', 'none');
-        tab1.inject(li_url);
-        var tab2 = new Element('a', { href:'#tab-2', 'data-toggle':'tab', text:'Upload' });
-        tab2.setStyle('text-decoration', 'none');
-        tab2.inject(li_upload);
 
-        li_url.inject(ul);
-        li_upload.inject(ul);
 
-        var div = new Element('div', {'class':'tab-content'});
-        var div_url = new Element('div', {'class':'tab-pane active', 'id':'tab-1'});
-        var div_upload = new Element('div', {'class':'tab-pane fade', 'id':'tab-2'});
 
-        var form = new Element('form');
 
         // Add Text
-        new Element('p', {text:'Paste your link below'}).inject(form);
-
-        // Add Input ...
-        var input = new Element('input', {
-            placeholder:'http://www.example.com/',
-            type:Browser.ie ? 'text' : 'url', // IE workaround
-            required:true,
-            autofocus:'autofocus'
         });
         if (model.getValue() != null){
-            input.value = model.getValue();
         }
 
-        input.setStyles({
-            width:'99%',
-            margin:"10px 0px"
-
-        });
-        input.addEvent('keyup', function(event){
             setTimeout(function () {
-                if (input.value.length != 0) {
-                    preload(input.value);
                 }
             }, 0);
         });
-        input.inject(form);
 
-        var ima = new Element('img', {'title':'IMAGEN', 'src':'http://aprendeenlinea.udea.edu.co/lms/sitio/file.php/1/boletin/201212/bol27_image04.png'});
-        ima.setStyles({
-            width:'99%',
-            height:"100px",
-            margin:"10px 0px"
         });
 
-        ima.inject(form);
-        ima.hide();
-
-        var errorUrl = new Element('p',{text:"Invalid URL"});
-        errorUrl.setStyle('color', 'red');
-        errorUrl.inject(form);
-        errorUrl.hide();
 
         //preview of the image
         function preload(src) {
@@ -116,32 +69,11 @@ mindplot.widget.ImageEditor = new Class({
         //resize the image to fit in the dialog
         function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
             var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-            return { width: srcWidth*ratio, height: srcHeight*ratio };
         }
 
-        // Register submit event ...
-        form.addEvent('submit', function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-            if (input.value != null && input.value.trim() != "") {
-                model.setValue(input.value);
-            }
-            this.close();
-        }.bind(this));
 
-        form.inject(div_url);
 
-        // Add Text
-        new Element('p', {text:'Drag your image here'}).inject(div_upload);
-        div_url.inject(div);
 
-        div_upload.inject(div);
-        ul.inject(result);
-        div.inject(result);
-
-        result.addEvent('keydown', function (event) {
-            event.stopPropagation();
-        });
 
         return result;
 
