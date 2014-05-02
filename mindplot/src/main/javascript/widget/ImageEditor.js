@@ -82,7 +82,7 @@ mindplot.widget.ImageEditor = new Class({
 
         // Add Text
         var text = $('<p></p>').text("Paste your link below:");
-        text.css('margin','0px 0px 20px');
+        text.css("margin","1em");
 
         form.append(text);
 
@@ -162,8 +162,10 @@ mindplot.widget.ImageEditor = new Class({
             this.showRemoveButton();
         }
 
-        div_url.append(form);
+        // Add Text
+        div_upload.append($('<p></p>').text('Drag your image here').css("margin","1em"));
 
+        div_url.append(form);
         div.append(div_url);
         div.append(div_upload);
         result.append(ul);
