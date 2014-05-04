@@ -22,7 +22,7 @@ mindplot.widget.ImageEditor = new Class({
     initialize:function (model) {
         $assert(model, "model can not be null");
         this._model = model;
-        this.parent($msg("Add Image"), {
+        this.parent($msg("Image"), {  //FIXME: $msg("IMAGE")
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
@@ -112,8 +112,7 @@ mindplot.widget.ImageEditor = new Class({
         var imagePreview = $('<img>').attr({
             'title':'IMAGEN',
             'class': 'img-thumbnail',
-            'id': 'imagePreview',
-            'src':'http://aprendeenlinea.udea.edu.co/lms/sitio/file.php/1/boletin/201212/bol27_image04.png'
+            'id': 'imagePreview'
         })
         imagePreview.hide();
         imagePreview.css({
