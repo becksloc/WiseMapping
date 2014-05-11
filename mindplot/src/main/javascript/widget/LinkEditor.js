@@ -27,6 +27,7 @@ mindplot.widget.LinkEditor = new Class({
             closeButton: true,
             acceptButton: true,
             removeButton: true,
+            errorMessage: true,
             onRemoveClickData: {model: this._model}
         });
         this.css({width:"600px"});
@@ -36,14 +37,14 @@ mindplot.widget.LinkEditor = new Class({
 
     _buildPanel:function (model) {
         var result = $('<div></div>').css("padding-top", "5px");
-        var form = $('<form></form>').attr({
+        this.form = $('<form></form>').attr({
             'action': 'none',
             'id': 'linkFormId'
         });
         var text = $('<p></p>').text("Paste your url here:");
         text.css('margin','0px 0px 20px');
 
-        form.append(text);
+        this.form.append(text);
 
         var section = $('<div></div>').attr({
             'class': 'input-group'
@@ -52,7 +53,6 @@ mindplot.widget.LinkEditor = new Class({
         // Add Input
         var input = $('<input/>').attr({
             'placeholder': 'http://www.example.com/',
-            'type': 'url', //FIXME: THIS not work on IE, see workaround below
             'required': 'true',
             'autofocus': 'autofocus',
             'class': 'form-control'
@@ -61,7 +61,6 @@ mindplot.widget.LinkEditor = new Class({
         if (model.getValue() != null){
             input.val(model.getValue());
         }
-//            type:Browser.ie ? 'text' : 'url', // IE workaround
 
         // Open Button
         var openButton = $('<button></button>').attr({
@@ -73,35 +72,50 @@ mindplot.widget.LinkEditor = new Class({
         openButton.click(function(){
             window.open(input.val(),"_blank", "status=1,width=700,height=450,resize=1");
         });
-        var spanControl = $('<span class="input-group-btn"></span>').append(openButton)
+        var spanControl = $('<span class="input-group-btn"></span>').append(openButton);
 
         section.append(input);
         section.append(spanControl);
-        form.append(section);
+        this.form.append(section);
 
-        $(document).ready(function () {
-            var me = this;
-            $(document).on('submit','#linkFormId',function (event) {
-                event.stopPropagation();
+        var me = this;
+        this.form.unbind('submit').submit(
+            function (event) {
                 event.preventDefault();
-                var inputValue = input.val();
-                if (inputValue != null && inputValue.trim() != "") {
-                    model.setValue(inputValue);
+                if(me.checkURL(input.val())){
+                    me.cleanError();
+                    var inputValue = input.val();
+                    if (inputValue != null && inputValue.trim() != "") {
+                        model.setValue(inputValue);
+                    }
+                    me.close();
+                    this.formSubmitted = true;
+                } else {
+                    me.alertError($msg('URL_ERROR'));
+                    event.stopPropagation();
                 }
-                me.close();
-            });
-
-        });
+            }
+        );
 
         if (typeof model.getValue() != 'undefined'){
             this.showRemoveButton();
         }
 
-        result.append(form);
+        result.append(this.form);
         return result;
     },
 
-    onAcceptClick: function() {
-        $("#linkFormId").submit();
+    checkURL: function(url){
+        var regex = /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+        return(regex.test(url));
+    },
+
+    onAcceptClick: function(event) {
+        this.formSubmitted = false;
+        $("#linkFormId").trigger('submit');
+        if (!this.formSubmitted) {
+            event.stopPropagation();
+        }
     }
+
 });
