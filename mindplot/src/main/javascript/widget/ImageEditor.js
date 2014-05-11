@@ -134,6 +134,11 @@ mindplot.widget.ImageEditor = new Class({
 
         }
 
+        imagePreview.bind('error', function (event) {
+            var errorImage = "images/image-not-found.png"
+            imagePreview.prop('src', errorImage);
+        });
+
         //resize the image to fit in the dialog
         function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
             var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
