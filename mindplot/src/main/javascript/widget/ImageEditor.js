@@ -89,7 +89,6 @@ mindplot.widget.ImageEditor = new Class({
         // Add Input
         var input = $('<input/>').attr({
             'placeholder': 'http://www.example.com/',
-            'type': 'url', //FIXME: THIS not work on IE, see workaround below
             'required': 'true',
             'autofocus': 'autofocus',
             'class': 'form-control'
