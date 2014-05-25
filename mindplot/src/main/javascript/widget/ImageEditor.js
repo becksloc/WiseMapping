@@ -27,6 +27,7 @@ mindplot.widget.ImageEditor = new Class({
             closeButton: true,
             acceptButton: true,
             removeButton: true,
+            errorMessage: false,
             onRemoveClickData: {model: this._model}
         });
         this.css({width:"600px"});
@@ -147,19 +148,19 @@ mindplot.widget.ImageEditor = new Class({
             };
         }
 
-        $(document).ready(function () {
-            var me = this;
-            $(document).on('submit','#imageFormId',function (event) {
-                event.stopPropagation();
+        var me = this;
+        form.unbind('submit').submit(
+            function (event) {
                 event.preventDefault();
                 var inputValue = input.val();
                 if (inputValue != null && inputValue.trim() != "") {
                     model.setValue(inputValue);
                 }
+                //save image
                 me.close();
-            });
-
-        });
+                this.formSubmitted = true;
+            }
+        );
 
         if (typeof model.getValue() != 'undefined'){
             this.showRemoveButton();
@@ -167,6 +168,20 @@ mindplot.widget.ImageEditor = new Class({
 
         // Add Text
 //        div_upload.append($('<p></p>').text('Drag your image here').css("margin","1em"));
+
+        var inputFileUpload =  $('<input style="display: none">').attr({
+            'type': 'file'
+        });
+
+        var button = $('<button>Choose from disk</button>').attr({
+            'class': 'btn btn-info'
+        });
+        button.click(function() {
+            inputFileUpload.click();
+        });
+        button.css("margin","1em");
+        div_upload.append(button);
+        div_upload.append(inputFileUpload);
 
         div_url.append(form);
         div.append(div_url);
@@ -178,7 +193,11 @@ mindplot.widget.ImageEditor = new Class({
 
     },
 
-    onAcceptClick: function() {
-        $("#imageFormId").submit();
+    onAcceptClick: function(event) {
+        this.formSubmitted = false;
+        $("#imageFormId").trigger('submit');
+        if (!this.formSubmitted) {
+            event.stopPropagation();
+        }
     }
 });
