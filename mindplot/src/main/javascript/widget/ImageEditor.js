@@ -49,17 +49,17 @@ mindplot.widget.ImageEditor = new Class({
             'href':'#tab-1',
             'data-toggle':'pill'
         });
-        tab1.html('From URL');//FIXME:cambiar a $msg('FROM_URL')
+        tab1.html($msg('FROM_URL'));
         li_url.append(tab1);
         var tab2 = $('<a></a>').attr({
             'href':'#tab-2',
             'data-toggle':'pill'
         });
-        tab2.html('Upload'); //FIXME:cambiar a $msg('UPLOAD')
+        tab2.html($msg('UPLOAD'));
         li_upload.append(tab2);
 
-        ul.append(li_upload);
         ul.append(li_url);
+        ul.append(li_upload);
 
         var div = $('<div></div>').attr({
             'class':'tab-content'
@@ -166,7 +166,7 @@ mindplot.widget.ImageEditor = new Class({
         }
 
         // Add Text
-        div_upload.append($('<p></p>').text('Drag your image here').css("margin","1em"));
+//        div_upload.append($('<p></p>').text('Drag your image here').css("margin","1em"));
 
         div_url.append(form);
         div.append(div_url);
