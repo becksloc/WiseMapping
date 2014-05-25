@@ -21,7 +21,6 @@ mindplot.DesignerKeyboard = new Class({
     Static:{
         register:function (designer) {
             this._instance = new mindplot.DesignerKeyboard(designer);
-            //this._instance.activate();
         },
 
         getInstance:function () {
@@ -97,84 +96,49 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'ctrl+z', function(event) {
+            ['ctrl+z', 'meta+z'], function(event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.undo();
             }
         );
         this.addShortcut(
-            'meta+z', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.undo();
-            }
-        );
-        this.addShortcut(
-            'ctrl+c', function (event) {
+            ['ctrl+c','meta+c'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.copyToClipboard();
             }
         );
         this.addShortcut(
-            'meta+c', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.copyToClipboard();
-            }
-        );
-        this.addShortcut(
-            'ctrl+v', function (event) {
+            ['ctrl+v','meta+v'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.pasteClipboard();
             }
         );
         this.addShortcut(
-            'meta+v', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.pasteClipboard();
-            }
-        );
-        this.addShortcut(
-            'ctrl+z+shift', function (event) {
+            ['ctrl+shift+z','meta+shift+z'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.redo();
             }
         );
         this.addShortcut(
-            'meta+z+shift', function (event) {
+            ['ctrl+y','meta+y'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.redo();
             }
         );
         this.addShortcut(
-            'ctrl+y', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.redo();
-            }
-        );
-        this.addShortcut(
-            'meta+y', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.redo();
-            }
-        );
-        this.addShortcut(
-            'ctrl+a', function (event) {
+            ['ctrl+a','meta+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.selectAll();
             }
         );
         this.addShortcut(
-            'ctrl+b', function (event) {
+            ['ctrl+b','meta+b'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -182,30 +146,14 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'meta+b', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.changeFontWeight();
-            }
-        );
-        this.addShortcut(
-            'ctrl+s', function (event) {
+            ['ctrl+s','meta+s'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 document.id('save').fireEvent('click');
             }
         );
         this.addShortcut(
-            'meta+s', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                document.id('save').fireEvent('click');
-            }
-        );
-        this.addShortcut(
-            'ctrl+i', function (event) {
+            ['ctrl+i','meta+i'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -213,15 +161,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'meta+i', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.changeFontStyle();
-            }
-        );
-        this.addShortcut(
-            'meta+shift+a', function (event) {
+            ['meta+shift+a','ctrl+shift+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -229,23 +169,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'ctrl+shift+a', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.deselectAll();
-            }
-        );
-        this.addShortcut(
-            'meta+a', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.selectAll();
-            }
-        );
-        this.addShortcut(
-            'meta+=', function (event) {
+            ['ctrl+=','meta+='], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -253,23 +177,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'meta+-', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.zoomOut();
-            }
-        );
-        this.addShortcut(
-            'ctrl+=', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                designer.zoomIn();
-            }
-        );
-        this.addShortcut(
-            'ctrl+-', function (event) {
+            ['ctrl+-','meta+-'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
