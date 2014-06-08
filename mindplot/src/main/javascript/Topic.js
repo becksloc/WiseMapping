@@ -767,12 +767,17 @@ mindplot.Topic = new Class({
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
                 }
                 else {
+                    //change shape to Image
+                    model.setImageSize(200,200); //FIXME:hardcode size
+                    model.setImageUrl(value);
+                    dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
                         dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url:value});
                     }
                     else {
                         dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {url:value});
                     }
+
                 }
             }
         };
