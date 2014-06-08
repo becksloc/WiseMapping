@@ -22,7 +22,7 @@ mindplot.widget.ImageEditor = new Class({
     initialize:function (model) {
         $assert(model, "model can not be null");
         this._model = model;
-        this.parent($msg("Image"), {  //FIXME: $msg("IMAGE")
+        this.parent($msg("Image"), {
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
@@ -130,8 +130,6 @@ mindplot.widget.ImageEditor = new Class({
                 me.height(resize.height);
                 me.show();
             });
-
-
         }
 
         imagePreview.bind('error', function (event) {
