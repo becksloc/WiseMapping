@@ -36,6 +36,11 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function (model) {
+        var HEIGHT_IMG_EDITOR = 100;
+        var WIDTH_IMG_EDITOR = 600;
+        var HEIGHT_IMG_TOPIC = 100;
+        var WIDTH_IMG_TOPIC = 100;
+
         var result = $('<div></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
 
         var ul = $('<ul></ul>').attr({
@@ -125,7 +130,7 @@ mindplot.widget.ImageEditor = new Class({
         function preload(src) {
             imagePreview.prop('src', src).load(function() {
                 var me = $(this);
-                var resize = calculateAspectRatioFit(me.width(), me.height(), 300, 100);
+                var resize = calculateAspectRatioFit(me.width(), me.height(), WIDTH_IMG_EDITOR, HEIGHT_IMG_EDITOR);
                 me.width(resize.width);
                 me.height(resize.height);
                 me.show();
@@ -150,11 +155,11 @@ mindplot.widget.ImageEditor = new Class({
         form.unbind('submit').submit(
             function (event) {
                 event.preventDefault();
+                var resizeTopicImg = calculateAspectRatioFit(imagePreview.width(), imagePreview.height(), WIDTH_IMG_TOPIC, HEIGHT_IMG_TOPIC);
                 var inputValue = input.val();
                 if (inputValue != null && inputValue.trim() != "") {
-                    model.setValue(inputValue);
+                    model.setValue(inputValue, resizeTopicImg);
                 }
-                //save image
                 me.close();
                 this.formSubmitted = true;
             }

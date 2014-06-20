@@ -759,7 +759,7 @@ mindplot.Topic = new Class({
                 return result;
             },
 
-            setValue:function (value) {
+            setValue:function (value, img_size) {
                 var dispatcher = mindplot.ActionDispatcher.getInstance();
                 var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 if (!$defined(value)) {
@@ -768,7 +768,7 @@ mindplot.Topic = new Class({
                 }
                 else {
                     //change shape to Image
-                    model.setImageSize(200,200); //FIXME:hardcode size
+                    model.setImageSize(img_size.width,img_size.height);
                     model.setImageUrl(value);
                     dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
