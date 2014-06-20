@@ -765,6 +765,7 @@ mindplot.Topic = new Class({
                 if (!$defined(value)) {
                     var featureId = links[0].getId();
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
+                    dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.LINE);
                 }
                 else {
                     //change shape to Image
