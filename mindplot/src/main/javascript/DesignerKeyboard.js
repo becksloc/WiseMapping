@@ -38,19 +38,19 @@ mindplot.DesignerKeyboard = new Class({
         // Try with the keyboard ..
         var model = designer.getModel();
         this.addShortcut(
-            'backspace', function (event) {
+            ['backspace'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.deleteSelectedEntities();
             }
         );
         this.addShortcut(
-            'space', function() {
+            ['space'], function() {
                 designer.shrinkSelectedBranch();
             }
         );
         this.addShortcut(
-            'f2',function() {
+            ['f2'],function() {
                 var node = model.selectedTopic();
                 if (node) {
                     node.showTextEditor();
@@ -58,26 +58,26 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'del', function(event) {
+            ['del'], function(event) {
                 designer.deleteSelectedEntities();
                 event.preventDefault();
                 event.stopPropagation();
             }
         );
         this.addShortcut(
-            'enter', function() {
+            ['enter'], function() {
                 designer.createSiblingForSelectedNode();
             }
         );
         this.addShortcut(
-            'insert', function(event) {
+            ['insert'], function(event) {
                 designer.createChildForSelectedNode();
                 event.preventDefault();
                 event.stopPropagation();
             }
         );
         this.addShortcut(
-            'tab', function(event) {
+            ['tab'], function(event) {
                 designer.createChildForSelectedNode();
                 event.preventDefault();
                 event.stopPropagation();
@@ -89,7 +89,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            'meta+enter', function(event) {
+            ['meta+enter'], function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.createChildForSelectedNode();
@@ -103,42 +103,35 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['ctrl+c','meta+c'], function (event) {
+            ['ctrl+c', 'meta+c'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.copyToClipboard();
             }
         );
         this.addShortcut(
-            ['ctrl+v','meta+v'], function (event) {
+            ['ctrl+v', 'meta+v'], function (event) {
                 event.preventDefault(event);
                 event.stopPropagation();
                 designer.pasteClipboard();
             }
         );
         this.addShortcut(
-            ['ctrl+shift+z','meta+shift+z'], function (event) {
+            ['ctrl+shift+z', 'meta+shift+z', 'ctrl+y', 'meta+y'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.redo();
             }
         );
         this.addShortcut(
-            ['ctrl+y','meta+y'], function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                designer.redo();
-            }
-        );
-        this.addShortcut(
-            ['ctrl+a','meta+a'], function (event) {
+            ['ctrl+a', 'meta+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 designer.selectAll();
             }
         );
         this.addShortcut(
-            ['ctrl+b','meta+b'], function (event) {
+            ['ctrl+b', 'meta+b'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -146,14 +139,14 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['ctrl+s','meta+s'], function (event) {
+            ['ctrl+s', 'meta+s'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                document.id('save').fireEvent('click');
+                $(document).find('#save').trigger('click');
             }
         );
         this.addShortcut(
-            ['ctrl+i','meta+i'], function (event) {
+            ['ctrl+i', 'meta+i'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -161,7 +154,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['meta+shift+a','ctrl+shift+a'], function (event) {
+            ['ctrl+shift+a', 'meta+shift+a'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -169,7 +162,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['ctrl+=','meta+='], function (event) {
+            ['meta+=', 'ctrl+='], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -177,7 +170,7 @@ mindplot.DesignerKeyboard = new Class({
             }
         );
         this.addShortcut(
-            ['ctrl+-','meta+-'], function (event) {
+            ['meta+-', 'ctrl+-'], function (event) {
                 event.preventDefault();
                 event.stopPropagation();
 
