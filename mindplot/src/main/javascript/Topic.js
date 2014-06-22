@@ -759,13 +759,13 @@ mindplot.Topic = new Class({
                 return result;
             },
 
-            setValue:function (value, img_size) {
+            setValue:function (value, img_size, imgSource) {
                 var dispatcher = mindplot.ActionDispatcher.getInstance();
                 var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 if (!$defined(value)) {
                     var featureId = links[0].getId();
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
-                    dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.LINE);
+                    dispatcher.removeImgShapeTypeToTopic(topicId);
                 }
                 else {
                     //change shape to Image

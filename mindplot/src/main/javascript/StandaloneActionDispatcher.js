@@ -174,11 +174,20 @@ mindplot.StandaloneActionDispatcher = new Class({
         var commandFunc = function (topic, shapeType) {
             var result = topic.getShapeType();
             topic.setShapeType(shapeType, true);
+            $(document).trigger("shapeTypeChange", [topic]);
             return result;
         };
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, shapeType);
         this.execute(command);
+    },
+
+    removeImgShapeTypeToTopic:function (topicsIds) {
+        $(document).on("shapeTypeChange", function(event, topic) {
+            topic.setSize({width: 50, height:20}, true);
+            event.stopPropagation();
+        });
+        this.changeShapeTypeToTopic(topicsIds, mindplot.model.TopicShape.LINE);
     },
 
     changeFontWeightToTopic:function (topicsIds) {
