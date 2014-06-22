@@ -36,11 +36,6 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function (model) {
-        var HEIGHT_IMG_EDITOR = 100;
-        var WIDTH_IMG_EDITOR = 600;
-        var HEIGHT_IMG_TOPIC = 100;
-        var WIDTH_IMG_TOPIC = 100;
-
         var result = $('<div></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
 
         var ul = $('<ul></ul>').attr({
@@ -130,7 +125,7 @@ mindplot.widget.ImageEditor = new Class({
         function preload(src) {
             imagePreview.prop('src', src).load(function() {
                 var me = $(this);
-                var resize = calculateAspectRatioFit(me.width(), me.height(), WIDTH_IMG_EDITOR, HEIGHT_IMG_EDITOR);
+                var resize = calculateAspectRatioFit(me.width(), me.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
                 me.width(resize.width);
                 me.height(resize.height);
                 me.show();
@@ -155,10 +150,19 @@ mindplot.widget.ImageEditor = new Class({
         form.unbind('submit').submit(
             function (event) {
                 event.preventDefault();
-                var resizeTopicImg = calculateAspectRatioFit(imagePreview.width(), imagePreview.height(), WIDTH_IMG_TOPIC, HEIGHT_IMG_TOPIC);
-                var inputValue = input.val();
+                var resizeTopicImg = calculateAspectRatioFit(imagePreview.width(), imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
+                var inputValue;
+                var imgSource;
+                if(input.val() != "" ){
+                    inputValue = input.val();
+                    imgSource = "url";
+                }
+                else{
+                    inputValue = inputFileUpload.val();
+                    imgSource = "disk";
+                }
                 if (inputValue != null && inputValue.trim() != "") {
-                    model.setValue(inputValue, resizeTopicImg);
+                    model.setValue(inputValue, resizeTopicImg, imgSource);
                 }
                 me.close();
                 this.formSubmitted = true;
@@ -177,12 +181,12 @@ mindplot.widget.ImageEditor = new Class({
         });
 
         var button = $('<button>Choose from disk</button>').attr({
-            'class': 'btn btn-info'
+            'class': 'btn btn-primary'
         });
         button.click(function() {
             inputFileUpload.click();
         });
-        button.css("margin","1em");
+        button.css("margin","2em");
         div_upload.append(button);
         div_upload.append(inputFileUpload);
 
@@ -204,3 +208,11 @@ mindplot.widget.ImageEditor = new Class({
         }
     }
 });
+
+mindplot.widget.ImageEditor.SIZE = {
+    HEIGHT_IMG_EDITOR: 100,
+    WIDTH_IMG_EDITOR: 600,
+    HEIGHT_IMG_TOPIC: 100,
+    WIDTH_IMG_TOPIC: 100
+};
+
