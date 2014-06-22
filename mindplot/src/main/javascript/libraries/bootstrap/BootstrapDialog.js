@@ -41,7 +41,7 @@ var BootstrapDialog = new Class({
         if (this.options.acceptButton) {
             this.acceptButton = $('<button type="button" class="btn btn-primary" id="acceptBtn" data-dismiss="modal">'+ $msg('ACCEPT') + '</button>');
             footer.append(this.acceptButton);
-            this.acceptButton.unbind('click').click(this.onAcceptClick)
+            this.acceptButton.unbind('click').click({dialog: this}, this.onAcceptClick);
         }
         if (this.options.removeButton) {
             this.removeButton = $('<button type="button" class="btn btn-secondary" id="removeBtn" data-dismiss="modal">'+ $msg('REMOVE') +'</button>');

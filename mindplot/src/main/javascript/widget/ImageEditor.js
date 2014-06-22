@@ -17,7 +17,7 @@
  */
 
 mindplot.widget.ImageEditor = new Class({
-    Extends:BootstrapDialog,
+    Extends: BootstrapDialog,
 
     initialize:function (model) {
         $assert(model, "model can not be null");
@@ -76,7 +76,7 @@ mindplot.widget.ImageEditor = new Class({
             'id':'tab-2'
         });
 
-        var form = $('<form></form>').attr({
+        this.form = $('<form></form>').attr({
             'action': 'none',
             'id': 'imageFormId'
         });
@@ -85,7 +85,7 @@ mindplot.widget.ImageEditor = new Class({
         var text = $('<p></p>').text("Paste your link below:");
         text.css("margin","1em");
 
-        form.append(text);
+        this.form.append(text);
 
         // Add Input
         var input = $('<input/>').attr({
@@ -107,7 +107,7 @@ mindplot.widget.ImageEditor = new Class({
             }, 0);
         });
 
-        form.append(input);
+        this.form.append(input);
 
         var imagePreview = $('<img>').attr({
             'title':'IMAGEN',
@@ -119,7 +119,7 @@ mindplot.widget.ImageEditor = new Class({
             margin:"1em auto"
         });
 
-        form.append($('<div></div>').css('display', 'flex').append(imagePreview));
+        this.form.append($('<div></div>').css('display', 'flex').append(imagePreview));
 
         //preview of the image
         function preload(src) {
@@ -147,7 +147,7 @@ mindplot.widget.ImageEditor = new Class({
         }
 
         var me = this;
-        form.unbind('submit').submit(
+        this.form.submit(
             function (event) {
                 event.preventDefault();
                 var resizeTopicImg = calculateAspectRatioFit(imagePreview.width(), imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
@@ -165,7 +165,6 @@ mindplot.widget.ImageEditor = new Class({
                     model.setValue(inputValue, resizeTopicImg, imgSource);
                 }
                 me.close();
-                this.formSubmitted = true;
             }
         );
 
@@ -190,7 +189,7 @@ mindplot.widget.ImageEditor = new Class({
         div_upload.append(button);
         div_upload.append(inputFileUpload);
 
-        div_url.append(form);
+        div_url.append(this.form);
         div.append(div_url);
         div.append(div_upload);
         result.append(ul);
@@ -201,11 +200,9 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     onAcceptClick: function(event) {
-        this.formSubmitted = false;
-        $("#imageFormId").trigger('submit');
-        if (!this.formSubmitted) {
-            event.stopPropagation();
-        }
+        var me = event.data.dialog;
+        me.form.trigger('submit');
+        event.stopPropagation();
     }
 });
 
