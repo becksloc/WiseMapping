@@ -21,71 +21,81 @@ mindplot.widget.ImageEditor = new Class({
 
     initialize:function (model) {
         $assert(model, "model can not be null");
-        this._model = model;
+        this.model = model;
         this.parent($msg("Image"), {
             cancelButton: true,
             closeButton: true,
             acceptButton: true,
             removeButton: true,
             errorMessage: false,
-            onRemoveClickData: {model: this._model}
+            onRemoveClickData: {model: this.model}
         });
         this.css({width:"600px"});
-        var panel = this._buildPanel(model);
-        this.setContent(panel);
+        this.form = $("#imageFormId");
+        this.imagePreview = $("#imagePreview");
+        var editor = $("#imageEditor");
+        if (editor.length == 0) {
+            editor = this._buildPanel();
+        }
+        this.setContent(editor);
     },
 
-    _buildPanel:function (model) {
-        var result = $('<div></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
+    _buildPanel:function () {
+        var result = $('<div id="imageEditor"></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
 
-        var ul = $('<ul></ul>').attr({
-            'class':'nav nav-tabs',
-            'id':'imageUlId'
-        });
+        /* building tab bar */
+        var tabBar = $('<ul class="nav nav-tabs"></ul>');
 
-        var li_url = $('<li></li>').attr({'class':'active'});
-        var li_upload = $('<li></li>');
+        var urlTab = $('<li class="active"></li>').append($('<a href="#tab1" data-toggle="tab"></a>').html($msg('FROM_URL')));
+        tabBar.append(urlTab);
 
-        var tab1 = $('<a></a>').attr({
-            'href':'#tab-1',
-            'data-toggle':'pill'
-        });
-        tab1.html($msg('FROM_URL'));
-        li_url.append(tab1);
-        var tab2 = $('<a></a>').attr({
-            'href':'#tab-2',
-            'data-toggle':'pill'
-        });
-        tab2.html($msg('UPLOAD'));
-        li_upload.append(tab2);
+        var uploadTab = $('<li></li>').append($('<a href="#tab2" data-toggle="tab"></a>').html($msg('UPLOAD')));
+        tabBar.append(uploadTab);
 
-        ul.append(li_url);
-        ul.append(li_upload);
-
+        /* building tab contents..*/
         var div = $('<div></div>').attr({
             'class':'tab-content'
         });
 
-        var div_url = $('<div></div>').attr({
-            'class':'tab-pane active',
-            'id':'tab-1'
-        });
+        this.form = this._buildForm();
 
-        var div_upload = $('<div></div>').attr({
-            'class':'tab-pane fade',
-            'id':'tab-2'
-        });
+        if (typeof this.model.getValue() != 'undefined'){
+            this.showRemoveButton();
+        }
 
-        this.form = $('<form></form>').attr({
-            'action': 'none',
-            'id': 'imageFormId'
-        });
+        // Add Text
+//        fromFileContent.append($('<p></p>').text('Drag your image here').css("margin","1em"));
 
+        var inputFileUpload =  $('<input type="file" style="display: none">');
+
+        var button = $('<button class="btn btn-primary">Choose from disk</button>');
+        button.click(function() {
+            inputFileUpload.click();
+        });
+        button.css("margin","2em");
+        var urlContent = $('<div id="tab1" class="tab-pane active"></div>');
+        urlContent.append(this.form);
+        div.append(urlContent);
+        var fromFileContent = $('<div id="tab2" class="tab-pane fade"></div>').append(button).append(inputFileUpload);
+        div.append(fromFileContent);
+        result.append(tabBar);
+        result.append(div);
+
+        return result;
+
+    },
+
+    onAcceptClick: function(event) {
+        $("#imageFormId").trigger('submit', [event.data.dialog]);
+        event.stopPropagation();
+    },
+
+    _buildForm: function() {
+        var form = $('<form action="none" id="imageFormId"></form>');
         // Add Text
         var text = $('<p></p>').text("Paste your link below:");
         text.css("margin","1em");
-
-        this.form.append(text);
+        form.append(text);
 
         // Add Input
         var input = $('<input/>').attr({
@@ -95,62 +105,38 @@ mindplot.widget.ImageEditor = new Class({
             'class': 'form-control'
         });
 
-        if (model.getValue() != null){
-            input.val(model.getValue());
-        }
+        form.append(input);
 
+        this.imagePreview = $('<img>').attr({
+            'class': 'img-thumbnail',
+            'id': 'imagePreview'
+        });
+        this.imagePreview.hide();
+        this.imagePreview.css({
+            margin:"1em auto"
+        });
+
+        form.append($('<div></div>').css('display', 'flex').append(this.imagePreview));
+
+        var me = this;
+        // register event for thumbnail
         input.keyup(function(event){
             setTimeout(function () {
                 if (input.val().length != 0) {
-                    preload(input.val());
+                    me._loadThumbail(input.val());
                 }
             }, 0);
         });
 
-        this.form.append(input);
-
-        var imagePreview = $('<img>').attr({
-            'title':'IMAGEN',
-            'class': 'img-thumbnail',
-            'id': 'imagePreview'
-        })
-        imagePreview.hide();
-        imagePreview.css({
-            margin:"1em auto"
-        });
-
-        this.form.append($('<div></div>').css('display', 'flex').append(imagePreview));
-
-        //preview of the image
-        function preload(src) {
-            imagePreview.prop('src', src).load(function() {
-                var me = $(this);
-                var resize = calculateAspectRatioFit(me.width(), me.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
-                me.width(resize.width);
-                me.height(resize.height);
-                me.show();
-            });
-        }
-
-        imagePreview.bind('error', function (event) {
+        this.imagePreview.bind('error', function (event) {
             var errorImage = "images/image-not-found.png"
-            imagePreview.prop('src', errorImage);
+            $(this).prop('src', errorImage);
         });
 
-        //resize the image to fit in the dialog
-        function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
-            var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-            return {
-                width: srcWidth * ratio,
-                height: srcHeight * ratio
-            };
-        }
-
-        var me = this;
-        this.form.submit(
-            function (event) {
+        form.on("submitData",
+            function (event, dialog) {
                 event.preventDefault();
-                var resizeTopicImg = calculateAspectRatioFit(imagePreview.width(), imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
+                var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
                 var inputValue;
                 var imgSource;
                 if(input.val() != "" ){
@@ -162,47 +148,48 @@ mindplot.widget.ImageEditor = new Class({
                     imgSource = "disk";
                 }
                 if (inputValue != null && inputValue.trim() != "") {
-                    model.setValue(inputValue, resizeTopicImg, imgSource);
+                    dialog.model.setValue(inputValue, resizeTopicImg, imgSource);
                 }
-                me.close();
+                dialog.close();
             }
         );
-
-        if (typeof model.getValue() != 'undefined'){
-            this.showRemoveButton();
-        }
-
-        // Add Text
-//        div_upload.append($('<p></p>').text('Drag your image here').css("margin","1em"));
-
-        var inputFileUpload =  $('<input style="display: none">').attr({
-            'type': 'file'
-        });
-
-        var button = $('<button>Choose from disk</button>').attr({
-            'class': 'btn btn-primary'
-        });
-        button.click(function() {
-            inputFileUpload.click();
-        });
-        button.css("margin","2em");
-        div_upload.append(button);
-        div_upload.append(inputFileUpload);
-
-        div_url.append(this.form);
-        div.append(div_url);
-        div.append(div_upload);
-        result.append(ul);
-        result.append(div);
-
-        return result;
-
+        return form;
     },
 
-    onAcceptClick: function(event) {
-        var me = event.data.dialog;
-        me.form.trigger('submit');
-        event.stopPropagation();
+    show: function() {
+        var me = this;
+        this.form.unbind("submit").on("submit", function(event) {
+            $(this).trigger("submitData", [me])
+            event.preventDefault();
+        });
+        var input = this.form.find("input");
+        this.imagePreview.hide();
+        input.val("");
+        if (this.model.getValue() != null){
+            input.val(this.model.getValue());
+            this._loadThumbail(input.val());
+        }
+        this.parent();
+    },
+
+    //preview of the image
+    _loadThumbail: function(src) {
+        var me = this;
+        this.imagePreview.prop('src', src).load(function() {
+            var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
+            $(this).width(resize.width);
+            $(this).height(resize.height);
+            $(this).show();
+        });
+    },
+
+    //resize the image to fit in the dialog
+    _calculateAspectRatioFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
+        var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+        return {
+            width: srcWidth * ratio,
+            height: srcHeight * ratio
+        };
     }
 });
 

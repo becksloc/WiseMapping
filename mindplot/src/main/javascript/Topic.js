@@ -746,9 +746,10 @@ mindplot.Topic = new Class({
     },
 
     showImageEditor:function () {
-
+        this.closeEditors();
         var topicId = this.getId();
         var model = this.getModel();
+
         var editorModel = {
             getValue:function () {
                 var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
@@ -782,8 +783,6 @@ mindplot.Topic = new Class({
                 }
             }
         };
-
-        this.closeEditors();
         var editor = new mindplot.widget.ImageEditor(editorModel);
         editor.show();
     },
