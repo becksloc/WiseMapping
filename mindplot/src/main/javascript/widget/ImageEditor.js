@@ -59,9 +59,6 @@ mindplot.widget.ImageEditor = new Class({
 
         this.form = this._buildForm();
 
-        if (typeof this.model.getValue() != 'undefined'){
-            this.showRemoveButton();
-        }
 
         // Add Text
 //        fromFileContent.append($('<p></p>').text('Drag your image here').css("margin","1em"));
@@ -168,6 +165,9 @@ mindplot.widget.ImageEditor = new Class({
         if (this.model.getValue() != null){
             input.val(this.model.getValue());
             this._loadThumbail(input.val());
+        }
+        if (typeof this.model.getValue() != 'undefined'){
+            this.showRemoveButton();
         }
         this.parent();
     },
