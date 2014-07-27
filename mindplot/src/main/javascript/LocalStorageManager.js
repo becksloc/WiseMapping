@@ -36,12 +36,12 @@ mindplot.LocalStorageManager = new Class({
             var xml = localStorage.getItem(mapId + "-xml");
             if (xml == null || this.forceLoad) {
                 $.ajax({
-                    url:this.documentUrl.replace("{id}", mapId),
-                    headers:{"Content-Type":"text/plain","Accept":"application/xml"},
-                    method:'get',
-                    async:false,
-                    success:function (responseText) {
-                        xml = responseText;
+                    url: this.documentUrl.replace("{id}", mapId),
+                    type:'get',
+                    dataType: "text",
+                    async: false,
+                    success:function (response) {
+                        xml = response;
                     }
                 });
                 // If I could not load it from a file, hard code one.
@@ -49,7 +49,7 @@ mindplot.LocalStorageManager = new Class({
                     throw new Error("Map could not be loaded");
                 }
             }
-            return xml;
+             return jQuery.parseXML(xml);
         },
 
         unlockMap:function (mindmap) {
