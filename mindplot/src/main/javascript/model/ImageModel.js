@@ -20,20 +20,21 @@ mindplot.model.ImageModel = new Class({
     Extends:mindplot.model.FeatureModel,
     initialize:function (attributes) {
         this.parent(mindplot.model.ImageModel.FEATURE_TYPE);
-        this.setUrl(attributes.url);
+        this.setType(attributes.type);
+        this.setValue(attributes.value);
     },
 
-    getUrl:function () {
-        return this.getAttribute('url');
+    getValue:function () {
+        return this.getAttribute('value');
     },
 
-    setUrl:function (url) {
-        $assert(url, 'url can not be null');
-
-        var fixedUrl = this._fixUrl(url);
-        this.setAttribute('url', fixedUrl);
-
-        this.setAttribute('urlType', 'url');
+    setValue:function (value) {
+        console.log('test');
+        $assert(value, 'image source can not be null');
+        if (this.getType() == 'url') {
+            value = this._fixUrl(value);
+        }
+        this.setAttribute('value', value);
     },
 
     _fixUrl:function (url) {
@@ -44,9 +45,13 @@ mindplot.model.ImageModel = new Class({
         return result;
     },
 
-    setUrlType:function (urlType) {
-        $assert(urlType, 'urlType can not be null');
-        this.setAttribute('urlType', urlType);
+    getType:function () {
+        return this.getAttribute('type');
+    },
+
+    setType:function (type) {
+        $assert(type, 'type can not be null');
+        this.setAttribute('type', type);
     }
 });
 
