@@ -60,6 +60,9 @@
             <div id="topicRelation" class="buttonOn">
                 <img src="images/topic-relation.png"/>
             </div>
+            <div id="topicImage" class="buttonOn">
+                <img src="images/topic-image.png"/>
+            </div>
         </div>
         <div id="font" class="buttonContainer">
             <div id="fontFamily" class="buttonOn">
