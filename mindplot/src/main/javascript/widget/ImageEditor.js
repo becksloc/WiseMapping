@@ -33,6 +33,7 @@ mindplot.widget.ImageEditor = new Class({
         this.css({width:"600px"});
         this.form = $("#imageFormId");
         this.imagePreview = $("#imagePreview");
+        this.imgSource = "url";
         var editor = $("#imageEditor");
         if (editor.length == 0) {
             editor = this._buildPanel();
@@ -46,10 +47,10 @@ mindplot.widget.ImageEditor = new Class({
         /* building tab bar */
         var tabBar = $('<ul class="nav nav-tabs"></ul>');
 
-        var urlTab = $('<li class="active"></li>').append($('<a href="#tab1" data-toggle="tab"></a>').html($msg('FROM_URL')));
+        var urlTab = $('<li type="url" class="active"></li>').append($('<a href="#tab1" data-toggle="tab"></a>').html($msg('FROM_URL')));
         tabBar.append(urlTab);
 
-        var uploadTab = $('<li></li>').append($('<a href="#tab2" data-toggle="tab"></a>').html($msg('UPLOAD')));
+        var uploadTab = $('<li type="disk"></li>').append($('<a href="#tab2" data-toggle="tab"></a>').html($msg('UPLOAD')));
         tabBar.append(uploadTab);
 
         /* building tab contents..*/
@@ -83,8 +84,10 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     onAcceptClick: function(event) {
+        this.imgSource = $("li.active").attr('type');
         $("#imageFormId").trigger('submit', [event.data.dialog]);
         event.stopPropagation();
+
     },
 
     _buildForm: function() {
@@ -134,18 +137,8 @@ mindplot.widget.ImageEditor = new Class({
             function (event, dialog) {
                 event.preventDefault();
                 var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
-                var inputValue;
-                var imgSource;
-                if(input.val() != "" ){
-                    inputValue = input.val();
-                    imgSource = "url";
-                }
-                else{
-                    inputValue = inputFileUpload.val();
-                    imgSource = "disk";
-                }
-                if (inputValue != null && inputValue.trim() != "") {
-                    dialog.model.setValue(inputValue, resizeTopicImg, imgSource);
+                if (input.val() != null && input.val().trim() != "") {
+                    dialog.model.setValue(input.val(), resizeTopicImg, me.imgSource);
                 }
                 dialog.close();
             }
