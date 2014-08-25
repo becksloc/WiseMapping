@@ -92,5 +92,11 @@ CREATE TABLE ACCESS_AUDITORY (
   FOREIGN KEY (user_id) REFERENCES "user" (colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
+CREATE TABLE IMAGE (
+  name    VARCHAR(255)       CHARACTER SET utf8 NOT NULL,
+  mindmap_id       INTEGER            NOT NULL,
+  user_id    INTEGER NOT NULL,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+);
 
 COMMIT;
