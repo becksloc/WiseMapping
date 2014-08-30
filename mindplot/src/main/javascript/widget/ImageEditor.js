@@ -34,7 +34,7 @@ mindplot.widget.ImageEditor = new Class({
         this.form = $("#imageFormId");
         this.imagePreview = $("#imagePreview");
         this.uploadContent = $("#uploadContent");
-        this.imgSource = "url";
+        this.inputFileUpload = $("#inputFileUpload");
         var editor = $("#imageEditor");
         if (editor.length == 0) {
             editor = this._buildPanel();
@@ -78,7 +78,6 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     onAcceptClick: function(event) {
-        this.imgSource = $("li.active").attr('type');
         $("#imageFormId").trigger('submit', [event.data.dialog]);
         event.stopPropagation();
 
@@ -141,24 +140,17 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildFormUpload: function(){
-        var uploadContent = $('<div id="uploadContent"></div>');
-        var inputFileUpload =  $('<input type="file" style="display: none">');
+        this.uploadContent = $('<div id="uploadContent"></div>');
+        this.inputFileUpload =  $('<input type="file" id="fileUpload" style="display: none">');
 
-        inputFileUpload.on('change', function() {
-
-            $("#fileName").text(inputFileUpload.val());
-//            var reader = new FileReader();
-//            reader.onload = function(event){
-//                console.log(event);
-//            };
-//            reader.readAsDataURL(this.files.item(0));
+        var me = this;
+        this.inputFileUpload.on('change', function() {
+            $("#fileName").text(me.inputFileUpload.val());
         });
 
-
         var button = $('<button class="btn btn-primary">Choose from disk</button>');
-
         button.click(function() {
-            inputFileUpload.click();
+            me.inputFileUpload.click();
         });
 
         button.css("margin","2em");
@@ -173,11 +165,14 @@ mindplot.widget.ImageEditor = new Class({
             reader.readAsDataURL(this.files.item(0));
         });
 
-        uploadContent.append(button).append(inputFileUpload).append('<p id="fileName" style="padding-left: 2em"></p>').append(buttonUpload);
+        var container = $('<div class="row"></div>');
 
-        return uploadContent;
+        this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName).append(buttonUpload));
+
+        return this.uploadContent;
 
     },
+
     show: function() {
         var me = this;
         this.form.unbind("submit").on("submit", function(event) {
@@ -185,6 +180,9 @@ mindplot.widget.ImageEditor = new Class({
             event.preventDefault();
         });
         var input = this.form.find("input");
+//        this.uploadContent.find("input").val("");
+        this.uploadContent.find("p").text("");
+
         this.imagePreview.hide();
         input.val("");
         if (this.model.getValue() != null){
