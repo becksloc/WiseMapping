@@ -155,14 +155,20 @@ mindplot.widget.ImageEditor = new Class({
 
         button.css("margin","2em");
 
-        var buttonUpload = $('<button class="btn btn-secondary">Upload</button>');
 
+        var fileName = $('<p id="fileName" class="col-md-8" style="padding-left: 3em"></p>');
+
+        var buttonUpload = $('<button class="btn btn-info col-md-4">Upload Image</button>');
         buttonUpload.click(function(){
             var reader = new FileReader();
             reader.onload = function(event){
                 console.log(event);
+                buttonUpload.text("Image uploaded successfully!");
+                buttonUpload.attr({
+                    'disabled':'disabled'
+                });
             };
-            reader.readAsDataURL(this.files.item(0));
+            reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
         var container = $('<div class="row"></div>');
