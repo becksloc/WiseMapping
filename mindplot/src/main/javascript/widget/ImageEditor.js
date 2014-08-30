@@ -33,6 +33,7 @@ mindplot.widget.ImageEditor = new Class({
         this.css({width:"600px"});
         this.form = $("#imageFormId");
         this.imagePreview = $("#imagePreview");
+        this.uploadContent = $("#uploadContent");
         this.imgSource = "url";
         var editor = $("#imageEditor");
         if (editor.length == 0) {
@@ -60,22 +61,15 @@ mindplot.widget.ImageEditor = new Class({
 
         this.form = this._buildForm();
 
+        this.uploadContent = this._buildFormUpload();
 
-        // Add Text
-//        fromFileContent.append($('<p></p>').text('Drag your image here').css("margin","1em"));
-
-        var inputFileUpload =  $('<input type="file" style="display: none">');
-
-        var button = $('<button class="btn btn-primary">Choose from disk</button>');
-        button.click(function() {
-            inputFileUpload.click();
-        });
-        button.css("margin","2em");
         var urlContent = $('<div id="tab1" class="tab-pane active"></div>');
         urlContent.append(this.form);
         div.append(urlContent);
-        var fromFileContent = $('<div id="tab2" class="tab-pane fade"></div>').append(button).append(inputFileUpload);
+        var fromFileContent = $('<div id="tab2" class="tab-pane fade"></div>');
+        fromFileContent.append(this.uploadContent);
         div.append(fromFileContent);
+
         result.append(tabBar);
         result.append(div);
 
@@ -146,6 +140,44 @@ mindplot.widget.ImageEditor = new Class({
         return form;
     },
 
+    _buildFormUpload: function(){
+        var uploadContent = $('<div id="uploadContent"></div>');
+        var inputFileUpload =  $('<input type="file" style="display: none">');
+
+        inputFileUpload.on('change', function() {
+
+            $("#fileName").text(inputFileUpload.val());
+//            var reader = new FileReader();
+//            reader.onload = function(event){
+//                console.log(event);
+//            };
+//            reader.readAsDataURL(this.files.item(0));
+        });
+
+
+        var button = $('<button class="btn btn-primary">Choose from disk</button>');
+
+        button.click(function() {
+            inputFileUpload.click();
+        });
+
+        button.css("margin","2em");
+
+        var buttonUpload = $('<button class="btn btn-secondary">Upload</button>');
+
+        buttonUpload.click(function(){
+            var reader = new FileReader();
+            reader.onload = function(event){
+                console.log(event);
+            };
+            reader.readAsDataURL(this.files.item(0));
+        });
+
+        uploadContent.append(button).append(inputFileUpload).append('<p id="fileName" style="padding-left: 2em"></p>').append(buttonUpload);
+
+        return uploadContent;
+
+    },
     show: function() {
         var me = this;
         this.form.unbind("submit").on("submit", function(event) {
