@@ -755,7 +755,7 @@ mindplot.Topic = new Class({
                 var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 var result;
                 if (links.length > 0)
-                    result = links[0].getUrl();
+                    result = links[0].getValue();
 
                 return result;
             },
@@ -774,10 +774,10 @@ mindplot.Topic = new Class({
                     model.setImageUrl(value);
                     dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
-                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url:value});
+                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, type:imgSource});
                     }
                     else {
-                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {url:value});
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {value:value, type:imgSource});
                     }
 
                 }
