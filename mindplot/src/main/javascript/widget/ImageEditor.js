@@ -150,6 +150,7 @@ mindplot.widget.ImageEditor = new Class({
             buttonUpload.prop({
                 'disabled':false
             });
+            buttonUpload.show();
         });
 
         var button = $('<button class="btn btn-primary">Choose from disk</button>');
@@ -192,6 +193,7 @@ mindplot.widget.ImageEditor = new Class({
         var input = this.form.find("input");
 //        this.uploadContent.find("input").val("");
         this.uploadContent.find("p").text("");
+        me.uploadContent.find('.btn-info').hide();
 
         this.imagePreview.hide();
         input.val("");
