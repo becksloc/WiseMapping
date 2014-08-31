@@ -33,6 +33,7 @@ mindplot.widget.ImageEditor = new Class({
         this.css({width:"600px"});
         this.form = $("#imageFormId");
         this.imagePreview = $("#imagePreview");
+        this.filePreview = $("#filePreview");
         this.uploadContent = $("#uploadContent");
         this.inputFileUpload = $("#inputFileUpload");
         var editor = $("#imageEditor");
@@ -116,7 +117,7 @@ mindplot.widget.ImageEditor = new Class({
         input.keyup(function(event){
             setTimeout(function () {
                 if (input.val().length != 0) {
-                    me._loadThumbail(input.val());
+                    me._loadThumbail(input.val(),me.imagePreview);
                 }
             }, 0);
         });
@@ -172,13 +173,25 @@ mindplot.widget.ImageEditor = new Class({
                 buttonUpload.prop({
                     'disabled':true
                 });
+                me._loadThumbail(reader.result,me.filePreview);
             };
             reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
         var container = $('<div class="row" style="padding-left: 2em"></div>');
 
+        this.filePreview = $('<img>').attr({
+            'class': 'img-thumbnail',
+            'id': 'imagePreview'
+        });
+        this.filePreview.hide();
+        this.filePreview.css({
+            margin:"1em auto"
+        });
+
+
         this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName).append(buttonUpload));
+        this.uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
 
         return this.uploadContent;
 
@@ -196,6 +209,8 @@ mindplot.widget.ImageEditor = new Class({
         me.uploadContent.find('.btn-info').hide();
 
         this.imagePreview.hide();
+        this.filePreview.hide();
+
         input.val("");
         if (this.model.getValue() != null){
             input.val(this.model.getValue());
@@ -208,9 +223,9 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     //preview of the image
-    _loadThumbail: function(src) {
+    _loadThumbail: function(src,tab) {
         var me = this;
-        this.imagePreview.prop('src', src).load(function() {
+        tab.prop('src', src).load(function() {
             var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
             $(this).width(resize.width);
             $(this).height(resize.height);
