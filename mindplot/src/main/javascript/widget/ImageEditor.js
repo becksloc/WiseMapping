@@ -146,6 +146,10 @@ mindplot.widget.ImageEditor = new Class({
         var me = this;
         this.inputFileUpload.on('change', function() {
             $("#fileName").text(me.inputFileUpload.val());
+            buttonUpload.text("Upload Image");
+            buttonUpload.prop({
+                'disabled':false
+            });
         });
 
         var button = $('<button class="btn btn-primary">Choose from disk</button>');
@@ -156,7 +160,7 @@ mindplot.widget.ImageEditor = new Class({
         button.css("margin","2em");
 
 
-        var fileName = $('<p id="fileName" class="col-md-8" style="padding-left: 3em"></p>');
+        var fileName = $('<p id="fileName" class="col-md-8"></p>');
 
         var buttonUpload = $('<button class="btn btn-info col-md-4">Upload Image</button>');
         buttonUpload.click(function(){
@@ -164,14 +168,14 @@ mindplot.widget.ImageEditor = new Class({
             reader.onload = function(event){
                 console.log(event);
                 buttonUpload.text("Image uploaded successfully!");
-                buttonUpload.attr({
-                    'disabled':'disabled'
+                buttonUpload.prop({
+                    'disabled':true
                 });
             };
             reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
-        var container = $('<div class="row"></div>');
+        var container = $('<div class="row" style="padding-left: 2em"></div>');
 
         this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName).append(buttonUpload));
 
