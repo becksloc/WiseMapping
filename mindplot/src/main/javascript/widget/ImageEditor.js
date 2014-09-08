@@ -79,8 +79,17 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     onAcceptClick: function(event) {
-        $("#imageFormId").trigger('submit', [event.data.dialog]);
+        var fileURL = ""; //FIXME obtener url para la imagen subida de disco.
+        var dialog = event.data.dialog;
+        if(($('.nav-tabs .active').text()) == "From URL"){
+            $("#imageFormId").trigger('submit', dialog);
+        }
+        else{
+            var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
+            dialog.model.setValue(fileURL, resizeTopicImg);
+        }
         event.stopPropagation();
+        dialog.close();
 
     },
 
@@ -130,9 +139,10 @@ mindplot.widget.ImageEditor = new Class({
         form.on("submitData",
             function (event, dialog) {
                 event.preventDefault();
+                event.stopPropagation();
                 var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
                 if (input.val() != null && input.val().trim() != "") {
-                    dialog.model.setValue(input.val(), resizeTopicImg, me.imgSource);
+                    dialog.model.setValue(input.val(), resizeTopicImg);
                 }
                 dialog.close();
             }
@@ -146,12 +156,13 @@ mindplot.widget.ImageEditor = new Class({
 
         var me = this;
         this.inputFileUpload.on('change', function() {
-            $("#fileName").text(me.inputFileUpload.val());
-            buttonUpload.text("Upload Image");
-            buttonUpload.prop({
-                'disabled':false
-            });
-            buttonUpload.show();
+            var name = me.inputFileUpload.val().replace("fakepath", "..");
+            $("#fileName").text(name);
+            var reader = new FileReader();
+            reader.onload = function(event){
+                me._loadThumbail(reader.result,me.filePreview);
+            };
+            reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
         var button = $('<button class="btn btn-primary">Choose from disk</button>');
@@ -161,28 +172,13 @@ mindplot.widget.ImageEditor = new Class({
 
         button.css("margin","2em");
 
-
         var fileName = $('<p id="fileName" class="col-md-8"></p>');
-
-        var buttonUpload = $('<button class="btn btn-info col-md-4">Upload Image</button>');
-        buttonUpload.click(function(){
-            var reader = new FileReader();
-            reader.onload = function(event){
-                console.log(event);
-                buttonUpload.text("Image uploaded successfully!");
-                buttonUpload.prop({
-                    'disabled':true
-                });
-                me._loadThumbail(reader.result,me.filePreview);
-            };
-            reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
-        });
 
         var container = $('<div class="row" style="padding-left: 2em"></div>');
 
         this.filePreview = $('<img>').attr({
             'class': 'img-thumbnail',
-            'id': 'imagePreview'
+            'id': 'filePreview'
         });
         this.filePreview.hide();
         this.filePreview.css({
@@ -190,7 +186,7 @@ mindplot.widget.ImageEditor = new Class({
         });
 
 
-        this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName).append(buttonUpload));
+        this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName));
         this.uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
 
         return this.uploadContent;
@@ -203,14 +199,13 @@ mindplot.widget.ImageEditor = new Class({
             $(this).trigger("submitData", [me])
             event.preventDefault();
         });
-        var input = this.form.find("input");
 //        this.uploadContent.find("input").val("");
         this.uploadContent.find("p").text("");
         me.uploadContent.find('.btn-info').hide();
-
         this.imagePreview.hide();
         this.filePreview.hide();
 
+        var input = this.form.find("input");
         input.val("");
         if (this.model.getValue() != null){
             input.val(this.model.getValue());
