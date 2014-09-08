@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.NONE;
 import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@XmlRootElement(name = "label")
+@XmlRootElement(name = "image")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @JsonAutoDetect(
         fieldVisibility = NONE,
@@ -28,7 +28,6 @@ public class RestImage {
     @JsonIgnore
     private Image image;
     private byte[] data;
-
 
     public RestImage() {
         this.image = new Image();
@@ -45,14 +44,6 @@ public class RestImage {
 
     public void setMindmapId(final int mindmapId) {
         this.image.getMap().setId(mindmapId);
-    }
-
-    public long getUserId() {
-        return this.image.getCreator().getId();
-    }
-
-    public void setUserId(final long userId) {
-        this.image.getCreator().setId(userId);
     }
 
     public void setName(@NotNull final String name) {
