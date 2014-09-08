@@ -30,6 +30,16 @@ public class ImageManagerImpl extends HibernateDaoSupport
     @Nullable
     @Override
     public Image getImageById(int id) {
-        List<Image> Images = getHibernateTemplate().find("from com.wisemapping.model.Image wisemapping where id=?", new Object[]{id});
+        List<Image> images = getHibernateTemplate().find("from com.wisemapping.model.Image wisemapping where id=?", id);
+        return getFirst(images);
     }
+
+    @Nullable private Image getFirst(List<Image> Images) {
+        Image result = null;
+        if (Images != null && !Images.isEmpty()) {
+            result = Images.get(0);
+        }
+        return result;
+    }
+    
 }
