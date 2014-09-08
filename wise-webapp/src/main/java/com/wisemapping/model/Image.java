@@ -22,15 +22,6 @@ public class Image {
         return creator;
     }
 
-    @Nullable
-    public String getTitle() {
-        return name;
-    }
-
-    public void setTitle(@NotNull String title) {
-        this.name = title;
-    }
-
     public int getId() {
         return id;
     }
@@ -47,4 +38,13 @@ public class Image {
     public void setMap(@NotNull Mindmap map) {
         this.map = map;
     }
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
 }
