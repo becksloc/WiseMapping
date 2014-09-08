@@ -1,5 +1,6 @@
 package com.wisemapping.service;
 
+import com.wisemapping.dao.ImageManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Image;
 import com.wisemapping.model.User;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class ImageServiceImpl implements ImageService {
 
-    private  ImageManager imageManager;
+    private ImageManager imageManager;
 
     @Override
     public void addImage(@NotNull final Image image) throws WiseMappingException {
