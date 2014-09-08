@@ -78,7 +78,7 @@ public class BaseController {
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
-        return new RestErrors("Communication error",Severity.SEVERE);
+        return new RestErrors("Communication error",Severity.SEVERE, ex.getMessage());
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
