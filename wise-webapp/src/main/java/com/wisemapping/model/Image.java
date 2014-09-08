@@ -11,7 +11,14 @@ public class Image {
     @NotNull private String name;
     @NotNull private User creator;
     @NotNull private Mindmap map;
+    @Nullable private String extension;
 
+    public Image() {}
+
+    public Image(@NotNull final Mindmap map, @NotNull final User creator) {
+        this.creator = creator;
+        this.map = map;
+    }
 
     public void setCreator(@NotNull User creator) {
         this.creator = creator;
@@ -38,6 +45,16 @@ public class Image {
     public void setMap(@NotNull Mindmap map) {
         this.map = map;
     }
+
+    @Nullable
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(@Nullable String extension) {
+        this.extension = extension;
+    }
+
     @NotNull
     public String getName() {
         return name;
