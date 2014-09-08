@@ -36,8 +36,10 @@ import com.wisemapping.model.Label;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
+import com.wisemapping.persistence.ImageSaver;
 import com.wisemapping.rest.model.RestCollaboration;
 import com.wisemapping.rest.model.RestCollaborationList;
+import com.wisemapping.rest.model.RestImage;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapHistory;
@@ -72,6 +74,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -657,5 +660,21 @@ public class MindmapController extends BaseController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", consumes = { "application/xml","application/json"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public void saveImage(@RequestBody RestImage restImage) throws WiseMappingException {
+        final User user = Utils.getUser();
+        restImage.getDelegated().setCreator(user);
+        final int mindmapId = restImage.getMindmapId();
+        final Mindmap mindmap = mindmapService.findMindmapById(mindmapId);
+        if (mindmap == null) {
+            throw new MapCouldNotFoundException("Map could not be found. Id:" + mindmapId);
+        }
+        try {
+            ImageSaver.save(restImage.getDelegated(), restImage.getData());
+        } catch (IOException | NoSuchAlgorithmException e) {
+            throw new WiseMappingException("image cannot be saved", e);
+        }
+    }
 
 }
