@@ -1,9 +1,11 @@
 package com.wisemapping.rest.model;
 
+import com.wisemapping.model.Image;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,33 +26,41 @@ import static org.codehaus.jackson.annotate.JsonAutoDetect.Visibility.PUBLIC_ONL
 public class RestImage {
 
     @JsonIgnore
-    private String extension;
-
-    private String mindmapId;
-
-    private String userId;
+    private Image image;
     private byte[] data;
 
 
     public RestImage() {
+        this.image = new Image();
     }
 
-    @NotNull
-    public String getMindmapId() {
-        return mindmapId;
+    @JsonIgnore
+    public Image getDelegated() {
+        return this.image;
     }
 
-    public void setMindmapId(@NotNull final String mindmapId) {
-        this.mindmapId = mindmapId;
+    public int getMindmapId() {
+        return this.image.getMap().getId();
     }
 
-    @NotNull
-    public String getUserId() {
-        return userId;
+    public void setMindmapId(final int mindmapId) {
+        this.image.getMap().setId(mindmapId);
     }
 
-    public void setUserId(@NotNull final String userId) {
-        this.userId = userId;
+    public long getUserId() {
+        return this.image.getCreator().getId();
+    }
+
+    public void setUserId(final long userId) {
+        this.image.getCreator().setId(userId);
+    }
+
+    public void setName(@NotNull final String name) {
+        this.image.setName(name);
+    }
+
+    @NotNull public String getName() {
+        return this.image.getName();
     }
 
     public byte[] getData() {
@@ -61,11 +71,11 @@ public class RestImage {
         this.data = data;
     }
 
-    public String getExtension() {
-        return extension;
+    @Nullable public String getExtension() {
+        return this.image.getExtension();
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setExtension(@Nullable final String extension) {
+        this.image.setExtension(extension);
     }
 }
