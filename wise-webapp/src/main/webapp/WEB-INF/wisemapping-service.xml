@@ -72,6 +72,17 @@
         </property>
     </bean>
 
+    <bean id="imageServiceTarget" class="com.wisemapping.service.ImageServiceImpl">
+        <property name="imageManager" ref="imageManager"/>
+    </bean>
+
+    <bean id="imageService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="target">
+            <ref local="imageServiceTarget"/>
+        </property>
+    </bean>
+
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail.smtp.host}"/>
         <property name="port" value="${mail.smtp.port}"/>

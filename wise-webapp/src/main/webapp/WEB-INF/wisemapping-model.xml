@@ -18,5 +18,9 @@
             <property name="hibernateTemplate" ref="hibernateTemplate"/>
         </bean>
 
+        <bean id="imageManager" class="com.wisemapping.dao.ImageManagerImpl">
+            <property name="hibernateTemplate" ref="hibernateTemplate"/>
+        </bean>
+
     </beans>
 </beans>
