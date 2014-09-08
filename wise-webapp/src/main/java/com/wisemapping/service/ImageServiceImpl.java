@@ -13,6 +13,10 @@ public class ImageServiceImpl implements ImageService {
 
     private ImageManager imageManager;
 
+    public void setImageManager(ImageManager imageManager) {
+        this.imageManager = imageManager;
+    }
+
     @Override
     public void addImage(@NotNull final Image image) throws WiseMappingException {
         imageManager.addImage(image);
