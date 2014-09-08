@@ -32,6 +32,7 @@ import com.wisemapping.importer.ImporterFactory;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.CollaborationProperties;
 import com.wisemapping.model.CollaborationRole;
+import com.wisemapping.model.Image;
 import com.wisemapping.model.Label;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
@@ -48,6 +49,7 @@ import com.wisemapping.rest.model.RestMindmapInfo;
 import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.CollaborationException;
+import com.wisemapping.service.ImageService;
 import com.wisemapping.service.LabelService;
 import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
@@ -96,6 +98,11 @@ public class MindmapController extends BaseController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
+
+    @Qualifier("imageService")
+    @Autowired
+    private ImageService imageService;
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
@@ -589,7 +596,7 @@ public class MindmapController extends BaseController {
         createMap(new RestMindmap(mindMap, null), response, title, description);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"},produces = {"application/xml", "application/json","text/plain"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/{id}", consumes = {"application/xml", "application/json"}, produces = {"application/xml", "application/json","text/plain"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id, @NotNull HttpServletResponse response) throws IOException, WiseMappingException {
         // Validate ...
@@ -660,21 +667,26 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", consumes = { "application/xml","application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", consumes = { "application/xml","application/json"}, produces = {"application/xml", "application/json", "text/plain"})
     @ResponseStatus(value = HttpStatus.OK)
-    public void saveImage(@RequestBody RestImage restImage) throws WiseMappingException {
+    public void saveImage(@RequestBody RestImage restImage, @NotNull HttpServletResponse response) throws WiseMappingException {
         final User user = Utils.getUser();
-        restImage.getDelegated().setCreator(user);
+        final Image delegated = restImage.getDelegated();
+        delegated.setCreator(user);
         final int mindmapId = restImage.getMindmapId();
         final Mindmap mindmap = mindmapService.findMindmapById(mindmapId);
         if (mindmap == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + mindmapId);
         }
         try {
-            ImageSaver.save(restImage.getDelegated(), restImage.getData());
+            final String fileName = ImageSaver.save(delegated, restImage.getData());
+            delegated.setName(fileName);
+            imageService.addImage(delegated);
         } catch (IOException | NoSuchAlgorithmException e) {
             throw new WiseMappingException("image cannot be saved", e);
         }
+
+        response.setHeader("Location", delegated.getName());
     }
 
 }
