@@ -95,9 +95,10 @@ CREATE TABLE ACCESS_AUDITORY (
 
 CREATE TABLE IMAGE (
   id         INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name    VARCHAR(255) NOT NULL,
-  mindmap_id       INTEGER            NOT NULL,
+  name       VARCHAR(255) NOT NULL,
+  mindmap_id INTEGER NOT NULL,
   user_id    INTEGER NOT NULL,
+  extension  VARCHAR(5) NOT NULL,
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
 );
 
