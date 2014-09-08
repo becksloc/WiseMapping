@@ -781,6 +781,10 @@ mindplot.Topic = new Class({
                     }
 
                 }
+            },
+
+            getMindmapId: function() {
+                return model.getMindmap().getId();
             }
         };
         var editor = new mindplot.widget.ImageEditor(editorModel);

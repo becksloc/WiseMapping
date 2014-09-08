@@ -13,7 +13,9 @@ public class Image {
     @NotNull private Mindmap map;
     @Nullable private String extension;
 
-    public Image() {}
+    public Image() {
+        this(new Mindmap(), new User());
+    }
 
     public Image(@NotNull final Mindmap map, @NotNull final User creator) {
         this.creator = creator;

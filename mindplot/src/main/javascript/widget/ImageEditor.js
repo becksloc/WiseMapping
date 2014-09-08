@@ -86,7 +86,26 @@ mindplot.widget.ImageEditor = new Class({
         }
         else{
             var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
-            dialog.model.setValue(fileURL, resizeTopicImg);
+            var filePath = $("#fileUpload").val();
+            var fileName = filePath.replace(filePath.lastIndexOf('/'));
+            var fileNameAndExtension = fileName.split(".");
+            $.ajax({
+                type: 'post',
+                url: "c/restful/maps/img",
+                data: JSON.stringify({
+                    data: dialog.filePreview.attr('src'),
+                    name: fileNameAndExtension[0],
+                    extension: fileNameAndExtension[1],
+                    mindmapId: dialog.model.getMindmapId()
+                }),
+                contentType:"application/json; charset=utf-8",
+                async: false,
+                dataType: "json",
+                success: function() {
+                    console.log('todo bien');
+                    dialog.model.setValue("http://st-listas.20minutos.es/images/2009-10/156965/1755633_640px.jpg?1256348772", resizeTopicImg);
+                }
+            });
         }
         event.stopPropagation();
         dialog.close();
@@ -160,7 +179,7 @@ mindplot.widget.ImageEditor = new Class({
             $("#fileName").text(name);
             var reader = new FileReader();
             reader.onload = function(event){
-                me._loadThumbail(reader.result,me.filePreview);
+                me._loadThumbail(reader.result, me.filePreview);
             };
             reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
@@ -196,7 +215,7 @@ mindplot.widget.ImageEditor = new Class({
     show: function() {
         var me = this;
         this.form.unbind("submit").on("submit", function(event) {
-            $(this).trigger("submitData", [me])
+            $(this).trigger("submitData", [me]);
             event.preventDefault();
         });
 //        this.uploadContent.find("input").val("");
@@ -218,7 +237,7 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     //preview of the image
-    _loadThumbail: function(src,tab) {
+    _loadThumbail: function(src, tab) {
         var me = this;
         tab.prop('src', src).load(function() {
             var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
