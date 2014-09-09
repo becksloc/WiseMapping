@@ -86,24 +86,19 @@ mindplot.widget.ImageEditor = new Class({
         }
         else{
             var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
-            var filePath = $("#fileUpload").val();
-            var fileName = filePath.replace(filePath.lastIndexOf('/'));
-            var fileNameAndExtension = fileName.split(".");
+            var formData = new FormData();
+            formData.append('file', dialog.inputFileUpload.get(0).files[0]);
+            formData.append('mindmapId', dialog.model.getMindmapId());
             $.ajax({
                 type: 'post',
                 url: "c/restful/maps/img",
-                data: JSON.stringify({
-                    data: dialog.filePreview.attr('src'),
-                    name: fileNameAndExtension[0],
-                    extension: fileNameAndExtension[1],
-                    mindmapId: dialog.model.getMindmapId()
-                }),
-                contentType:"application/json; charset=utf-8",
+                data: formData,
+                contentType:false,
+                processData: false,
                 async: false,
-                dataType: "json",
-                success: function() {
-                    console.log('todo bien');
-                    dialog.model.setValue("http://st-listas.20minutos.es/images/2009-10/156965/1755633_640px.jpg?1256348772", resizeTopicImg);
+                success: function(data, status, xhr) {
+                    console.log(data);
+                    dialog.model.setValue(xhr.getResponseHeader('Location'), resizeTopicImg);
                 }
             });
         }
@@ -171,7 +166,7 @@ mindplot.widget.ImageEditor = new Class({
 
     _buildFormUpload: function(){
         this.uploadContent = $('<div id="uploadContent"></div>');
-        this.inputFileUpload =  $('<input type="file" id="fileUpload" style="display: none">');
+        this.inputFileUpload =  $('<input type="file" name="file" id="fileUpload" style="display: none">');
 
         var me = this;
         this.inputFileUpload.on('change', function() {

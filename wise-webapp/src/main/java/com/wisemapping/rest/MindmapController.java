@@ -40,7 +40,6 @@ import com.wisemapping.model.User;
 import com.wisemapping.persistence.ImageSaver;
 import com.wisemapping.rest.model.RestCollaboration;
 import com.wisemapping.rest.model.RestCollaborationList;
-import com.wisemapping.rest.model.RestImage;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestMindmap;
 import com.wisemapping.rest.model.RestMindmapHistory;
@@ -54,6 +53,7 @@ import com.wisemapping.service.LabelService;
 import com.wisemapping.service.LockInfo;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
+import com.wisemapping.util.FileUtils;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -71,6 +71,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -667,26 +668,29 @@ public class MindmapController extends BaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", consumes = { "application/xml","application/json"}, produces = {"application/xml", "application/json", "text/plain"})
+    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", produces = {"application/xml", "application/json", "text/plain"})
     @ResponseStatus(value = HttpStatus.OK)
-    public void saveImage(@RequestBody RestImage restImage, @NotNull HttpServletResponse response) throws WiseMappingException {
+    public void saveImage(@RequestParam("file") MultipartFile file, @RequestParam("mindmapId") int mindmapId, @NotNull HttpServletResponse response) throws WiseMappingException {
         final User user = Utils.getUser();
-        final Image delegated = restImage.getDelegated();
-        delegated.setCreator(user);
-        final int mindmapId = restImage.getMindmapId();
         final Mindmap mindmap = mindmapService.findMindmapById(mindmapId);
+        final String originalFileName = file.getOriginalFilename();
+        final String fileName = FileUtils.getFileName(originalFileName);
+        final String extension = FileUtils.getFileExtension(originalFileName);
         if (mindmap == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + mindmapId);
         }
         try {
-            final String fileName = ImageSaver.save(delegated, restImage.getData());
-            delegated.setName(fileName);
-            imageService.addImage(delegated);
+            final String saveFileName = ImageSaver.save(FileUtils.getUserImagesFolder(this.context.getRealPath("")), fileName, extension, file.getBytes());
+            final Image image = new Image();
+            image.setCreator(user);
+            image.setMap(mindmap);
+            image.setName(saveFileName);
+            image.setExtension(extension);
+            imageService.addImage(image);
+            response.setHeader("Location", FileUtils.IMAGE_FOLDER + "/" + saveFileName);
         } catch (IOException | NoSuchAlgorithmException e) {
             throw new WiseMappingException("image cannot be saved", e);
         }
-
-        response.setHeader("Location", delegated.getName());
     }
 
 }
