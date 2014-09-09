@@ -12,13 +12,13 @@ public class ImageManagerImpl extends HibernateDaoSupport
         implements ImageManager {
 
     @Override
-    public void addImage(@NotNull final Image Image) {
-        saveImage(Image);
+    public void addImage(@NotNull final Image image) {
+        saveImage(image);
     }
 
     @Override
-    public void saveImage(@NotNull final Image Image) {
-        getSession().save(Image);
+    public void saveImage(@NotNull final Image image) {
+        getSession().save(image);
     }
 
     @NotNull
@@ -30,14 +30,14 @@ public class ImageManagerImpl extends HibernateDaoSupport
     @Nullable
     @Override
     public Image getImageById(int id) {
-        List<Image> images = getHibernateTemplate().find("from com.wisemapping.model.Image wisemapping where id=?", id);
+        final List<Image> images = getHibernateTemplate().find("from com.wisemapping.model.Image wisemapping where id=?", id);
         return getFirst(images);
     }
 
-    @Nullable private Image getFirst(List<Image> Images) {
+    @Nullable private Image getFirst(List<Image> images) {
         Image result = null;
-        if (Images != null && !Images.isEmpty()) {
-            result = Images.get(0);
+        if (images != null && !images.isEmpty()) {
+            result = images.get(0);
         }
         return result;
     }
