@@ -44,7 +44,7 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     _buildPanel:function () {
-        var result = $('<div id="imageEditor"></div>').css("margin-bottom", "-2em"); //FIXME: remove this hack for centered preview
+        var result = $('<div id="imageEditor"></div>').css("margin-bottom", "-2em");
 
         /* building tab bar */
         var tabBar = $('<ul class="nav nav-tabs"></ul>');
@@ -79,9 +79,8 @@ mindplot.widget.ImageEditor = new Class({
     },
 
     onAcceptClick: function(event) {
-        var fileURL = ""; //FIXME obtener url para la imagen subida de disco.
         var dialog = event.data.dialog;
-        if(($('.nav-tabs .active').text()) == "From URL"){
+        if(($('.nav-tabs .active a').attr('href')) == "#tab1"){
             $("#imageFormId").trigger('submit', dialog);
         }
         else{
@@ -129,9 +128,7 @@ mindplot.widget.ImageEditor = new Class({
             'id': 'imagePreview'
         });
         this.imagePreview.hide();
-        this.imagePreview.css({
-            margin:"1em auto"
-        });
+        this.imagePreview.css("margin", "1em auto");
 
         form.append($('<div></div>').css('display', 'flex').append(this.imagePreview));
 
