@@ -16,7 +16,7 @@
  *   limitations under the License.
  */
 
-mindplot.widget.ImageEditor = new Class({
+mindplot.widget.image.ImageEditor = new Class({
     Extends: BootstrapDialog,
 
     initialize:function (model) {
@@ -84,7 +84,7 @@ mindplot.widget.ImageEditor = new Class({
             $("#imageFormId").trigger('submit', dialog);
         }
         else{
-            var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
+            var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.image.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.image.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
             var formData = new FormData();
             formData.append('file', dialog.inputFileUpload.get(0).files[0]);
             formData.append('mindmapId', dialog.model.getMindmapId());
@@ -140,7 +140,7 @@ mindplot.widget.ImageEditor = new Class({
             function (event, dialog) {
                 event.preventDefault();
                 event.stopPropagation();
-                var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
+                var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.image.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.image.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
                 if (input.val() != null && input.val().trim() != "") {
                     dialog.model.setValue(input.val(), resizeTopicImg,"url");
                 }
@@ -232,7 +232,7 @@ mindplot.widget.ImageEditor = new Class({
     _loadThumbail: function(src, imagePreview) {
         var me = this;
         imagePreview.prop('src', src).load(function() {
-            var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
+            var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.image.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.image.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
             $(this).width(resize.width);
             $(this).height(resize.height);
             $(this).show();
@@ -249,7 +249,7 @@ mindplot.widget.ImageEditor = new Class({
     }
 });
 
-mindplot.widget.ImageEditor.SIZE = {
+mindplot.widget.image.ImageEditor.SIZE = {
     HEIGHT_IMG_EDITOR: 100,
     WIDTH_IMG_EDITOR: 600,
     HEIGHT_IMG_TOPIC: 100,

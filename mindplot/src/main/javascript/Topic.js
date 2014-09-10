@@ -791,7 +791,7 @@ mindplot.Topic = new Class({
                 return model.getMindmap().getId();
             }
         };
-        var editor = new mindplot.widget.ImageEditor(editorModel);
+        var editor = new mindplot.widget.image.ImageEditor(editorModel);
         editor.show();
     },
 
