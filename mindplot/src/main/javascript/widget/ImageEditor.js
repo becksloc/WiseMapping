@@ -98,6 +98,7 @@ mindplot.widget.ImageEditor = new Class({
                 success: function(data, status, xhr) {
                     console.log(data);
                     dialog.model.setValue(xhr.getResponseHeader('Location'), resizeTopicImg);
+
                 }
             });
         }
@@ -177,7 +178,8 @@ mindplot.widget.ImageEditor = new Class({
             reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
-        var button = $('<button class="btn btn-primary">Choose from disk</button>');
+        var button = $('<button class="btn"></button>');
+        button.html($msg('CHOOSE_FROM_DISK'));
         button.click(function() {
             me.inputFileUpload.click();
         });
