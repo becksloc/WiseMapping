@@ -23,6 +23,7 @@ mindplot.layout = {};
 mindplot.layout.boards = {};
 mindplot.layout.boards.original = {};
 mindplot.widget = {};
+mindplot.widget.image = {};
 mindplot.model = {};
 mindplot.collaboration = {};
 mindplot.collaboration.framework = {};

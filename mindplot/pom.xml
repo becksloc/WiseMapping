@@ -205,7 +205,11 @@
                                         <include>widget/ToolbarPaneItem.js</include>
                                         <include>widget/NoteEditor.js</include>
                                         <include>widget/LinkEditor.js</include>
-                                        <include>widget/ImageEditor.js</include>
+                                        <include>widget/image/ImagePreview.js</include>
+                                        <include>widget/image/AbstractTab.js</include>
+                                        <include>widget/image/UrlTab.js</include>
+                                        <include>widget/image/UploadTab.js</include>
+                                        <include>widget/image/ImageEditor.js</include>
                                         <include>widget/FloatingTip.js</include>
                                         <include>widget/LinkIconTooltip.js</include>
                                         <include>widget/KeyboardShortcutTooltip.js</include>
