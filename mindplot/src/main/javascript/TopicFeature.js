@@ -37,8 +37,7 @@ mindplot.TopicFeature = {
 
     Image:{
         id:mindplot.model.ImageModel.FEATURE_TYPE,
-        model:mindplot.model.ImageModel,
-        icon:mindplot.LinkIcon
+        model:mindplot.model.ImageModel
     },
 
     isSupported:function (id) {
@@ -61,10 +60,10 @@ mindplot.TopicFeature = {
         $assert(topic, 'topic can not be null');
         $assert(model, 'model can not be null');
 
-        var icon = mindplot.TopicFeature._featuresMetadataById.filter(function (elem) {
+        var feature = mindplot.TopicFeature._featuresMetadataById.filter(function (elem) {
             return elem.id == model.getType();
-        })[0].icon;
-        return new icon(topic, model, readOnly);
+        })[0];
+        return feature.icon ? new feature.icon(topic, model, readOnly) : null;
     }
 };
 

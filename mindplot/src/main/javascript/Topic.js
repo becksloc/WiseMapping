@@ -283,7 +283,9 @@ mindplot.Topic = new Class({
         model.addFeature(featureModel);
 
         var result = mindplot.TopicFeature.createIcon(this, featureModel, this.isReadOnly());
-        iconGroup.addIcon(result, featureModel.getType() == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
+        if (result) {
+            iconGroup.addIcon(result, featureModel.getType() == mindplot.TopicFeature.Icon.id && !this.isReadOnly());
+        }
 
         this._adjustShapes();
         return result;

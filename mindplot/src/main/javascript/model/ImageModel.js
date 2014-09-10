@@ -20,7 +20,6 @@ mindplot.model.ImageModel = new Class({
     Extends:mindplot.model.FeatureModel,
     initialize:function (attributes) {
         this.parent(mindplot.model.ImageModel.FEATURE_TYPE);
-        this.setType(attributes.type);
         this.setValue(attributes.value);
     },
 
@@ -43,15 +42,6 @@ mindplot.model.ImageModel = new Class({
             result = "http://" + result;
         }
         return result;
-    },
-
-    getType:function () {
-        return this.getAttribute('type');
-    },
-
-    setType:function (type) {
-        $assert(type, 'type can not be null');
-        this.setAttribute('type', type);
     }
 });
 
