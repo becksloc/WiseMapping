@@ -32,9 +32,6 @@ BootstrapDialog.Request = new Class({
             me.acceptButton.unbind('click').click(function () {
                 submitDialogForm();
             });
-            me._native.on('hidden.bs.modal', function () {
-                $(this).remove();
-            });
             me.show();
         });
     }
