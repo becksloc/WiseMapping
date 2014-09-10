@@ -141,7 +141,7 @@ mindplot.widget.ImageEditor = new Class({
                 event.stopPropagation();
                 var resizeTopicImg = dialog._calculateAspectRatioFit(dialog.imagePreview.width(), dialog.imagePreview.height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_TOPIC, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_TOPIC);
                 if (input.val() != null && input.val().trim() != "") {
-                    dialog.model.setValue(input.val(), resizeTopicImg);
+                    dialog.model.setValue(input.val(), resizeTopicImg,"url");
                 }
                 dialog.close();
             }
@@ -169,7 +169,7 @@ mindplot.widget.ImageEditor = new Class({
         var me = this;
         this.inputFileUpload.on('change', function() {
             var name = me.inputFileUpload.val().replace("fakepath", "..");
-            $("#fileName").text(name);
+            $("#fileName").val(name);
             var reader = new FileReader();
             reader.onload = function(event){
                 me._loadThumbail(reader.result, me.filePreview);
@@ -182,15 +182,20 @@ mindplot.widget.ImageEditor = new Class({
             me.inputFileUpload.click();
         });
 
-        button.css("margin","2em");
+        button.css({
+            "color": "white",
+            "background-color": "black"
+        });
 
-        var fileName = $('<p id="fileName" class="col-md-8"></p>');
+        var fileName = $('<input id="fileName" readonly="readonly" class="form-control">');
 
-        var container = $('<div class="row" style="padding-left: 2em"></div>');
+        var container = $('<div class="input-group" style="padding-top: 2em"></div>');
 
         this.filePreview = this._buildImagePreview();
+        var spanControl = $('<span class="input-group-btn"></span>');
+        spanControl.append(button);
 
-        uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName));
+        uploadContent.append(this.inputFileUpload).append(container.append(fileName).append(spanControl));
         uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
 
         return uploadContent;
