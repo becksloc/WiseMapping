@@ -778,10 +778,10 @@ mindplot.Topic = new Class({
                     model.setImageUrl(value);
                     dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
-                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, type:imgSource});
+                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, source:imgSource});
                     }
                     else {
-                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {value:value, type:imgSource});
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {value:value, source:imgSource});
                     }
 
                 }
