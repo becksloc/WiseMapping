@@ -28,7 +28,6 @@ mindplot.model.ImageModel = new Class({
     },
 
     setValue:function (value) {
-        console.log('test');
         $assert(value, 'image source can not be null');
         if (this.getType() == 'url') {
             value = this._fixUrl(value);
