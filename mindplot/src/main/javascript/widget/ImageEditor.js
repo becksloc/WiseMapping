@@ -31,14 +31,15 @@ mindplot.widget.ImageEditor = new Class({
             onRemoveClickData: {model: this.model}
         });
         this.css({width:"600px"});
-        this.form = $("#imageFormId");
-        this.imagePreview = $("#imagePreview");
-        this.filePreview = $("#filePreview");
-        this.uploadContent = $("#uploadContent");
-        this.inputFileUpload = $("#inputFileUpload");
         var editor = $("#imageEditor");
         if (editor.length == 0) {
             editor = this._buildPanel();
+        } else {
+            this.fromUrlForm = $("#imageFormId");
+            this.imagePreview = $("#imagePreview");
+            this.filePreview = $("#filePreview");
+            this.uploadContent = $("#uploadContent");
+            this.inputFileUpload = $("#inputFileUpload");
         }
         this.setContent(editor);
     },
@@ -60,12 +61,11 @@ mindplot.widget.ImageEditor = new Class({
             'class':'tab-content'
         });
 
-        this.form = this._buildForm();
-
-        this.uploadContent = this._buildFormUpload();
+        this.fromUrlForm = this._buildFromUrlForm();
+        this.uploadContent = this._buildUploadForm();
 
         var urlContent = $('<div id="tab1" class="tab-pane active"></div>');
-        urlContent.append(this.form);
+        urlContent.append(this.fromUrlForm);
         div.append(urlContent);
         var fromFileContent = $('<div id="tab2" class="tab-pane fade"></div>');
         fromFileContent.append(this.uploadContent);
@@ -106,12 +106,10 @@ mindplot.widget.ImageEditor = new Class({
 
     },
 
-    _buildForm: function() {
+    _buildFromUrlForm: function() {
         var form = $('<form action="none" id="imageFormId"></form>');
         // Add Text
-        var text = $('<p></p>').text("Paste your link below:");
-        text.css("margin","1em");
-        form.append(text);
+        form.append($('<p style="margin: 1em"></p>').text($msg("PASTE_YOUR_LINK")));
 
         // Add Input
         var input = $('<input/>').attr({
@@ -123,12 +121,7 @@ mindplot.widget.ImageEditor = new Class({
 
         form.append(input);
 
-        this.imagePreview = $('<img>').attr({
-            'class': 'img-thumbnail',
-            'id': 'imagePreview'
-        });
-        this.imagePreview.hide();
-        this.imagePreview.css("margin", "1em auto");
+        this.imagePreview = this._buildImagePreview();
 
         form.append($('<div></div>').css('display', 'flex').append(this.imagePreview));
 
@@ -137,14 +130,9 @@ mindplot.widget.ImageEditor = new Class({
         input.keyup(function(event){
             setTimeout(function () {
                 if (input.val().length != 0) {
-                    me._loadThumbail(input.val(),me.imagePreview);
+                    me._loadThumbail(input.val(), me.imagePreview);
                 }
             }, 0);
-        });
-
-        this.imagePreview.bind('error', function (event) {
-            var errorImage = "images/image-not-found.png"
-            $(this).prop('src', errorImage);
         });
 
         form.on("submitData",
@@ -161,8 +149,21 @@ mindplot.widget.ImageEditor = new Class({
         return form;
     },
 
-    _buildFormUpload: function(){
-        this.uploadContent = $('<div id="uploadContent"></div>');
+    _buildImagePreview: function() {
+        var result = $('<img>').attr({
+            'class': 'img-thumbnail',
+            'id': 'imagePreview'
+        });
+        result.hide();
+        result.css("margin", "1em auto");
+        result.bind('error', function (event) {
+            $(this).prop('src', "images/image-not-found.png");
+        });
+        return result;
+    },
+
+    _buildUploadForm: function(){
+        var uploadContent = $('<div id="uploadContent"></div>');
         this.inputFileUpload =  $('<input type="file" name="file" id="fileUpload" style="display: none">');
 
         var me = this;
@@ -187,36 +188,28 @@ mindplot.widget.ImageEditor = new Class({
 
         var container = $('<div class="row" style="padding-left: 2em"></div>');
 
-        this.filePreview = $('<img>').attr({
-            'class': 'img-thumbnail',
-            'id': 'filePreview'
-        });
-        this.filePreview.hide();
-        this.filePreview.css({
-            margin:"1em auto"
-        });
+        this.filePreview = this._buildImagePreview();
 
+        uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName));
+        uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
 
-        this.uploadContent.append(button).append(this.inputFileUpload).append(container.append(fileName));
-        this.uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
-
-        return this.uploadContent;
+        return uploadContent;
 
     },
 
     show: function() {
         var me = this;
-        this.form.unbind("submit").on("submit", function(event) {
+        this.fromUrlForm.unbind("submit").on("submit", function(event) {
             $(this).trigger("submitData", [me]);
             event.preventDefault();
         });
 //        this.uploadContent.find("input").val("");
         this.uploadContent.find("p").text("");
-        me.uploadContent.find('.btn-info').hide();
+        this.uploadContent.find('.btn-info').hide();
         this.imagePreview.hide();
         this.filePreview.hide();
-
-        var input = this.form.find("input");
+        this.parent();
+        var input = this.fromUrlForm.find("input");
         input.val("");
         if (this.model.getValue() != null){
             input.val(this.model.getValue());
@@ -225,13 +218,12 @@ mindplot.widget.ImageEditor = new Class({
         if (typeof this.model.getValue() != 'undefined'){
             this.showRemoveButton();
         }
-        this.parent();
     },
 
     //preview of the image
-    _loadThumbail: function(src, tab) {
+    _loadThumbail: function(src, imagePreview) {
         var me = this;
-        tab.prop('src', src).load(function() {
+        imagePreview.prop('src', src).load(function() {
             var resize = me._calculateAspectRatioFit($(this).width(), $(this).height(), mindplot.widget.ImageEditor.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.ImageEditor.SIZE.HEIGHT_IMG_EDITOR);
             $(this).width(resize.width);
             $(this).height(resize.height);
