@@ -198,6 +198,7 @@ mindplot.widget.ImageEditor = new Class({
         uploadContent.append(this.inputFileUpload).append(container.append(fileName).append(spanControl));
         uploadContent.append($('<div></div>').css('display', 'flex').append(this.filePreview));
 
+
         return uploadContent;
 
     },
