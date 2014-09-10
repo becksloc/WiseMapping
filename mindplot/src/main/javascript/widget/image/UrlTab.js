@@ -66,5 +66,10 @@ mindplot.widget.image.UrlTab = new Class({
                 me._loadThumbnail(inputValue);
             }
         });
+
+        var previousValue = this.model.getValue();
+        if (previousValue) {
+            this.input.val(previousValue);
+        }
     }
 });

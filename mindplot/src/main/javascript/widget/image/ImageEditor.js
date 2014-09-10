@@ -31,8 +31,17 @@ mindplot.widget.image.ImageEditor = new Class({
         this.tabs = {
             tab1: new mindplot.widget.image.UrlTab(model, 'tab1', true),
             tab2: new mindplot.widget.image.UploadTab(model, 'tab2')
-        }
+        };
         this.setContent(this._buildPanel());
+
+        //This hack is related to .load method and cache problems, see http://api.jquery.com/load-event/
+        var me = this;
+        if (model.getValue()) {
+            this._native.on('shown.bs.modal', function() {
+                me.tabs['tab1'].input.trigger('keyup');
+
+            })
+        }
     },
 
     _buildPanel:function () {
