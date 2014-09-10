@@ -99,7 +99,7 @@ CREATE TABLE IMAGE (
   mindmap_id INTEGER NOT NULL,
   user_id    INTEGER NOT NULL,
   extension  VARCHAR(5) NULL,
-  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
 );
 
 COMMIT;
