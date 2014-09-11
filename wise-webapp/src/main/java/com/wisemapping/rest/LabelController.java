@@ -1,18 +1,13 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.LabelCouldNotFoundException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Label;
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestLabelList;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
-import com.wisemapping.service.MindmapService;
 import com.wisemapping.validator.LabelValidator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +64,11 @@ public class LabelController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
         final User user = Utils.getUser();
+        assert user != null;
         final Label label = labelService.getLabelById(id, user);
         if (label == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
         }
-        assert user != null;
         labelService.removeLabel(label, user);
     }
 
