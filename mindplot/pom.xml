@@ -210,6 +210,7 @@
                                         <include>widget/image/UrlTab.js</include>
                                         <include>widget/image/UploadTab.js</include>
                                         <include>widget/image/ImageEditor.js</include>
+                                        <include>widget/image/MyImagesTab.js</include>
                                         <include>widget/FloatingTip.js</include>
                                         <include>widget/LinkIconTooltip.js</include>
                                         <include>widget/KeyboardShortcutTooltip.js</include>
