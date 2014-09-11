@@ -65,10 +65,10 @@ mindplot.widget.LinkEditor = new Class({
         // Open Button
         var openButton = $('<button></button>').attr({
                 'type': 'button',
-                'class': 'btn btn-default'
+                'class': 'btn editorButton'
         });
 
-        openButton.html($msg('OPEN_LINK')).css('margin-left', '0px');
+        openButton.html($msg('OPEN_LINK'))
         openButton.click(function(){
             window.open(input.val(),"_blank", "status=1,width=700,height=450,resize=1");
         });

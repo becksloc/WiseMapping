@@ -32,9 +32,8 @@ mindplot.widget.image.UploadTab = new Class({
         this.inputFileUpload =  $('<input type="file" name="file" id="fileUpload" style="display: none">');
 
         var me = this;
-        var button = $('<button class="btn"></button>')
+        var button = $('<button class="btn editorButton"></button>')
             .html($msg('CHOOSE_FROM_DISK'))
-            .css({"color": "white", "background-color": "black"})
             .click(function() {
                 me.inputFileUpload.click();
             });
