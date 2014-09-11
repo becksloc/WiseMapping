@@ -39,6 +39,7 @@ mindplot.widget.image.UploadTab = new Class({
             });
 
         var fileName = $('<input id="fileName" readonly="readonly" class="form-control">');
+        fileName.css("cursor", "text");
         var container = $('<div class="input-group"></div>');
 
         var spanControl = $('<span class="input-group-btn"></span>');
