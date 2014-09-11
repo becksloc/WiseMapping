@@ -25,7 +25,7 @@ mindplot.widget.image.ImageEditor = new Class({
             cancelButton: true,
             closeButton: true,
             removeButton: true,
-            onRemoveClickData: {model: this.model}
+            onRemoveClickData: {model: model}
         });
         this.css({width:"600px"});
         this.tabs = {
