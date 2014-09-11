@@ -10,16 +10,14 @@ public class Image {
     private int id;
     @NotNull private String name;
     @NotNull private User creator;
-    @NotNull private Mindmap map;
     @Nullable private String extension;
 
     public Image() {
-        this(new Mindmap(), new User());
+        this(new User());
     }
 
-    public Image(@NotNull final Mindmap map, @NotNull final User creator) {
+    public Image(@NotNull final User creator) {
         this.creator = creator;
-        this.map = map;
     }
 
     public void setCreator(@NotNull User creator) {
@@ -37,15 +35,6 @@ public class Image {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @NotNull
-    public Mindmap getMap() {
-        return map;
-    }
-
-    public void setMap(@NotNull Mindmap map) {
-        this.map = map;
     }
 
     @Nullable

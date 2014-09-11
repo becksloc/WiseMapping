@@ -32,4 +32,9 @@ public class ImageServiceImpl implements ImageService {
     public Image getImageById(int id) {
         return imageManager.getImageById(id);
     }
+
+    @Override
+    public void removeImage(Image image) {
+        imageManager.remove(image);
+    }
 }

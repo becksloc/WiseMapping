@@ -19,41 +19,15 @@
 package com.wisemapping.rest;
 
 import com.mangofactory.swagger.annotations.ApiIgnore;
-import com.wisemapping.exceptions.ImportUnexpectedException;
-import com.wisemapping.exceptions.LabelCouldNotFoundException;
-import com.wisemapping.exceptions.MapCouldNotFoundException;
-import com.wisemapping.exceptions.MultipleSessionsOpenException;
-import com.wisemapping.exceptions.SessionExpiredException;
-import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.*;
 import com.wisemapping.importer.ImportFormat;
 import com.wisemapping.importer.Importer;
 import com.wisemapping.importer.ImporterException;
 import com.wisemapping.importer.ImporterFactory;
-import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.CollaborationProperties;
-import com.wisemapping.model.CollaborationRole;
-import com.wisemapping.model.Image;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.MindMapHistory;
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
-import com.wisemapping.persistence.ImageSaver;
-import com.wisemapping.rest.model.RestCollaboration;
-import com.wisemapping.rest.model.RestCollaborationList;
-import com.wisemapping.rest.model.RestLabel;
-import com.wisemapping.rest.model.RestMindmap;
-import com.wisemapping.rest.model.RestMindmapHistory;
-import com.wisemapping.rest.model.RestMindmapHistoryList;
-import com.wisemapping.rest.model.RestMindmapInfo;
-import com.wisemapping.rest.model.RestMindmapList;
+import com.wisemapping.model.*;
+import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
-import com.wisemapping.service.CollaborationException;
-import com.wisemapping.service.ImageService;
-import com.wisemapping.service.LabelService;
-import com.wisemapping.service.LockInfo;
-import com.wisemapping.service.LockManager;
-import com.wisemapping.service.MindmapService;
-import com.wisemapping.util.FileUtils;
+import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -64,27 +38,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 @Api(value = "mindmap", description = "User Mindmap Objects.")
@@ -99,11 +59,6 @@ public class MindmapController extends BaseController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
-
-    @Qualifier("imageService")
-    @Autowired
-    private ImageService imageService;
-
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json", "application/xml", "text/html"})
     @ResponseBody
@@ -667,30 +622,4 @@ public class MindmapController extends BaseController {
             }
         }
     }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/maps/img", produces = {"application/xml", "application/json", "text/plain"})
-    @ResponseStatus(value = HttpStatus.OK)
-    public void saveImage(@RequestParam("file") MultipartFile file, @RequestParam("mindmapId") int mindmapId, @NotNull HttpServletResponse response) throws WiseMappingException {
-        final User user = Utils.getUser();
-        final Mindmap mindmap = mindmapService.findMindmapById(mindmapId);
-        final String originalFileName = file.getOriginalFilename();
-        final String fileName = FileUtils.getFileName(originalFileName);
-        final String extension = FileUtils.getFileExtension(originalFileName);
-        if (mindmap == null) {
-            throw new MapCouldNotFoundException("Map could not be found. Id:" + mindmapId);
-        }
-        try {
-            final String saveFileName = ImageSaver.save(FileUtils.getUserImagesFolder(this.context.getRealPath("")), fileName, extension, file.getBytes());
-            final Image image = new Image();
-            image.setCreator(user);
-            image.setMap(mindmap);
-            image.setName(saveFileName);
-            image.setExtension(extension);
-            imageService.addImage(image);
-            response.setHeader("Location", FileUtils.IMAGE_FOLDER + "/" + saveFileName);
-        } catch (IOException | NoSuchAlgorithmException e) {
-            throw new WiseMappingException("image cannot be saved", e);
-        }
-    }
-
 }

@@ -46,6 +46,8 @@
                 <value>com.wisemapping.rest.model.RestLockInfo</value>
                 <value>com.wisemapping.rest.model.RestLabel</value>
                 <value>com.wisemapping.rest.model.RestLabelList</value>
+                <value>com.wisemapping.rest.model.RestImage</value>
+                <value>com.wisemapping.rest.model.RestImageList</value>
             </list>
         </property>
     </bean>

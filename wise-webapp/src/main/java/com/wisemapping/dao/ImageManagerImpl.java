@@ -34,6 +34,11 @@ public class ImageManagerImpl extends HibernateDaoSupport
         return getFirst(images);
     }
 
+    @Override
+    public void remove(Image image) {
+        getHibernateTemplate().delete(image);
+    }
+
     @Nullable private Image getFirst(List<Image> images) {
         Image result = null;
         if (images != null && !images.isEmpty()) {

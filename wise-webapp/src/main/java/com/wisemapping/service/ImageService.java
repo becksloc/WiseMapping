@@ -17,4 +17,5 @@ public interface ImageService {
     @Nullable
     Image getImageById(int id);
 
+    void removeImage(Image image);
 }

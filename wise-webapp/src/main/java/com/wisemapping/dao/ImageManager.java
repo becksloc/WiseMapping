@@ -18,4 +18,6 @@ public interface ImageManager {
 
     @Nullable
     Image getImageById(int id);
+
+    void remove(Image image);
 }
