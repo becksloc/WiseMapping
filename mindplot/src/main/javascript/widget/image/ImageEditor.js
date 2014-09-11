@@ -27,17 +27,13 @@ mindplot.widget.image.ImageEditor = new Class({
             removeButton: true,
             onRemoveClickData: {model: model}
         });
-        this.css({width:"600px"});
+        this.css({width:"800px"});
         this.tabs = {
             tab1: new mindplot.widget.image.UrlTab(model, 'tab1', true),
             tab2: new mindplot.widget.image.UploadTab(model, 'tab2'),
             tab3: new mindplot.widget.image.MyImagesTab(model, 'tab3')
         };
         this.setContent(this._buildPanel());
-
-        //This hack is related to .load method and cache problems, see http://api.jquery.com/load-event/
-        var me = this;
-
     },
 
     onDialogShown: function(event) {
