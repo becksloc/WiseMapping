@@ -9,6 +9,7 @@ public class Image {
     //~ Instance fields ......................................................................................
     private int id;
     @NotNull private String name;
+    private int hashCode;
     @NotNull private User creator;
     @Nullable private String extension;
 
@@ -35,6 +36,14 @@ public class Image {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getHashCode() {
+        return hashCode;
+    }
+
+    public void setHashCode(int hashCode) {
+        this.hashCode = hashCode;
     }
 
     @Nullable

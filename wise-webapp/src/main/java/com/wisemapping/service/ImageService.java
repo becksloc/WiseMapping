@@ -18,4 +18,6 @@ public interface ImageService {
     Image getImageById(int id);
 
     void removeImage(Image image);
+
+    Image getImageByHashCode(int fileHashCode,final User user);
 }

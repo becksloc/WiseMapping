@@ -39,6 +39,12 @@ public class ImageManagerImpl extends HibernateDaoSupport
         getHibernateTemplate().delete(image);
     }
 
+    @Override
+    public Image getImageByHashCode(int fileHashCode, User user) {
+        final List<Image> images = getHibernateTemplate().find("from com.wisemapping.model.Image wisemapping where hash_code=? and user_id=?", new Object[]{fileHashCode, user.getId()});
+        return getFirst(images);
+    }
+
     @Nullable private Image getFirst(List<Image> images) {
         Image result = null;
         if (images != null && !images.isEmpty()) {

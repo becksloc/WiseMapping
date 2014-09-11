@@ -1,6 +1,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.ImageCouldNotFoundException;
+import com.wisemapping.exceptions.LabelCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Image;
 import com.wisemapping.model.User;
@@ -39,17 +40,15 @@ public class ImageController extends BaseController {
     public void saveImage(@RequestParam("file") MultipartFile file, @NotNull HttpServletResponse response) throws WiseMappingException {
         final User user = Utils.getUser();
         final String originalFileName = file.getOriginalFilename();
-        final String fileName = FileUtils.getFileName(originalFileName);
-        final String extension = FileUtils.getFileExtension(originalFileName);
         try {
-            final String saveFileName = ImageSaver.save(FileUtils.getUserImagesFolder(this.context.getRealPath("")), fileName, extension, file.getBytes());
-            final Image image = new Image();
-            assert user != null;
-            image.setCreator(user);
-            image.setName(saveFileName);
-            image.setExtension(extension);
-            imageService.addImage(image);
-            response.setHeader("Location", FileUtils.IMAGE_FOLDER + "/" + saveFileName);
+            Image image = imageService.getImageByHashCode(FileUtils.getFileHashCode(file.getBytes()), user);
+            if (image == null) {
+                image = ImageSaver.save(FileUtils.getUserImagesFolder(this.context.getRealPath("")), originalFileName, file.getBytes());
+                assert user != null;
+                image.setCreator(user);
+                imageService.addImage(image);
+            }
+            response.setHeader("Location", FileUtils.IMAGE_FOLDER + "/" + image.getName());
         } catch (IOException | NoSuchAlgorithmException e) {
             throw new WiseMappingException("image cannot be saved", e);
         }

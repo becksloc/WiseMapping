@@ -20,4 +20,6 @@ public interface ImageManager {
     Image getImageById(int id);
 
     void remove(Image image);
+
+    Image getImageByHashCode(int fileHashCode, final User user);
 }

@@ -1,5 +1,7 @@
 package com.wisemapping.persistence;
 
+import com.wisemapping.model.Image;
+import com.wisemapping.util.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,23 +16,29 @@ public class ImageSaver {
     private ImageSaver() {}
 
     @NotNull
-    public static String save(@NotNull final File folder, @NotNull final String name, @Nullable final String extension, final byte[] data) throws NoSuchAlgorithmException, IOException {
+    public static Image save(@NotNull final File folder, @NotNull final String originalFileName, final byte[] data) throws NoSuchAlgorithmException, IOException {
+        Image image = new Image();
         final StringBuilder fileNameBuilder = new StringBuilder();
-        final int hashCode = Arrays.hashCode(data);
-        fileNameBuilder.append(name).append("-").append(hashCode);
+        final String fileName = FileUtils.getFileName(originalFileName);
+        final String extension = FileUtils.getFileExtension(originalFileName);
+        final int hashCode = FileUtils.getFileHashCode(data);
+        fileNameBuilder.append(fileName).append("-").append(hashCode);
         if (extension != null) {
             fileNameBuilder.append(extension);
         }
-        final String fileName = fileNameBuilder.toString();
+        final String fileSystemFileName = fileNameBuilder.toString();
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(new File(folder, fileName));
+            outputStream = new FileOutputStream(new File(folder, fileSystemFileName));
             outputStream.write(data);
+            image.setName(fileSystemFileName);
+            image.setHashCode(hashCode);
+            image.setExtension(extension);
         } finally {
             if (outputStream != null) {
                 outputStream.close();
             }
         }
-        return fileName;
+        return image;
     }
 }

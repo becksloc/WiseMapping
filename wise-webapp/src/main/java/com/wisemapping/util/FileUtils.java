@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.Arrays;
 
 public final class FileUtils {
 
@@ -29,6 +30,10 @@ public final class FileUtils {
             result = fullName.substring(i);
         }
         return result;
+    }
+
+    public static int getFileHashCode(final byte[] data) {
+        return Arrays.hashCode(data);
     }
 
     public static File getUserImagesFolder(@NotNull final String contextPath) {

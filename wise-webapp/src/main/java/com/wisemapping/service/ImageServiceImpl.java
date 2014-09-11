@@ -37,4 +37,9 @@ public class ImageServiceImpl implements ImageService {
     public void removeImage(Image image) {
         imageManager.remove(image);
     }
+
+    @Override
+    public Image getImageByHashCode(int fileHashCode, User user) {
+        return imageManager.getImageByHashCode(fileHashCode, user);
+    }
 }
