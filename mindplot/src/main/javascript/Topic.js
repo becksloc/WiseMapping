@@ -776,7 +776,7 @@ mindplot.Topic = new Class({
                     //change shape to Image
                     model.setImageSize(imgSize.width,imgSize.height);
                     model.setImageUrl(value);
-                    dispatcher.changeShapeTypeToTopic(topicId,mindplot.model.TopicShape.IMAGE);
+                    dispatcher.changeShapeTypeToTopic(topicId, mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
                         dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, source:imgSource});
                     }

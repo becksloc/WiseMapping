@@ -50,7 +50,7 @@ mindplot.widget.image.UrlTab = new Class({
         );
         var inputValue = this.input.val();
         if (inputValue != null && inputValue.trim() != "") {
-            this.model.setValue(inputValue, resizeTopicImg,"url");
+            this.model.setValue(inputValue, resizeTopicImg, "url");
         }
     },
 

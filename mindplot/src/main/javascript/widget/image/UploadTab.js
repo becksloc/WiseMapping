@@ -75,7 +75,7 @@ mindplot.widget.image.UploadTab = new Class({
             processData: false,
             async: false,
             success: function(data, status, xhr) {
-                me.model.setValue(xhr.getResponseHeader('Location'), resizeTopicImg);
+                me.model.setValue(xhr.getResponseHeader('Location'), resizeTopicImg, "disk");
             }
         });
     }
