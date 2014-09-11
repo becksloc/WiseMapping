@@ -48,7 +48,6 @@ mindplot.widget.image.UploadTab = new Class({
         uploadContent.append(this.inputFileUpload).append(container.append(fileName).append(spanControl));
         this.imagePreview.appendTo(uploadContent);
 
-        var me = this;
         this.inputFileUpload.on('change', function() {
             var name = $(this).val().replace("fakepath", "..");
             fileName.val(name);
