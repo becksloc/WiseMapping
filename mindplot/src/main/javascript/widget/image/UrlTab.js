@@ -40,6 +40,10 @@ mindplot.widget.image.UrlTab = new Class({
         this.imagePreview.appendTo(form);
 
         this._registerInputEvents();
+        form.on('submit', function(event){
+            event.preventDefault();
+            event.stopPropagation();
+        });
         return form;
     },
     
