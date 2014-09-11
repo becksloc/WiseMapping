@@ -19,7 +19,7 @@
 mindplot.widget.image.ImageEditor = new Class({
     Extends: BootstrapDialog,
 
-    initialize:function (model, tabs) {
+    initialize:function (model) {
         $assert(model, "model can not be null");
         this.parent($msg("Image"), {
             cancelButton: true,
