@@ -753,6 +753,7 @@ mindplot.Topic = new Class({
         this.closeEditors();
         var topicId = this.getId();
         var model = this.getModel();
+        var me = this;
 
         var editorModel = {
             getValue:function () {
@@ -776,6 +777,7 @@ mindplot.Topic = new Class({
                     //change shape to Image
                     model.setImageSize(imgSize.width,imgSize.height);
                     model.setImageUrl(value);
+                    me.getTextShape().setVisibility(false);
                     dispatcher.changeShapeTypeToTopic(topicId, mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
                         dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, source:imgSource});
