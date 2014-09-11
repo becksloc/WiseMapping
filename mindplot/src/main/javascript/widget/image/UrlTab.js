@@ -45,8 +45,6 @@ mindplot.widget.image.UrlTab = new Class({
     
     submitData: function(){
         var resizeTopicImg = this.imagePreview._calculateAspectRatioFit(
-            this.imagePreview.getWidth(),
-            this.imagePreview.getHeight(),
             mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_TOPIC,
             mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_TOPIC
         );

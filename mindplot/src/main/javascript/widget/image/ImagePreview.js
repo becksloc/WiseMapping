@@ -36,7 +36,10 @@ mindplot.widget.image.ImagePreview = new Class({
     loadThumbnail: function(src) {
         var me = this;
         this._native.prop('src', src).load(function() {
-            var resize = me._calculateAspectRatioFit();
+            var resize = me._calculateAspectRatioFit(
+                mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR,
+                mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR
+            );
             $(this).width(resize.width);
             $(this).height(resize.height);
             $(this).show();
@@ -44,10 +47,10 @@ mindplot.widget.image.ImagePreview = new Class({
     },
 
     //resize the image to fit in the dialog
-    _calculateAspectRatioFit: function() {
+    _calculateAspectRatioFit: function(maxWidth, maxHeight) {
         var ratio = Math.min(
-            mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR / this.getWidth(),
-            mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR / this.getHeight());
+            maxWidth / this.getWidth(),
+            maxHeight / this.getHeight());
         return {
             width: this.getWidth() * ratio,
             height: this.getHeight() * ratio
