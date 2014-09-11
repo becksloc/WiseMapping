@@ -20,16 +20,16 @@ mindplot.widget.image.MyImagesTab = new Class({
     Extends: mindplot.widget.image.AbstractTab,
 
     initialize: function(model, tabId, active) {
-        this.parent(model, $msg("GALLERY"), tabId, active);
         this.dataImages = [];
         var i = 0;
         for (i; i< 20; i++) {
             var item = {
                 id: i,
-                src: "http://blog.offlify.com/wp-content/media/wisemapping.jpg"
+                src: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRMB3Sqwp80tLFb8uRhn0Qpfu0gwIBYbWb4zoySObEA37r30VgxRg"
             }
             this.dataImages.push(item);
         }
+        this.parent(model, $msg("GALLERY"), tabId, active);
     },
 
     _buildContent: function() {
@@ -47,21 +47,22 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _createGallery: function() {
-        var container = $('<div class="row"></div>');
-        var gallery = $('<div class="col-xs-3"></div>');
-        container.append(gallery);
-        _.each(this.dataImages,function(index, value) {
-               gallery.append(this._createThumbnail(index,value));
+        var gallery = $('<div class="row"></div>');
+        var me = this;
+        _.each(me.dataImages,function(value) {
+            gallery.append(me._createThumbnail(value));
         });
-        return container;
+        return gallery;
     },
 
-    _createThumbnail: function(id, src){
+    _createThumbnail: function(value){
+        var container = $('<div class="col-xs-6 col-md-3"></div>');
         var thumbnail = $('<a href="#" class="thumbnail"></a>');
-        var img = ('<img alt="125x125">');
-        img.attr('id',id);
-        img.prop('src', src);
+        var img = $('<img>');
+        img.attr('id',value.id);
+        img.prop('src', value.src);
         thumbnail.append(img);
-        return thumbnail;
+        container.append(thumbnail);
+        return container;
     }
 });
