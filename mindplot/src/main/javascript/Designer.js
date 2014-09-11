@@ -503,6 +503,9 @@ mindplot.Designer = new Class({
 
             var shape = sourceModel.getShapeType();
             if(shape){
+                if (shape == mindplot.model.TopicShape.IMAGE) {
+                    shape = mindplot.model.TopicShape.LINE;
+                }
                 targetModel.setShapeType(shape)
             }
 
