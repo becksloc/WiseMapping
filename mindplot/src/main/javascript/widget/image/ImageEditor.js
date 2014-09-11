@@ -37,11 +37,15 @@ mindplot.widget.image.ImageEditor = new Class({
 
         //This hack is related to .load method and cache problems, see http://api.jquery.com/load-event/
         var me = this;
-        if (model.getValue()) {
-            this._native.on('shown.bs.modal', function() {
-                me.tabs['tab1'].input.trigger('keyup');
 
-            })
+    },
+
+    onDialogShown: function(event) {
+        var model = event.data.model;
+        var dialog = event.data.dialog;
+        if (model.getValue()) {
+            dialog.tabs['tab1'].input.trigger('keyup');
+            $(this).find('textarea').focus();
         }
     },
 
