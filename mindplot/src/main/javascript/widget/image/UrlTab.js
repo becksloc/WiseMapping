@@ -52,7 +52,6 @@ mindplot.widget.image.UrlTab = new Class({
         if (inputValue != null && inputValue.trim() != "") {
             this.model.setValue(inputValue, resizeTopicImg,"url");
         }
-        this.close();
     },
 
     _registerInputEvents: function() {
