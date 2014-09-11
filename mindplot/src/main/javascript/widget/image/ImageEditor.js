@@ -30,7 +30,8 @@ mindplot.widget.image.ImageEditor = new Class({
         this.css({width:"600px"});
         this.tabs = {
             tab1: new mindplot.widget.image.UrlTab(model, 'tab1', true),
-            tab2: new mindplot.widget.image.UploadTab(model, 'tab2')
+            tab2: new mindplot.widget.image.UploadTab(model, 'tab2'),
+            tab3: new mindplot.widget.image.MyImagesTab(model, 'tab3')
         };
         this.setContent(this._buildPanel());
 
@@ -54,6 +55,8 @@ mindplot.widget.image.ImageEditor = new Class({
         urlTab.appendTo(tabBar);
         var uploadTab = this.tabs["tab2"];
         uploadTab.appendTo(tabBar);
+        var myImageTab = this.tabs["tab3"];
+        myImageTab.appendTo(tabBar)
 
         /* building tab contents..*/
         var div = $('<div></div>').attr({
@@ -62,6 +65,8 @@ mindplot.widget.image.ImageEditor = new Class({
 
         urlTab.appendContainerTo(div);
         uploadTab.appendContainerTo(div);
+        myImageTab.appendContainerTo(div);
+
         result.append(tabBar);
         result.append(div);
 
