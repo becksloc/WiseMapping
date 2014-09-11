@@ -34,6 +34,12 @@ BootstrapDialog.Request = new Class({
             });
             me.show();
         });
+    },
+
+    onDialogShown: function() {
+        if (typeof(onDialogShown) == "function") {
+            onDialogShown();
+        }
     }
 
 

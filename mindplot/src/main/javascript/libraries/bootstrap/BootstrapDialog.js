@@ -13,7 +13,7 @@ var BootstrapDialog = new Class({
     initialize: function (title, options) {
         this.setOptions(options);
         this.options.onRemoveClickData.dialog = this;
-        this._native = $('<div class="modal fade"></div>').append('<div class="modal-dialog" style="margin:150px auto"></div>');
+        this._native = $('<div class="modal fade" tabindex="-1"></div>').append('<div class="modal-dialog"></div>');
         var content = $('<div class="modal-content"></div>');
         content.on('keydown', function(event) {
             event.stopPropagation();
@@ -37,6 +37,7 @@ var BootstrapDialog = new Class({
         this._native.on('hidden.bs.modal', function() {
             $(this).remove();
         });
+        this._native.on('shown.bs.modal', this.onDialogShown);
     },
 
     _buildFooter: function() {
@@ -81,7 +82,9 @@ var BootstrapDialog = new Class({
         //this method should be abstract
     },
 
+    onDialogShown: function() {
 
+    },
     onRemoveClick: function(event) {
         event.data.model.setValue(null);
         event.data.dialog.close();

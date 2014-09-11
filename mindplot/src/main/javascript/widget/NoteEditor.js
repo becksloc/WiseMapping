@@ -29,7 +29,7 @@ mindplot.widget.NoteEditor = new Class({
             removeButton: true,
             onRemoveClickData: {model: this._model}
         });
-        this.css({width:"600px"});
+        this.css({margin:"150px auto"});
         var panel = this._buildPanel(model);
         this.setContent(panel);
         },
@@ -44,10 +44,9 @@ mindplot.widget.NoteEditor = new Class({
         });
 
         // Add textarea
-        var textArea = $('<textarea></textarea>').attr({
+        var textArea = $('<textarea></textarea autofocus>').attr({
                 'placeholder':$msg('WRITE_YOUR_TEXT_HERE'),
                 'required':'true',
-                'autofocus':'autofocus',
                 'class':'form-control'
         });
         textArea.css({
@@ -82,6 +81,10 @@ mindplot.widget.NoteEditor = new Class({
 
     onAcceptClick: function() {
         $("#noteFormId").submit();
+    },
+
+    onDialogShown: function() {
+        $(this).find('textarea').focus();
     }
 });
 

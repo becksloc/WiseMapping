@@ -30,7 +30,7 @@ mindplot.widget.LinkEditor = new Class({
             errorMessage: true,
             onRemoveClickData: {model: this._model}
         });
-        this.css({width:"600px"});
+        this.css({margin:"150px auto"});
         var panel = this._buildPanel(model);
         this.setContent(panel);
     },
@@ -51,7 +51,7 @@ mindplot.widget.LinkEditor = new Class({
         });
 
         // Add Input
-        var input = $('<input/>').attr({
+        var input = $('<input id="inputUrl"/>').attr({
             'placeholder': 'http://www.example.com/',
             'required': 'true',
             'autofocus': 'autofocus',
@@ -116,6 +116,10 @@ mindplot.widget.LinkEditor = new Class({
         if (!this.formSubmitted) {
             event.stopPropagation();
         }
+    },
+
+    onDialogShown: function() {
+        $(this).find('#inputUrl').focus();
     }
 
 });
