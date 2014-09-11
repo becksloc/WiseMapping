@@ -31,11 +31,12 @@ mindplot.widget.image.UploadTab = new Class({
 
         this.inputFileUpload =  $('<input type="file" name="file" id="fileUpload" style="display: none">');
 
+        var me = this;
         var button = $('<button class="btn"></button>')
             .html($msg('CHOOSE_FROM_DISK'))
             .css({"color": "white", "background-color": "black"})
             .click(function() {
-                this.inputFileUpload.click();
+                me.inputFileUpload.click();
             });
 
         var fileName = $('<input id="fileName" readonly="readonly" class="form-control">');
