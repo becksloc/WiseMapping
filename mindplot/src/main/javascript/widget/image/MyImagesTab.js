@@ -20,15 +20,6 @@ mindplot.widget.image.MyImagesTab = new Class({
     Extends: mindplot.widget.image.AbstractTab,
 
     initialize: function(model, tabId, active) {
-        this.dataImages = [];
-        var i = 0;
-        for (i; i< 20; i++) {
-            var item = {
-                id: i,
-                src: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRMB3Sqwp80tLFb8uRhn0Qpfu0gwIBYbWb4zoySObEA37r30VgxRg"
-            }
-            this.dataImages.push(item);
-        }
         this.parent(model, $msg("GALLERY"), tabId, active);
     },
 
@@ -42,15 +33,24 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
     
     submitData: function(){
-        this.model.setValue(inputValue, resizeTopicImg,"url");
-
+        this.model.setValue(inputValue, resizeTopicImg, "disk");
     },
 
     _createGallery: function() {
         var gallery = $('<div class="row"></div>');
         var me = this;
-        _.each(me.dataImages,function(value) {
-            gallery.append(me._createThumbnail(value));
+        jQuery.ajax("c/restful/maps/img/", {
+            async:false,
+            dataType:'json',
+            type:'GET',
+            success:function (data) {
+                _.each(data.images,function(value) {
+                    gallery.append(me._createThumbnail(value));
+                });
+            },
+            error:function (jqXHR, textStatus, errorThrown) {
+                $('#messagesPanel div').text(errorThrown).parent().show();
+            }
         });
         return gallery;
     },
@@ -60,7 +60,7 @@ mindplot.widget.image.MyImagesTab = new Class({
         var thumbnail = $('<a href="#" class="thumbnail"></a>');
         var img = $('<img>');
         img.attr('id',value.id);
-        img.prop('src', value.src);
+        img.prop('src', value.location);
         thumbnail.append(img);
         container.append(thumbnail);
         return container;

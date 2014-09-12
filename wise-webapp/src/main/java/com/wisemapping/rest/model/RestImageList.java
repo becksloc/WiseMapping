@@ -38,4 +38,10 @@ public class RestImageList {
     public List<RestImage> getImages() {
         return restImages;
     }
+
+    public void setImagesLocation(String folder) {
+        for (RestImage image : this.restImages) {
+            image.setLocation(folder);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.wisemapping.rest.model;
 
 import com.wisemapping.model.Image;
+import com.wisemapping.util.FileUtils;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -26,6 +27,7 @@ public class RestImage {
 
     @JsonIgnore
     private Image image;
+    private String location;
 
     public RestImage(@NotNull final Image image) {
         this.image = image;
@@ -33,6 +35,14 @@ public class RestImage {
 
     public RestImage() {
         this(new Image());
+    }
+
+    public void setId(int id) {
+        this.image.setId(id);
+    }
+
+    public int getId() {
+        return this.image.getId();
     }
 
     public void setName(@NotNull final String name) {
@@ -44,12 +54,13 @@ public class RestImage {
         return this.image.getName();
     }
 
-    public void setExtension(@Nullable String extension) {
-        this.image.setExtension(extension);
+    public void setLocation(@NotNull final String folder) {
+        this.location = folder + "/" + image.getName();
     }
 
-    @JsonIgnore
-    public String getExtension() {
-        return this.image.getExtension();
+    @Nullable
+    public String getLocation() {
+        return this.location;
     }
+
 }

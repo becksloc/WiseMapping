@@ -59,7 +59,9 @@ public class ImageController extends BaseController {
         final User user = Utils.getUser();
         assert user != null;
         final List<Image> all = imageService.getAll(user);
-        return new RestImageList(all);
+        RestImageList result = new RestImageList(all);
+        result.setImagesLocation(FileUtils.IMAGE_FOLDER);
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/img")
