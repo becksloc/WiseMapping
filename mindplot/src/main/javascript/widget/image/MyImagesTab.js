@@ -55,14 +55,55 @@ mindplot.widget.image.MyImagesTab = new Class({
         return gallery;
     },
 
-    _createThumbnail: function(value){
+    _createThumbnail: function(value) {
         var container = $('<div class="col-xs-6 col-md-3"></div>');
-        var thumbnail = $('<a href="#" class="thumbnail"></a>');
+        container.attr('id', 'imageContainer' + value.id);
+        var thumbnailBorder = this._createThumbnailBorder();
+        var remover = this._createRemover();
         var img = $('<img>');
-        img.attr('id',value.id);
-        img.prop('src', value.location);
-        thumbnail.append(img);
-        container.append(thumbnail);
+        img.attr('alt',$msg("IMAGE_NOT_FOUND"));
+        img.attr('id', value.id);
+        img.attr('src', value.location);
+        thumbnailBorder.append(remover);
+        thumbnailBorder.append(img);
+        container.append(thumbnailBorder);
         return container;
+    },
+
+    _createThumbnailBorder: function() {
+        var thumbnailBorder = $('<div class="thumbnail thumbnailBorder"></div>');
+        thumbnailBorder.click(function() {
+            var allThumbs = $(".thumbnail");
+            allThumbs.removeClass("thumbnailBorderSelected");
+            allThumbs.addClass("thumbnailBorder");
+            $(this).addClass("thumbnailBorderSelected");
+        });
+        thumbnailBorder.on("mouseover", function() {
+            $(this).find(".thumbnailClose").show();
+        });
+        thumbnailBorder.on("mouseleave", function() {
+            $(this).find(".thumbnailClose").hide();
+        });
+        return thumbnailBorder;
+    },
+
+    _createRemover: function() {
+        var remover = $('<div class="thumbnailClose">×</div>');
+        remover.on("click", function () {
+            console.log("removeImage");
+            var imageId = $(this).siblings().attr("id");
+            jQuery.ajax({
+                url: "c/restful/maps/img/" + imageId,
+                async: false,
+                type: 'delete',
+                success: function () {
+                    $("#imageContainer" + imageId).remove();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#messagesPanel div').text(errorThrown).parent().show();
+                }
+            });
+        });
+        return remover;
     }
 });
