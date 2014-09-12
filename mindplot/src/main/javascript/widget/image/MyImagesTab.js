@@ -32,8 +32,12 @@ mindplot.widget.image.MyImagesTab = new Class({
         return form;
     },
     
-    submitData: function(){
-        this.model.setValue(inputValue, resizeTopicImg, "disk");
+    submitData: function() {
+        var image = $('.thumbnailBorderSelected').find('img');
+        var location = image.attr('src');
+        var width = image.width();
+        var height = image.height();
+        this.model.setValue(location, {width: width, height: height}, "disk");
     },
 
     _createGallery: function() {
@@ -61,7 +65,7 @@ mindplot.widget.image.MyImagesTab = new Class({
         var thumbnailBorder = this._createThumbnailBorder();
         var remover = this._createRemover();
         var img = $('<img>');
-        img.attr('alt',$msg("IMAGE_NOT_FOUND"));
+        img.attr('alt', $msg("IMAGE_NOT_FOUND"));
         img.attr('id', value.id);
         img.attr('src', value.location);
         thumbnailBorder.append(remover);
