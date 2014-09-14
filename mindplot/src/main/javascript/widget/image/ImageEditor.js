@@ -89,7 +89,7 @@ mindplot.widget.image.ImageEditor = new Class({
     },
 
     onRemoveClick: function(event) {
-        event.data.model.setValue(null);
+        event.data.model.setValue(null,null,null);
         event.data.dialog.close();
     }
 });
