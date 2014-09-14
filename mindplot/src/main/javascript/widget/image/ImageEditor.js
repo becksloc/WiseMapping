@@ -43,6 +43,9 @@ mindplot.widget.image.ImageEditor = new Class({
             dialog.tabs['tab1'].input.trigger('keyup');
             $(this).find('textarea').focus();
         }
+        if (typeof model.getValue() != 'undefined'){
+            dialog.showRemoveButton();
+        }
     },
 
     _buildPanel:function () {
