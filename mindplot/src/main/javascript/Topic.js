@@ -775,7 +775,7 @@ mindplot.Topic = new Class({
                 }
                 else {
                     //change shape to Image
-                    model.setImageSize(imgSize.width,imgSize.height);
+                    model.setImageSize(imgSize.width, imgSize.height);
                     model.setImageUrl(value);
                     me.getTextShape().setVisibility(false);
                     dispatcher.changeShapeTypeToTopic(topicId, mindplot.model.TopicShape.IMAGE);

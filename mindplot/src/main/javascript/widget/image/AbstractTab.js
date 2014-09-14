@@ -55,7 +55,7 @@ mindplot.widget.image.AbstractTab = new Class({
         element.append(this.container);
     },
 
-    submitData: function(){
+    submitData: function() {
 
     }
 });
