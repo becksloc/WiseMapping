@@ -62,10 +62,7 @@ mindplot.widget.image.UploadTab = new Class({
     },
 
     submitData: function() {
-        var resizeTopicImg = this.imagePreview._calculateAspectRatioFit(
-            mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_TOPIC,
-            mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_TOPIC
-        );
+        var resizeTopicImg = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(this.imagePreview.getWidth(), this.imagePreview.getHeight());
         var formData = new FormData();
         formData.append('file', this.inputFileUpload.get(0).files[0]);
         formData.append('mindmapId', this.model.getMindmapId());

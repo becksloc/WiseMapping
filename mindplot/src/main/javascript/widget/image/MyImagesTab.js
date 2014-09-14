@@ -37,7 +37,8 @@ mindplot.widget.image.MyImagesTab = new Class({
         var location = image.attr('src');
         var width = image.width();
         var height = image.height();
-        this.model.setValue(location, {width: width, height: height}, "disk");
+        var aspectRatioFit = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(width, height);
+        this.model.setValue(location, aspectRatioFit, "disk");
     },
 
     _createGallery: function() {

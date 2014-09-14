@@ -47,11 +47,8 @@ mindplot.widget.image.UrlTab = new Class({
         return form;
     },
     
-    submitData: function(){
-        var resizeTopicImg = this.imagePreview._calculateAspectRatioFit(
-            mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_TOPIC,
-            mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_TOPIC
-        );
+    submitData: function() {
+        var resizeTopicImg = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(this.imagePreview.getWidth(), this.imagePreview.getHeight());
         var inputValue = this.input.val();
         if (inputValue != null && inputValue.trim() != "") {
             this.model.setValue(inputValue, resizeTopicImg, "url");

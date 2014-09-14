@@ -36,25 +36,11 @@ mindplot.widget.image.ImagePreview = new Class({
     loadThumbnail: function(src) {
         var me = this;
         this._native.prop('src', src).load(function() {
-            var resize = me._calculateAspectRatioFit(
-                mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR,
-                mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR
-            );
+            var resize = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(me.getWidth(), me.getHeight());
             $(this).width(resize.width);
             $(this).height(resize.height);
             $(this).show();
         });
-    },
-
-    //resize the image to fit in the dialog
-    _calculateAspectRatioFit: function(maxWidth, maxHeight) {
-        var ratio = Math.min(
-            maxWidth / this.getWidth(),
-            maxHeight / this.getHeight());
-        return {
-            width: this.getWidth() * ratio,
-            height: this.getHeight() * ratio
-        };
     },
 
     appendTo: function(element) {
@@ -77,3 +63,15 @@ mindplot.widget.image.ImagePreview.SIZE = {
     HEIGHT_IMG_TOPIC: 100,
     WIDTH_IMG_TOPIC: 100
 };
+
+mindplot.widget.image.ImagePreview._calculateAspectRatioFit = function(width, heigth) {
+    var ratio = Math.min(
+        mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR  / width,
+        mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR / heigth
+    );
+    return {
+        width: width * ratio,
+        height: heigth * ratio
+    };
+}
+
