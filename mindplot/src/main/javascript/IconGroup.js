@@ -79,10 +79,6 @@ mindplot.IconGroup = new Class({
             }
         }, this);
 
-        if (result == null) {
-            throw new Error("Icon can no be found:" + iconModel.getId() + ", Icons:" + this._icons);
-        }
-
         return result;
     },
 
@@ -90,7 +86,9 @@ mindplot.IconGroup = new Class({
         $assert(featureModel, "featureModel can not be null");
 
         var icon = this._findIconFromModel(featureModel);
-        this._removeIcon(icon);
+        if (icon) {
+            this._removeIcon(icon);
+        }
     },
 
     _removeIcon:function (icon) {
