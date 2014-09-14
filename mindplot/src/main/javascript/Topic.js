@@ -770,6 +770,7 @@ mindplot.Topic = new Class({
                 var links = model.findFeatureByType(mindplot.TopicFeature.Image.id);
                 if (!$defined(value)) {
                     var featureId = links[0].getId();
+                    me.getTextShape().setVisibility(true);
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
                     dispatcher.removeImgShapeTypeToTopic(topicId);
                 }
