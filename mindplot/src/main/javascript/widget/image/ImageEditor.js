@@ -24,7 +24,7 @@ mindplot.widget.image.ImageEditor = new Class({
         this.parent($msg("Image"), {
             cancelButton: true,
             closeButton: true,
-            removeButton: true,
+            removeButton: typeof model.getValue() != 'undefined',
             onRemoveClickData: {model: model}
         });
         this.css({width:"800px"});
@@ -42,9 +42,6 @@ mindplot.widget.image.ImageEditor = new Class({
         if (model.getValue()) {
             dialog.tabs['tab1'].input.trigger('keyup');
             $(this).find('textarea').focus();
-        }
-        if (typeof model.getValue() != 'undefined'){
-            dialog.showRemoveButton();
         }
     },
 
