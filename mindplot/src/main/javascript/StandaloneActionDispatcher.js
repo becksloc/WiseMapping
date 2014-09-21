@@ -184,7 +184,7 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     removeImgShapeTypeToTopic:function (topicsIds) {
         $(document).on("shapeTypeChange", function(event, topic) {
-            topic.setSize({width: 50, height:20}, true);
+            topic.setSize({width: topic.getTextShape().getWidth(), height: topic.getTextShape().getHeight()}, true);
             event.stopPropagation();
         });
         this.changeShapeTypeToTopic(topicsIds, mindplot.model.TopicShape.LINE);
