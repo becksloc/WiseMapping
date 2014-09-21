@@ -902,14 +902,24 @@ mindplot.Designer = new Class({
         },
 
         changeTopicShape:function (shape) {
-            var validateFunc = function (topic) {
+            var validateFuncCentralTopic = function (topic) {
                 return !(topic.getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE && shape == mindplot.model.TopicShape.LINE)
             };
+            var validateErrorCentralTopic = 'Central Topic shape can not be changed to line figure.';
+            var topicsIdsCentralTopic = this.getModel().filterTopicsIds(validateFuncCentralTopic, validateErrorCentralTopic);
 
-            var validateError = 'Central Topic shape can not be changed to line figure.';
-            var topicsIds = this.getModel().filterTopicsIds(validateFunc, validateError);
-            if (topicsIds.length > 0) {
-                this._actionDispatcher.changeShapeTypeToTopic(topicsIds, shape);
+            var validateFuncImage = function (topic) {
+                return !(topic.getShapeType() == mindplot.model.TopicShape.IMAGE)
+            };
+            var validateErrorImage = 'Shape can not be changed in image topics.';
+            var topicsIdsCentralImage = this.getModel().filterTopicsIds(validateFuncImage, validateErrorImage);
+
+            var result = topicsIdsCentralTopic.filter(function(n) {
+                return topicsIdsCentralImage.indexOf(n) > -1;
+            });
+
+            if (result.length > 0) {
+                this._actionDispatcher.changeShapeTypeToTopic(result, shape);
             }
         },
 
