@@ -54,8 +54,8 @@ public class RestImage {
         return this.image.getName();
     }
 
-    public void setLocation(@NotNull final String folder) {
-        this.location = folder + "/" + image.getName();
+    public void setLocation(@NotNull final String location) {
+        this.location = location;
     }
 
     @Nullable

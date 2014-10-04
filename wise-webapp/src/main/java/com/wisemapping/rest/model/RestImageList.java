@@ -41,7 +41,7 @@ public class RestImageList {
 
     public void setImagesLocation(String folder) {
         for (RestImage image : this.restImages) {
-            image.setLocation(folder);
+            image.setLocation(folder + '/' + image.getName());
         }
     }
 }
