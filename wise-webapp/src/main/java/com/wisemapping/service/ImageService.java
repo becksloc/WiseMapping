@@ -19,5 +19,5 @@ public interface ImageService {
 
     void removeImage(Image image);
 
-    Image getImageByHashCode(int fileHashCode,final User user);
+    Image getImageByHashCode(int fileHashCode, final User user);
 }
