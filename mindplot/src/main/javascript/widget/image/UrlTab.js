@@ -24,9 +24,9 @@ mindplot.widget.image.UrlTab = new Class({
     },
 
     _buildContent: function() {
-        var form = $('<form action="none" id="imageFormId"></form>');
+        this.form = $('<form action="none" id="imageFormId"></form>');
         // Add Text
-        form.append($('<p style="margin: 1em"></p>').text($msg("PASTE_YOUR_LINK")));
+        this.form.append($('<p style="margin: 1em"></p>').text($msg("PASTE_YOUR_LINK")));
 
         // Add Input
         this.input = $('<input/>').attr({
@@ -36,15 +36,15 @@ mindplot.widget.image.UrlTab = new Class({
             'class': 'form-control'
         });
 
-        form.append(this.input);
-        this.imagePreview.appendTo(form);
+        this.form.append(this.input);
+        this.imagePreview.appendTo(this.form);
 
         this._registerInputEvents();
-        form.on('submit', function(event){
+        this.form.on('submit', function(event){
             event.preventDefault();
             event.stopPropagation();
         });
-        return form;
+        return this.form;
     },
     
     submitData: function() {
@@ -61,6 +61,9 @@ mindplot.widget.image.UrlTab = new Class({
         this.input.keyup(function(event){
             var inputValue = $(this).val();
             if (inputValue.length != 0) {
+                me.form.find("#imagePreview").remove();
+                me.imagePreview = me._buildImagePreview();
+                me.imagePreview.appendTo(me.form);
                 me._loadThumbnail(inputValue);
             }
         });
