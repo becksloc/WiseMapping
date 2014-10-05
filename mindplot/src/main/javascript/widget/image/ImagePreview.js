@@ -36,7 +36,8 @@ mindplot.widget.image.ImagePreview = new Class({
     loadThumbnail: function(src) {
         var me = this;
         this._native.prop('src', src).load(function() {
-            var resize = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(me.getWidth(), me.getHeight());
+            var resize = mindplot.widget.image.ImagePreview._calculateAspectRatioFit(me.getWidth(), me.getHeight(),
+                mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR, mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR);
             $(this).width(resize.width);
             $(this).height(resize.height);
             $(this).show();
@@ -64,14 +65,14 @@ mindplot.widget.image.ImagePreview.SIZE = {
     WIDTH_IMG_TOPIC: 100
 };
 
-mindplot.widget.image.ImagePreview._calculateAspectRatioFit = function(width, heigth) {
+mindplot.widget.image.ImagePreview._calculateAspectRatioFit = function(width, height, maxWidth, maxHeight) {
     var ratio = Math.min(
-        mindplot.widget.image.ImagePreview.SIZE.WIDTH_IMG_EDITOR  / width,
-        mindplot.widget.image.ImagePreview.SIZE.HEIGHT_IMG_EDITOR / heigth
+        maxWidth  / width,
+        maxHeight / height
     );
     return {
         width: width * ratio,
-        height: heigth * ratio
+        height: height * ratio
     };
 }
 
