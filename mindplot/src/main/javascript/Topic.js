@@ -773,6 +773,7 @@ mindplot.Topic = new Class({
                     me.getTextShape().setVisibility(true);
                     dispatcher.removeFeatureFromTopic(topicId, featureId);
                     dispatcher.removeImgShapeTypeToTopic(topicId);
+                    me._adjustShapes();
                 }
                 else {
                     //change shape to Image
