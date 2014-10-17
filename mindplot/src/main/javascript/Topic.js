@@ -782,12 +782,12 @@ mindplot.Topic = new Class({
                     me.getTextShape().setVisibility(false);
                     dispatcher.changeShapeTypeToTopic(topicId, mindplot.model.TopicShape.IMAGE);
                     if (links.length > 0) {
+                        me._adjustShapes();
                         dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {value:value, source:imgSource});
                     }
                     else {
                         dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Image.id, {value:value, source:imgSource});
                     }
-
                 }
             },
 
