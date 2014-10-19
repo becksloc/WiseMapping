@@ -25,9 +25,9 @@ mindplot.widget.image.UploadTab = new Class({
 
     _buildContent: function() {
 
-        var uploadContent = $('<div id="uploadContent"></div>');
+        this.uploadContent = $('<div id="uploadContent"></div>');
         // Add Text
-        uploadContent.append($('<p style="margin: 1em"></p>').text($msg("SELECT_IMAGE")));
+        this.uploadContent.append($('<p style="margin: 1em"></p>').text($msg("SELECT_IMAGE")));
 
         this.inputFileUpload =  $('<input type="file" name="file" id="fileUpload" style="display: none">');
 
@@ -45,20 +45,23 @@ mindplot.widget.image.UploadTab = new Class({
         var spanControl = $('<span class="input-group-btn"></span>');
         spanControl.append(button);
 
-        uploadContent.append(this.inputFileUpload).append(container.append(fileName).append(spanControl));
-        this.imagePreview.appendTo(uploadContent);
+        this.uploadContent.append(this.inputFileUpload).append(container.append(fileName).append(spanControl));
+        this.imagePreview.appendTo(this.uploadContent);
 
         this.inputFileUpload.on('change', function() {
             var name = $(this).val().replace("fakepath", "..");
             fileName.val(name);
             var reader = new FileReader();
             reader.onload = function(event){
+                me.uploadContent.find("#imagePreview").remove();
+                me.imagePreview = me._buildImagePreview();
+                me.imagePreview.appendTo(me.uploadContent);
                 me._loadThumbnail(reader.result);
             };
             reader.readAsDataURL(me.inputFileUpload.get(0).files[0]);
         });
 
-        return uploadContent;
+        return this.uploadContent;
     },
 
     submitData: function() {
