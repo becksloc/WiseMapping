@@ -9,9 +9,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
-import org.testng.FileAssert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static org.testng.Assert.assertEquals;
@@ -55,7 +54,6 @@ public class RestImageITCase {
                 found = true;
             }
         }
-
         assertTrue(found, "Image could not be found");
     }
 
@@ -63,7 +61,6 @@ public class RestImageITCase {
     @Test(dataProvider="Image-Provider-Function")
     public void deleteImage(final @NotNull File image, final @NotNull MediaType mediaType) throws IOException, WiseMappingException {
         final RestTemplate template = RestHelper.createTemplate(userEmail + ":" + "admin");
-
         final URI imageLocation = addNewImage(template, image);
         String expectedLocation = buildImageLocation(image);
 
@@ -84,14 +81,22 @@ public class RestImageITCase {
             }
         }
 
+        try {
+            template.delete(RestHelper.HOST_PORT + "/service/maps/img/" + imageId);
+        } catch (HttpClientErrorException e) {
+            if (!e.getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+                Assert.fail("Image deletion through unexpectedly exception");
+            }
+        } catch (Exception e) {
+            Assert.fail("Image deletion through unexpectedly exception");
+        }
+
     }
 
     static URI addNewImage(@NotNull RestTemplate template, File image) throws IOException {
-
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("file", new FileSystemResource(image.getAbsoluteFile()));
         return template.postForLocation(BASE_REST_URL + "/maps/img", parts);
-
     }
 
     private String buildImageLocation(File image) throws IOException {
