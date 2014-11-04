@@ -23,11 +23,7 @@ var BootstrapDialog = new Class({
             content.append(header);
         }
         var body = $('<div class="modal-body"></div>');
-        if(this.options.errorMessage){
-            var error = $('<div class="alert alert-danger"></div>');
-            error.hide();
-            body.append(error);
-        }
+        this._addErrorMessage(body);
         content.append(body);
         var footer = this._buildFooter();
         if (footer) {
@@ -93,6 +89,7 @@ var BootstrapDialog = new Class({
     setContent: function(content) {
         var modalBody = this._native.find('.modal-body');
         modalBody.empty();
+        this._addErrorMessage(modalBody);
         modalBody.append(content);
     },
 
@@ -111,5 +108,13 @@ var BootstrapDialog = new Class({
 
     cleanError: function(){
         this._native.find('.alert-danger').hide();
+    },
+
+    _addErrorMessage: function(body){
+        if(this.options.errorMessage){
+            var error = $('<div class="alert alert-danger"></div>');
+            error.hide();
+            body.append(error);
+        }
     }
 });

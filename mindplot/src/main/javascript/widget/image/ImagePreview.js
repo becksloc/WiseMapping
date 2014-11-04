@@ -24,9 +24,12 @@ mindplot.widget.image.ImagePreview = new Class({
             'id': 'imagePreview'
         });
         this._native.hide();
+        this.imageError = false;
         this._native.css("margin", "1em auto");
+        var me = this;
         this._native.bind('error', function (event) {
             $(this).prop('src', "images/image-not-found.png");
+            me.imageError = true;
         });
         this.container = $('<div></div>').css('display', 'flex');
         this.container.append(this._native);
@@ -54,6 +57,10 @@ mindplot.widget.image.ImagePreview = new Class({
 
     getHeight: function(){
         return this._native.height();
+    },
+
+    getImageError: function(){
+        return this.imageError;
     }
 });
 

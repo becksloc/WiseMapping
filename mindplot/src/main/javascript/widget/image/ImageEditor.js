@@ -24,6 +24,7 @@ mindplot.widget.image.ImageEditor = new Class({
         this.parent($msg("Image"), {
             cancelButton: true,
             closeButton: true,
+            errorMessage: true,
             removeButton: typeof model.getValue() != 'undefined',
             onRemoveClickData: {model: model}
         });
@@ -78,10 +79,15 @@ mindplot.widget.image.ImageEditor = new Class({
         var dialog = event.data.dialog;
         var activeTabId = $(".tab-content div.tab-pane.active").attr('id');
         var tab = dialog.tabs[activeTabId];
-
-        tab.submitData(dialog.model);
         event.stopPropagation();
-        dialog.close();
+        if(!tab.imagePreview.getImageError()){
+            tab.submitData(dialog.model);
+            dialog.close();
+        }
+        else {
+            event.preventDefault();
+            dialog.alertError($msg("IMAGE_ERROR"));
+        }
     },
 
     show: function() {
