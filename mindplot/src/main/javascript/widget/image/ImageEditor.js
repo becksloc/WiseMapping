@@ -52,12 +52,27 @@ mindplot.widget.image.ImageEditor = new Class({
         /* building tab bar */
         var tabBar = $('<ul class="nav nav-tabs"></ul>');
 
+        var me = this;
+        var imageChange = function() {
+            me.cleanError();
+            me.acceptButton.prop('disabled', true);
+        };
+        var imageLoaded = function() {
+            me.acceptButton.prop('disabled', false);
+        };
+
         var urlTab = this.tabs["tab1"];
         urlTab.appendTo(tabBar);
+        urlTab.addEvent("change", imageChange);
+        urlTab.addEvent("loaded", imageLoaded);
+
         var uploadTab = this.tabs["tab2"];
         uploadTab.appendTo(tabBar);
+        uploadTab.addEvent("change", imageChange);
+        uploadTab.addEvent("loaded", imageLoaded);
+
         var myImageTab = this.tabs["tab3"];
-        myImageTab.appendTo(tabBar)
+        myImageTab.appendTo(tabBar);
 
         /* building tab contents..*/
         var div = $('<div></div>').attr({

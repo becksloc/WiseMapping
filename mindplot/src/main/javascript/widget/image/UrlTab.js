@@ -60,6 +60,7 @@ mindplot.widget.image.UrlTab = new Class({
         var me = this;
         // register event for thumbnail
         this.input.keyup(function(event){
+            me.fireEvent("change");
             var inputValue = $(this).val();
             if (inputValue.length != 0) {
                 me.form.find("#imagePreview").remove();
@@ -67,6 +68,7 @@ mindplot.widget.image.UrlTab = new Class({
                 me.imagePreview.appendTo(me.form);
                 me._loadThumbnail(inputValue);
             }
+            me.fireEvent("loaded");
         });
 
         var previousValue = this.model.getValue();

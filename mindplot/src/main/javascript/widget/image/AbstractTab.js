@@ -17,6 +17,7 @@
  */
 
 mindplot.widget.image.AbstractTab = new Class({
+    Extends: mindplot.Events,
 
     initialize: function(model, tabName, tabId, active) {
         $assert(model, 'model could not be null');
