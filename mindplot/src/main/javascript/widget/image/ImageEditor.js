@@ -28,7 +28,7 @@ mindplot.widget.image.ImageEditor = new Class({
             removeButton: typeof model.getValue() != 'undefined',
             onRemoveClickData: {model: model}
         });
-        this.css({width:"800px"});
+        this.css({width:"60em"});
         this.tabs = {
             tab1: new mindplot.widget.image.UrlTab(model, 'tab1', true),
             tab2: new mindplot.widget.image.UploadTab(model, 'tab2'),
