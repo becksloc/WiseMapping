@@ -25,9 +25,10 @@ mindplot.widget.image.MyImagesTab = new Class({
 
     _buildContent: function() {
         var form = $('<form action="none" id="imageFormId"></form>');
+        form.css("overflow-y", "scroll");
+        form.css("height", "20em");
         // Add Text
         form.append($('<p style="margin: 1em"></p>').text($msg("SELECT_IMAGE")));
-
         form.append(this._createGallery());
         return form;
     },
@@ -43,7 +44,7 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _createGallery: function() {
-        var gallery = $('<div class="row"></div>');
+        var gallery = $('<div class="row" width="58em"></div>');
         var me = this;
         jQuery.ajax("c/restful/maps/img/", {
             async:false,
@@ -62,7 +63,7 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _createThumbnail: function(value) {
-        var container = $('<div class="col-xs-6 col-md-3"></div>');
+        var container = $('<div class="col-xs-6 col-sm-4"></div>');
         container.attr('id', 'imageContainer' + value.id);
         var thumbnailBorder = this._createThumbnailBorder();
         var remover = this._createRemover();
