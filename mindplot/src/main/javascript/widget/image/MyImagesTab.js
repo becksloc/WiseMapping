@@ -30,6 +30,9 @@ mindplot.widget.image.MyImagesTab = new Class({
         // Add Text
         this.form.append($('<p id="selectImage" style="margin:1em"></p>').text($msg("SELECT_IMAGE")).hide());
         var gallery_info = $('<h1 id="galleryInfo" style="margin-top:3em"></h1>');
+        gallery_info.append(($('<span class="alert alert-info col-sm-offset-2 col-sm-8"></span>')).text($msg("NO_GALLERY")));
+        gallery_info.hide();
+        this.form.append(gallery_info);
         this.form.append(this._createGallery());
         return this.form;
     },
@@ -45,16 +48,24 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _createGallery: function() {
-        var gallery = $('<div class="row" width="58em"></div>');
+        var gallery = $('<div class="row" width="55em" style="margin-right: 0px"></div>');
         var me = this;
         jQuery.ajax("c/restful/maps/img/", {
             async:false,
             dataType:'json',
             type:'GET',
             success:function (data) {
-                _.each(data.images,function(value) {
-                    gallery.append(me._createThumbnail(value));
-                });
+                var images = data.images;
+                if(images.length == 0){
+                    me.form.find("#galleryInfo").show();
+                }
+                else{
+                    me.form.find("#selectImage").show();
+                    me.form.find("#galleryInfo").hide();
+                    _.each(images,function(value) {
+                        gallery.append(me._createThumbnail(value));
+                    });
+                }
             },
             error:function (jqXHR, textStatus, errorThrown) {
                 $('#messagesPanel div').text(errorThrown).parent().show();
