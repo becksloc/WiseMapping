@@ -24,13 +24,14 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _buildContent: function() {
-        var form = $('<form action="none" id="imageFormId"></form>');
-        form.css("overflow-y", "scroll");
-        form.css("height", "20em");
+        this.form = $('<form action="none" id="imageFormId"></form>');
+        this.form.css("overflow-y", "scroll");
+        this.form.css("height", "20em");
         // Add Text
-        form.append($('<p style="margin: 1em"></p>').text($msg("SELECT_IMAGE")));
-        form.append(this._createGallery());
-        return form;
+        this.form.append($('<p id="selectImage" style="margin:1em"></p>').text($msg("SELECT_IMAGE")).hide());
+        var gallery_info = $('<h1 id="galleryInfo" style="margin-top:3em"></h1>');
+        this.form.append(this._createGallery());
+        return this.form;
     },
     
     submitData: function() {
