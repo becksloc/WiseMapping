@@ -1,0 +1,1 @@
+../../../../../mindplot/src/main/javascript/libraries/jquery/jquery.mobile-1.4.5.min.js
