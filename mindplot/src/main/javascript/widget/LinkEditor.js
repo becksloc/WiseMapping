@@ -115,7 +115,9 @@ mindplot.widget.LinkEditor = new Class({
     },
 
     onDialogShown: function() {
-        $(this).find('#inputUrl').focus();
+        if ( ! $.mobile.support.touch ) {
+            $(this).find('#inputUrl').focus();
+        }
     },
 
     onRemoveClick: function(event) {
