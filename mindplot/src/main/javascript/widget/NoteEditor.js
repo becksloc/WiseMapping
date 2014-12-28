@@ -81,7 +81,9 @@ mindplot.widget.NoteEditor = new Class({
     },
 
     onDialogShown: function() {
-        $(this).find('textarea').focus();
+        if ( ! $.mobile.support.touch ) {
+            $(this).find('textarea').focus();
+        }
     },
 
     onRemoveClick: function(event) {
