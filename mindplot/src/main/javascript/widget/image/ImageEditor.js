@@ -40,7 +40,9 @@ mindplot.widget.image.ImageEditor = new Class({
     onDialogShown: function(event) {
         var model = event.data.model;
         var dialog = event.data.dialog;
-        $(this).find('input').focus();
+        if ( ! $.mobile.support.touch ) {
+            $(this).find('input').focus();
+        }
         if (model.getValue()) {
             dialog.tabs['tab1'].input.trigger('keyup');
         }
