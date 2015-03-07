@@ -16,6 +16,7 @@
  *   limitations under the License.
  */
 
+//FIXME: Not used!
 mindplot.TextEditor = new Class({
     initialize:function(topic) {
         this._topic = topic;
@@ -68,14 +69,15 @@ mindplot.TextEditor = new Class({
     _registerEvents : function(divElem) {
         var inputElem = this._getTextareaElem();
         var spanElem = this._getSpanElem();
+        var me = this;
 
         divElem.addEvent('keydown', function (event) {
             switch (event.key) {
                 case 'esc':
-                    this.close(false);
+                    me.close(false);
                     break;
                 case 'enter':
-                    this.close(true);
+                    me.close(true);
                     break;
                 default:
                     spanElem.innerHTML = inputElem.value;
@@ -87,7 +89,7 @@ mindplot.TextEditor = new Class({
                     break;
             }
             event.stopPropagation();
-        }.bind(this));
+        });
 
         // If the user clicks on the input, all event must be ignored ...
         divElem.addEvent('click', function(event) {

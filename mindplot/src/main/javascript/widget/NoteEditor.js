@@ -27,7 +27,7 @@ mindplot.widget.NoteEditor = new Class({
             closeButton: true,
             acceptButton: true,
             removeButton: typeof model.getValue() != 'undefined',
-            onRemoveClickData: {model: this._model}
+            onEventData: {model: this._model}
         });
         this.css({margin:"150px auto"});
         var panel = this._buildPanel(model);
@@ -54,6 +54,9 @@ mindplot.widget.NoteEditor = new Class({
             'height':80,
             'resize':'none'
         });
+        textArea.on("keypress", function(event) {
+            event.stopPropagation();
+        });
         form.append(textArea);
 
         if (model.getValue() != null){
@@ -76,8 +79,16 @@ mindplot.widget.NoteEditor = new Class({
         return result;
     },
 
-    onAcceptClick: function() {
-        $("#noteFormId").submit();
+    onAcceptClick: function(event) {
+        event.data.dialog._submitForm(event.data.model);
+    },
+
+    _submitForm: function(model) {
+        var textarea = this._native.find("textarea");
+        if (textarea.val()) {
+            model.setValue(textarea.val());
+        }
+        this.close();
     },
 
     onDialogShown: function() {

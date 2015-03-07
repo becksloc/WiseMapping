@@ -47,11 +47,11 @@ mindplot.Topic = new Class({
         this.addEvent('click', function (event) {
             event.stopPropagation();
         });
-
+        var me = this;
         this.addEvent('dblclick', function (event) {
-            this._getTopicEventDispatcher().show(this);
+            me._getTopicEventDispatcher().show(me);
             event.stopPropagation();
-        }.bind(this));
+        });
     },
 
     setShapeType:function (type) {
@@ -462,7 +462,7 @@ mindplot.Topic = new Class({
 
     setText:function (text) {
         // Avoid empty nodes ...
-        if (!text || text.trim().length == 0) {
+        if (!text || $.trim(text).length == 0) {
             text = null;
         }
 
@@ -580,24 +580,25 @@ mindplot.Topic = new Class({
         };
         elem.addEvent('mouseout', outout);
 
+        var me = this;
         // Focus events ...
         elem.addEvent('mousedown', function (event) {
-            if (!this.isReadOnly()) {
+            if (!me.isReadOnly()) {
                 // Disable topic selection of readOnly mode ...
                 var value = true;
                 if ((event.metaKey && Browser.Platform.mac) || (event.ctrlKey && !Browser.Platform.mac)) {
-                    value = !this.isOnFocus();
+                    value = !me.isOnFocus();
                     event.stopPropagation();
                     event.preventDefault();
                 }
                 topic.setOnFocus(value);
             }
 
-            var eventDispatcher = this._getTopicEventDispatcher();
-            eventDispatcher.process(mindplot.TopicEvent.CLICK, this);
+            var eventDispatcher = me._getTopicEventDispatcher();
+            eventDispatcher.process(mindplot.TopicEvent.CLICK, me);
             event.stopPropagation();
 
-        }.bind(this));
+        });
     },
 
     areChildrenShrunken:function () {
@@ -630,10 +631,11 @@ mindplot.Topic = new Class({
         // Do some fancy animation ....
         var elements = this._flatten2DElements(this);
         var fade = new mindplot.util.FadeEffect(elements, !value);
+        var me = this;
         fade.addEvent('complete', function () {
             // Set focus on the parent node ...
             if (value) {
-                this.setOnFocus(true);
+                me.setOnFocus(true);
             }
 
             // Set focus in false for all the children ...
@@ -642,7 +644,7 @@ mindplot.Topic = new Class({
                     elem.setOnFocus(false);
                 }
             });
-        }.bind(this));
+        });
         fade.start();
 
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeShrinkEvent, model);

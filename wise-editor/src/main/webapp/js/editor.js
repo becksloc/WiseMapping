@@ -31,6 +31,7 @@ Browser = {
     ie6: !window.XMLHttpRequest,
     ie7: document.all && window.XMLHttpRequest && !XDomainRequest && !window.opera,
     ie8: document.documentMode==8,
+    ie11: document.documentMode==11,
     opera: Boolean(window.opera),
     chrome: Boolean(window.chrome),
     safari: window.getComputedStyle && !window.globalStorage && !window.opera,
@@ -135,6 +136,7 @@ function loadDesignerOptions(jsonConf) {
     if (jsonConf) {
         $.ajax({
             url: jsonConf,
+            dataType: 'json',
             async: false,
             method: 'get',
             success: function (options) {

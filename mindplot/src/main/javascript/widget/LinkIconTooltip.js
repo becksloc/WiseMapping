@@ -30,14 +30,8 @@ mindplot.widget.LinkIconTooltip = new Class({
             container: 'body',
             title: $msg('LINK'),
             trigger: "manual",
-            template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+            template: '<div id="linkPopover" class="popover" onmouseover="$(this).mouseleave(function() {$(this).fadeOut(200); });" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
         });
-        var me = this;
-        nativeElement.mouseenter(
-            function() {
-                me.show();
-            }
-        );
     },
 
     _buildContent:function (linkIcon) {
@@ -62,7 +56,7 @@ mindplot.widget.LinkIconTooltip = new Class({
         });
 
         var img = $('<img>')
-            .prop('src', 'http://immediatenet.com/t/m?Size=1024x768&URL=' + linkIcon.getModel().getUrl())
+            .prop('src', 'http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' + linkIcon.getModel().getUrl())
             .prop('img', linkIcon.getModel().getUrl())
             .prop('alt', linkIcon.getModel().getUrl());
 

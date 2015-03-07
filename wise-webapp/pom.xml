@@ -9,7 +9,7 @@
         <groupId>org.wisemapping</groupId>
         <artifactId>wisemapping</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>3.1-SNAPSHOT</version>
+        <version>4.0.2-SNAPSHOT</version>
     </parent>
 
     <repositories>
@@ -488,6 +488,9 @@
                                 <include>**/*.jpg</include>
                                 <include>**/*.less</include>
                                 <include>js/editor.js</include>
+                                <include>js/hotkeys.js</include>
+                                <include>js/jquery-mousewheel.js</include>
+                                <include>js/underscore.js</include>
                             </includes>
                         </overlay>
                         <overlay>
