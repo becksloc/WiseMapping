@@ -33,7 +33,7 @@ var BootstrapDialog = new Class({
         this._native.on('hidden.bs.modal', function() {
             $(this).remove();
         });
-        this._native.on('shown.bs.modal', this.options.onRemoveClickData, this.onDialogShown);
+        this._native.on('shown.bs.modal', this.options.onEventData, this.onDialogShown);
     },
 
     _buildFooter: function() {

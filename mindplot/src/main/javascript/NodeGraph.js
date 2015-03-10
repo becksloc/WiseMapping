@@ -105,13 +105,23 @@ mindplot.NodeGraph = new Class({
 
             this._onFocus = focus;
             var outerShape = this.getOuterShape();
+            var imageShape = this.getShapeType() == mindplot.model.TopicShape.IMAGE;
             if (focus) {
-                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor);
-                outerShape.setOpacity(1);
+                if (imageShape) {
+                    outerShape.previousFill = outerShape.getFill();                    
+                }
+                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor, 1);
+                outerShape.setStroke(null,null,mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor, 1);
 
             } else {
-                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
-                outerShape.setOpacity(0);
+                if (imageShape) {
+                    outerShape.setFill(outerShape.previousFill.color, outerShape.previousFill.opacity);
+                    outerShape.setStroke(null, null, outerShape.previousFill.color, outerShape.previousFill.opacity);
+                } else {
+                    outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
+                    outerShape.setOpacity(0);
+                }
+                
             }
             this.setCursor('move');
 
