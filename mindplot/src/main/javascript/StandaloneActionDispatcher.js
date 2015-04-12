@@ -183,7 +183,21 @@ mindplot.StandaloneActionDispatcher = new Class({
     },
 
     removeImgShapeTypeToTopic:function (topicsIds) {
-        this.changeShapeTypeToTopic(topicsIds, mindplot.model.TopicShape.LINE);
+        var me = this;
+        var commandFunc = function (topic) {
+            var result = topic.getShapeType();
+            if (topic.isCentralTopic()){
+                me.changeShapeTypeToTopic(topicsIds, mindplot.model.TopicShape.ROUNDED_RECT);
+            }
+            else {
+                me.changeShapeTypeToTopic(topicsIds, mindplot.model.TopicShape.LINE);
+            }
+            return result;
+        };
+
+        var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds);
+        this.execute(command);
+
     },
 
     changeFontWeightToTopic:function (topicsIds) {
