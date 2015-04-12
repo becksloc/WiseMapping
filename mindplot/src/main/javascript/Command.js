@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2015] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,23 +16,37 @@
 *   limitations under the License.
 */
 
-mindplot.Command = new Class(
-{
+mindplot.Command = new Class(/** @lends mindplot.Command */{
+    /**
+     * @classdesc The command base class for handling do/undo mindmap operations
+     * @constructs
+     */
     initialize: function()
     {
         this._id = mindplot.Command._nextUUID();
     },
 
+    /** 
+     * @abstract
+     */
     execute: function(commandContext)
     {
         throw "execute must be implemented.";
     },
 
+    /** 
+     * Triggered by the undo button - reverses the executed command 
+     * @abstract
+     */
     undoExecute: function(commandContext)
     {
         throw "undo must be implemented.";
     },
 
+    /** 
+     * Returns the unique id of this command
+     * @returns {Number} command id
+     */
     getId:function()
     {
         return this._id;

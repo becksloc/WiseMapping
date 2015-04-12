@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -17,13 +17,20 @@
  */
 
 //FIXME: this Class should be reimplemented
-mindplot.util.FadeEffect = new Class({
+mindplot.util.FadeEffect = new Class(/** @lends FadeEffect */{
     Extends: mindplot.Events,
+    /**
+     * @extends mindplot.Events
+     * @constructs
+     * @param elements
+     * @param isVisible
+     */
     initialize: function(elements, isVisible) {
         this._isVisible = isVisible;
         this._element = elements;
     },
 
+    /** */
     start: function(){
         var visible = this._isVisible;
         _.each(this._element, function(elem) {

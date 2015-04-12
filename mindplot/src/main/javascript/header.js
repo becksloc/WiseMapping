@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -31,7 +31,7 @@ mindplot.persistence = {};
 
 mindplot.layout = {};
 
-Class.Mutators.Static = function(items){
+Class.Mutators.Static = function (items) {
     this.extend(items);
 };
 

@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,10 +16,15 @@
  *   limitations under the License.
  */
 
-
-mindplot.Topic = new Class({
-    Extends:mindplot.NodeGraph,
-    initialize:function (model, options) {
+mindplot.Topic = new Class(/** @lends Topic */{
+    Extends: mindplot.NodeGraph,
+    /**
+     * @extends mindplot.NodeGraph
+     * @constructs
+     * @param model
+     * @param options
+     */
+    initialize: function (model, options) {
         this.parent(model, options);
         this._children = [];
         this._parent = null;
@@ -39,7 +44,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    _registerEvents:function () {
+    _registerEvents: function () {
 
         this.setMouseEventsEnabled(true);
 
@@ -54,15 +59,20 @@ mindplot.Topic = new Class({
         });
     },
 
-    setShapeType:function (type) {
+    /**
+     * @param {String} type the topic shape type
+     * @see {@link mindplot.model.INodeModel}
+     */
+    setShapeType: function (type) {
         this._setShapeType(type, true);
     },
 
-    getParent:function () {
+    /** @return {mindplot.Topic} parent topic */
+    getParent: function () {
         return this._parent;
     },
 
-    _setShapeType:function (type, updateModel) {
+    _setShapeType: function (type, updateModel) {
         // Remove inner shape figure ...
         var model = this.getModel();
         if ($defined(updateModel) && updateModel) {
@@ -103,7 +113,8 @@ mindplot.Topic = new Class({
 
     },
 
-    getShapeType:function () {
+    /** @return {String} topic shape type */
+    getShapeType: function () {
         var model = this.getModel();
         var result = model.getShapeType();
         if (!$defined(result)) {
@@ -112,7 +123,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _removeInnerShape:function () {
+    _removeInnerShape: function () {
         var group = this.get2DElement();
         var innerShape = this.getInnerShape();
         group.removeChild(innerShape);
@@ -120,7 +131,8 @@ mindplot.Topic = new Class({
         return innerShape;
     },
 
-    getInnerShape:function () {
+    /** @return {web2d.Line|web2d.Rect|web2d.Image} inner shape of the topic */
+    getInnerShape: function () {
         if (!$defined(this._innerShape)) {
             // Create inner box.
             this._innerShape = this._buildShape(mindplot.Topic.INNER_RECT_ATTRIBUTES, this.getShapeType());
@@ -144,7 +156,7 @@ mindplot.Topic = new Class({
         return this._innerShape;
     },
 
-    _buildShape:function (attributes, shapeType) {
+    _buildShape: function (attributes, shapeType) {
         $assert(attributes, "attributes can not be null");
         $assert(shapeType, "shapeType can not be null");
 
@@ -174,9 +186,9 @@ mindplot.Topic = new Class({
             result = new web2d.Rect(0.3, attributes);
         }
         else if (shapeType == mindplot.model.TopicShape.LINE) {
-            result = new web2d.Line({strokeColor:"#495879", strokeWidth:1});
+            result = new web2d.Line({strokeColor: "#495879", strokeWidth: 1});
             result.setSize = function (width, height) {
-                this.size = {width:width, height:height};
+                this.size = {width: width, height: height};
                 result.setFrom(0, height);
                 result.setTo(width, height);
 
@@ -207,8 +219,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-
-    setCursor:function (type) {
+    /** @param {String} type the cursor type, either 'pointer', 'default' or 'move' */
+    setCursor: function (type) {
         var innerShape = this.getInnerShape();
         innerShape.setCursor(type);
 
@@ -219,7 +231,8 @@ mindplot.Topic = new Class({
         textShape.setCursor(type);
     },
 
-    getOuterShape:function () {
+    /** @return outer shape */
+    getOuterShape: function () {
         if (!$defined(this._outerShape)) {
             var rect = this._buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.TopicShape.ROUNDED_RECT);
             var shapeType = this.getShapeType();
@@ -237,7 +250,8 @@ mindplot.Topic = new Class({
         return this._outerShape;
     },
 
-    getTextShape:function () {
+    /** @return text shape */
+    getTextShape: function () {
         if (!$defined(this._text)) {
             this._text = this._buildTextShape(false);
 
@@ -249,7 +263,8 @@ mindplot.Topic = new Class({
         return this._text;
     },
 
-    getOrBuildIconGroup:function () {
+    /** @return icon group */
+    getOrBuildIconGroup: function () {
         if (!$defined(this._iconsGroup)) {
             this._iconsGroup = this._buildIconGroup();
             var group = this.get2DElement();
@@ -259,11 +274,12 @@ mindplot.Topic = new Class({
         return this._iconsGroup;
     },
 
-    getIconGroup:function () {
+    /** */
+    getIconGroup: function () {
         return this._iconsGroup;
     },
 
-    _buildIconGroup:function () {
+    _buildIconGroup: function () {
         var textHeight = this.getTextShape().getFontHeight();
         var result = new mindplot.IconGroup(this.getId(), textHeight);
         var padding = mindplot.TopicStyle.getInnerPadding(this);
@@ -283,7 +299,12 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    addFeature:function (featureModel) {
+    /**
+     * assigns the new feature model to the topic's node model and adds the respective icon
+     * @param {mindplot.model.FeatureModel} featureModel
+     * @return {mindplot.Icon} the icon corresponding to the feature model
+     */
+    addFeature: function (featureModel) {
         var iconGroup = this.getOrBuildIconGroup();
         this.closeEditors();
 
@@ -300,12 +321,14 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    findFeatureById:function (id) {
+    /** */
+    findFeatureById: function (id) {
         var model = this.getModel();
         return model.findFeatureById(id);
     },
 
-    removeFeature:function (featureModel) {
+    /** */
+    removeFeature: function (featureModel) {
         $assert(featureModel, "featureModel could not be null");
 
         //Removing the icon from MODEL
@@ -320,19 +343,22 @@ mindplot.Topic = new Class({
         this._adjustShapes();
     },
 
-    addRelationship:function (relationship) {
+    /** */
+    addRelationship: function (relationship) {
         this._relationships.push(relationship);
     },
 
-    deleteRelationship:function (relationship) {
+    /** */
+    deleteRelationship: function (relationship) {
         this._relationships.erase(relationship);
     },
 
-    getRelationships:function () {
+    /** */
+    getRelationships: function () {
         return this._relationships;
     },
 
-    _buildTextShape:function (readOnly) {
+    _buildTextShape: function (readOnly) {
         var result = new web2d.Text();
         var family = this.getFontFamily();
         var size = this.getFontSize();
@@ -355,7 +381,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    setFontFamily:function (value, updateModel) {
+    /** */
+    setFontFamily: function (value, updateModel) {
         var textShape = this.getTextShape();
         textShape.setFontFamily(value);
         if ($defined(updateModel) && updateModel) {
@@ -365,7 +392,8 @@ mindplot.Topic = new Class({
         this._adjustShapes(updateModel);
     },
 
-    setFontSize:function (value, updateModel) {
+    /** */
+    setFontSize: function (value, updateModel) {
 
         var textShape = this.getTextShape();
         textShape.setSize(value);
@@ -378,7 +406,8 @@ mindplot.Topic = new Class({
 
     },
 
-    setFontStyle:function (value, updateModel) {
+    /** */
+    setFontStyle: function (value, updateModel) {
         var textShape = this.getTextShape();
         textShape.setStyle(value);
         if ($defined(updateModel) && updateModel) {
@@ -388,7 +417,8 @@ mindplot.Topic = new Class({
         this._adjustShapes(updateModel);
     },
 
-    setFontWeight:function (value, updateModel) {
+    /** */
+    setFontWeight: function (value, updateModel) {
         var textShape = this.getTextShape();
         textShape.setWeight(value);
         if ($defined(updateModel) && updateModel) {
@@ -398,7 +428,8 @@ mindplot.Topic = new Class({
         this._adjustShapes();
     },
 
-    getFontWeight:function () {
+    /** */
+    getFontWeight: function () {
         var model = this.getModel();
         var result = model.getFontWeight();
         if (!$defined(result)) {
@@ -408,7 +439,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    getFontFamily:function () {
+    /** */
+    getFontFamily: function () {
         var model = this.getModel();
         var result = model.getFontFamily();
         if (!$defined(result)) {
@@ -418,7 +450,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    getFontColor:function () {
+    /** */
+    getFontColor: function () {
         var model = this.getModel();
         var result = model.getFontColor();
         if (!$defined(result)) {
@@ -428,7 +461,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    getFontStyle:function () {
+    /** */
+    getFontStyle: function () {
         var model = this.getModel();
         var result = model.getFontStyle();
         if (!$defined(result)) {
@@ -438,7 +472,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    getFontSize:function () {
+    /** */
+    getFontSize: function () {
         var model = this.getModel();
         var result = model.getFontSize();
         if (!$defined(result)) {
@@ -448,7 +483,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    setFontColor:function (value, updateModel) {
+    /** */
+    setFontColor: function (value, updateModel) {
         var textShape = this.getTextShape();
         textShape.setColor(value);
         if ($defined(updateModel) && updateModel) {
@@ -457,7 +493,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    _setText:function (text, updateModel) {
+    _setText: function (text, updateModel) {
         var textShape = this.getTextShape();
         textShape.setText(text == null ? mindplot.TopicStyle.defaultText(this) : text);
 
@@ -467,7 +503,8 @@ mindplot.Topic = new Class({
         }
     },
 
-    setText:function (text) {
+    /** */
+    setText: function (text) {
         // Avoid empty nodes ...
         if (!text || $.trim(text).length == 0) {
             text = null;
@@ -477,7 +514,8 @@ mindplot.Topic = new Class({
         this._adjustShapes();
     },
 
-    getText:function () {
+    /** */
+    getText: function () {
         var model = this.getModel();
         var result = model.getText();
         if (!$defined(result)) {
@@ -486,11 +524,12 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    setBackgroundColor:function (color) {
+    /** */
+    setBackgroundColor: function (color) {
         this._setBackgroundColor(color, true);
     },
 
-    _setBackgroundColor:function (color, updateModel) {
+    _setBackgroundColor: function (color, updateModel) {
         var innerShape = this.getInnerShape();
         innerShape.setFill(color);
 
@@ -505,7 +544,8 @@ mindplot.Topic = new Class({
         }
     },
 
-    getBackgroundColor:function () {
+    /** */
+    getBackgroundColor: function () {
         var model = this.getModel();
         var result = model.getBackgroundColor();
         if (!$defined(result)) {
@@ -514,11 +554,12 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    setBorderColor:function (color) {
+    /** */
+    setBorderColor: function (color) {
         this._setBorderColor(color, true);
     },
 
-    _setBorderColor:function (color, updateModel) {
+    _setBorderColor: function (color, updateModel) {
         var innerShape = this.getInnerShape();
         innerShape.setAttribute('strokeColor', color);
 
@@ -533,7 +574,8 @@ mindplot.Topic = new Class({
         }
     },
 
-    getBorderColor:function () {
+    /** */
+    getBorderColor: function () {
         var model = this.getModel();
         var result = model.getBorderColor();
         if (!$defined(result)) {
@@ -542,8 +584,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _buildTopicShape:function () {
-        var groupAttributes = {width:100, height:100, coordSizeWidth:100, coordSizeHeight:100};
+    _buildTopicShape: function () {
+        var groupAttributes = {width: 100, height: 100, coordSizeWidth: 100, coordSizeHeight: 100};
         var group = new web2d.Group(groupAttributes);
         this._set2DElement(group);
 
@@ -572,7 +614,7 @@ mindplot.Topic = new Class({
         this._registerDefaultListenersToElement(group, this);
     },
 
-    _registerDefaultListenersToElement:function (elem, topic) {
+    _registerDefaultListenersToElement: function (elem, topic) {
         var mouseOver = function (event) {
             if (topic.isMouseEventsEnabled()) {
                 topic.handleMouseOver(event);
@@ -608,12 +650,14 @@ mindplot.Topic = new Class({
         });
     },
 
-    areChildrenShrunken:function () {
+    /** */
+    areChildrenShrunken: function () {
         var model = this.getModel();
         return model.areChildrenShrunken() && !this.isCentralTopic();
     },
 
-    isCollapsed:function () {
+    /** */
+    isCollapsed: function () {
         var result = false;
 
         var current = this.getParent();
@@ -624,7 +668,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    setChildrenShrunken:function (value) {
+    /** */
+    setChildrenShrunken: function (value) {
         // Update Model ...
         var model = this.getModel();
         model.setChildrenShrunken(value);
@@ -658,7 +703,8 @@ mindplot.Topic = new Class({
 
     },
 
-    getShrinkConnector:function () {
+    /** */
+    getShrinkConnector: function () {
         var result = this._connector;
         if (this._connector == null) {
             this._connector = new mindplot.ShirinkConnector(this);
@@ -669,28 +715,32 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    handleMouseOver:function () {
+    /** */
+    handleMouseOver: function () {
         var outerShape = this.getOuterShape();
         outerShape.setOpacity(1);
     },
 
-    handleMouseOut:function () {
+    /** */
+    handleMouseOut: function () {
         var outerShape = this.getOuterShape();
         if (!this.isOnFocus() && this.getShapeType() != mindplot.model.TopicShape.IMAGE) {
             outerShape.setOpacity(0);
         }
     },
 
-    showTextEditor:function (text) {
-        this._getTopicEventDispatcher().show(this, {text:text});
+    /** */
+    showTextEditor: function (text) {
+        this._getTopicEventDispatcher().show(this, {text: text});
     },
 
-    showNoteEditor:function () {
+    /** */
+    showNoteEditor: function () {
 
         var topicId = this.getId();
         var model = this.getModel();
         var editorModel = {
-            getValue:function () {
+            getValue: function () {
                 var notes = model.findFeatureByType(mindplot.TopicFeature.Note.id);
                 var result;
                 if (notes.length > 0)
@@ -699,7 +749,7 @@ mindplot.Topic = new Class({
                 return result;
             },
 
-            setValue:function (value) {
+            setValue: function (value) {
                 var dispatcher = mindplot.ActionDispatcher.getInstance();
                 var notes = model.findFeatureByType(mindplot.TopicFeature.Note.id);
                 if (!$defined(value)) {
@@ -708,10 +758,10 @@ mindplot.Topic = new Class({
                 }
                 else {
                     if (notes.length > 0) {
-                        dispatcher.changeFeatureToTopic(topicId, notes[0].getId(), {text:value});
+                        dispatcher.changeFeatureToTopic(topicId, notes[0].getId(), {text: value});
                     }
                     else {
-                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Note.id, {text:value});
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Note.id, {text: value});
                     }
                 }
             }
@@ -721,12 +771,14 @@ mindplot.Topic = new Class({
         editor.show();
     },
 
-    showLinkEditor:function () {
+    /** opens a dialog where the user can enter or edit an existing link associated with this topic */
+    showLinkEditor: function () {
 
         var topicId = this.getId();
         var model = this.getModel();
         var editorModel = {
-            getValue:function () {
+            getValue: function () {
+                //@param {mindplot.model.LinkModel[]} links
                 var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
                 var result;
                 if (links.length > 0)
@@ -735,7 +787,7 @@ mindplot.Topic = new Class({
                 return result;
             },
 
-            setValue:function (value) {
+            setValue: function (value) {
                 var dispatcher = mindplot.ActionDispatcher.getInstance();
                 var links = model.findFeatureByType(mindplot.TopicFeature.Link.id);
                 if (!$defined(value)) {
@@ -744,10 +796,10 @@ mindplot.Topic = new Class({
                 }
                 else {
                     if (links.length > 0) {
-                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url:value});
+                        dispatcher.changeFeatureToTopic(topicId, links[0].getId(), {url: value});
                     }
                     else {
-                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Link.id, {url:value});
+                        dispatcher.addFeatureToTopic(topicId, mindplot.TopicFeature.Link.id, {url: value});
                     }
                 }
             }
@@ -808,18 +860,19 @@ mindplot.Topic = new Class({
         editor.show();
     },
 
-    closeEditors:function () {
+    /** */
+    closeEditors: function () {
         this._getTopicEventDispatcher().close(true);
     },
 
-    _getTopicEventDispatcher:function () {
+    _getTopicEventDispatcher: function () {
         return mindplot.TopicEventDispatcher.getInstance();
     },
 
     /**
      * Point: references the center of the rect shape.!!!
      */
-    setPosition:function (point) {
+    setPosition: function (point) {
         $assert(point, "position can not be null");
         point.x = Math.ceil(point.x);
         point.y = Math.ceil(point.y);
@@ -845,11 +898,13 @@ mindplot.Topic = new Class({
         this.invariant();
     },
 
-    getOutgoingLine:function () {
+    /** */
+    getOutgoingLine: function () {
         return this._outgoingLine;
     },
 
-    getIncomingLines:function () {
+    /** */
+    getIncomingLines: function () {
         var result = [];
         var children = this.getChildren();
         for (var i = 0; i < children.length; i++) {
@@ -862,7 +917,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    getOutgoingConnectedTopic:function () {
+    /** */
+    getOutgoingConnectedTopic: function () {
         var result = null;
         var line = this.getOutgoingLine();
         if ($defined(line)) {
@@ -871,7 +927,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _updateConnectionLines:function () {
+    _updateConnectionLines: function () {
         // Update this to parent line ...
         var outgoingLine = this.getOutgoingLine();
         if ($defined(outgoingLine)) {
@@ -890,7 +946,8 @@ mindplot.Topic = new Class({
         }
     },
 
-    setBranchVisibility:function (value) {
+    /** */
+    setBranchVisibility: function (value) {
         var current = this;
         var parent = this;
         while (parent != null && !parent.isCentralTopic()) {
@@ -900,8 +957,8 @@ mindplot.Topic = new Class({
         current.setVisibility(value);
     },
 
-
-    setVisibility:function (value) {
+    /** */
+    setVisibility: function (value) {
         this._setTopicVisibility(value);
 
         // Hide all children...
@@ -917,7 +974,8 @@ mindplot.Topic = new Class({
         }
     },
 
-    moveToBack:function () {
+    /** */
+    moveToBack: function () {
 
         // Update relationship lines
         for (var j = 0; j < this._relationships.length; j++) {
@@ -931,7 +989,8 @@ mindplot.Topic = new Class({
         this.get2DElement().moveToBack();
     },
 
-    moveToFront:function () {
+    /** */
+    moveToFront: function () {
 
         this.get2DElement().moveToFront();
         var connector = this.getShrinkConnector();
@@ -944,12 +1003,13 @@ mindplot.Topic = new Class({
         }
     },
 
-    isVisible:function () {
+    /** */
+    isVisible: function () {
         var elem = this.get2DElement();
         return elem.isVisible();
     },
 
-    _setRelationshipLinesVisibility:function (value) {
+    _setRelationshipLinesVisibility: function (value) {
         _.each(this._relationships, function (relationship) {
             var sourceTopic = relationship.getSourceTopic();
             var targetTopic = relationship.getTargetTopic();
@@ -960,7 +1020,7 @@ mindplot.Topic = new Class({
         });
     },
 
-    _setTopicVisibility:function (value) {
+    _setTopicVisibility: function (value) {
         var elem = this.get2DElement();
         elem.setVisibility(value);
 
@@ -975,7 +1035,8 @@ mindplot.Topic = new Class({
         textShape.setVisibility(this.getShapeType() != mindplot.model.TopicShape.IMAGE ? value : false);
     },
 
-    setOpacity:function (opacity) {
+    /** */
+    setOpacity: function (opacity) {
         var elem = this.get2DElement();
         elem.setOpacity(opacity);
 
@@ -987,7 +1048,7 @@ mindplot.Topic = new Class({
         textShape.setOpacity(opacity);
     },
 
-    _setChildrenVisibility:function (isVisible) {
+    _setChildrenVisibility: function (isVisible) {
 
         // Hide all children.
         var children = this.getChildren();
@@ -1004,7 +1065,8 @@ mindplot.Topic = new Class({
 
     },
 
-    invariant:function () {
+    /** */
+    invariant: function () {
         var line = this._outgoingLine;
         var model = this.getModel();
         var isConnected = model.isConnected();
@@ -1015,11 +1077,11 @@ mindplot.Topic = new Class({
         }
     },
 
-
-    setSize:function (size, force) {
+    /** */
+    setSize: function (size, force) {
         $assert(size, "size can not be null");
         $assert($defined(size.width), "size seem not to be a valid element");
-        size = {width:Math.ceil(size.width), height:Math.ceil(size.height)};
+        size = {width: Math.ceil(size.width), height: Math.ceil(size.height)};
 
         var oldSize = this.getSize();
         var hasSizeChanged = oldSize.width != size.width || oldSize.height != size.height;
@@ -1036,16 +1098,20 @@ mindplot.Topic = new Class({
             this._updatePositionOnChangeSize(oldSize, size);
 
             if (hasSizeChanged) {
-                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {node:this.getModel(), size:size});
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeResizeEvent, {
+                    node: this.getModel(),
+                    size: size
+                });
             }
         }
     },
 
-    _updatePositionOnChangeSize:function () {
+    _updatePositionOnChangeSize: function () {
         $assert(false, "this method must be overwrited.");
     },
 
-    disconnect:function (workspace) {
+    /** */
+    disconnect: function (workspace) {
         var outgoingLine = this.getOutgoingLine();
         if ($defined(outgoingLine)) {
             $assert(workspace, 'workspace can not be null');
@@ -1089,17 +1155,20 @@ mindplot.Topic = new Class({
         }
     },
 
-    getOrder:function () {
+    /** */
+    getOrder: function () {
         var model = this.getModel();
         return model.getOrder();
     },
 
-    setOrder:function (value) {
+    /** */
+    setOrder: function (value) {
         var model = this.getModel();
         model.setOrder(value);
     },
 
-    connectTo:function (targetTopic, workspace) {
+    /** */
+    connectTo: function (targetTopic, workspace) {
         $assert(!this._outgoingLine, 'Could not connect an already connected node');
         $assert(targetTopic != this, 'Circular connection are not allowed');
         $assert(targetTopic, 'Parent Graph can not be null');
@@ -1147,21 +1216,27 @@ mindplot.Topic = new Class({
 
         // Fire connection event ...
         if (this.isInWorkspace()) {
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:targetTopic.getModel(), childNode:this.getModel()});
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {
+                parentNode: targetTopic.getModel(),
+                childNode: this.getModel()
+            });
         }
     },
 
-    append:function (child) {
+    /** */
+    append: function (child) {
         var children = this.getChildren();
         children.push(child);
     },
 
-    removeChild:function (child) {
+    /** */
+    removeChild: function (child) {
         var children = this.getChildren();
         children.erase(child);
     },
 
-    getChildren:function () {
+    /** */
+    getChildren: function () {
         var result = this._children;
         if (!$defined(result)) {
             this._children = [];
@@ -1170,7 +1245,8 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    removeFromWorkspace:function (workspace) {
+    /** */
+    removeFromWorkspace: function (workspace) {
         var elem2d = this.get2DElement();
         workspace.removeChild(elem2d);
         var line = this.getOutgoingLine();
@@ -1181,7 +1257,8 @@ mindplot.Topic = new Class({
         mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeRemoved, this.getModel());
     },
 
-    addToWorkspace:function (workspace) {
+    /** */
+    addToWorkspace: function (workspace) {
         var elem = this.get2DElement();
         workspace.append(elem);
         if (!this.isInWorkspace()) {
@@ -1190,18 +1267,23 @@ mindplot.Topic = new Class({
             }
 
             if (this.getModel().isConnected())
-                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {parentNode:this.getOutgoingConnectedTopic().getModel(), childNode:this.getModel()});
+                mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeConnectEvent, {
+                    parentNode: this.getOutgoingConnectedTopic().getModel(),
+                    childNode: this.getModel()
+                });
 
         }
         this._isInWorkspace = true;
         this._adjustShapes();
     },
 
-    isInWorkspace:function () {
+    /** */
+    isInWorkspace: function () {
         return this._isInWorkspace;
     },
 
-    createDragNode:function (layoutManager) {
+    /** */
+    createDragNode: function (layoutManager) {
         var result = this.parent(layoutManager);
 
         // Is the node already connected ?
@@ -1217,7 +1299,7 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    _adjustShapes:function () {
+    _adjustShapes: function () {
         if (this._isInWorkspace) {
 
             var textShape = this.getTextShape();
@@ -1246,7 +1328,7 @@ mindplot.Topic = new Class({
                 var height = textHeight + (topicPadding * 2);
                 var width = textWidth + iconsWidth + (topicPadding * 2);
 
-                this.setSize({width:width, height:height});
+                this.setSize({width: width, height: height});
 
                 // Position node ...
                 textShape.setPosition(topicPadding + iconsWidth, topicPadding);
@@ -1258,7 +1340,7 @@ mindplot.Topic = new Class({
         }
     },
 
-    _flatten2DElements:function (topic) {
+    _flatten2DElements: function (topic) {
         var result = [];
 
         var children = topic.getChildren();
@@ -1279,7 +1361,11 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    isChildTopic:function (childTopic) {
+    /**
+     * @param childTopic
+     * @return {Boolean} true if childtopic is a child topic of this topic or the topic itself
+     */
+    isChildTopic: function (childTopic) {
         var result = (this.getId() == childTopic.getId());
         if (!result) {
             var children = this.getChildren();
@@ -1294,18 +1380,38 @@ mindplot.Topic = new Class({
         return result;
     },
 
-    isCentralTopic:function () {
+    /** @return {Boolean} true if the topic is the central topic of the map */
+    isCentralTopic: function () {
         return this.getModel().getType() == mindplot.model.INodeModel.CENTRAL_TOPIC_TYPE;
     }
 
 
 });
 
-
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.Topic.CONNECTOR_WIDTH = 6;
-mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor:'rgb(252,235,192)', stroke:'1 dot rgb(241,163,39)', x:0, y:0};
-mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS = {fillColor:'rgb(244,184,45)', x:0, y:0};
-mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke:'2 solid'};
+/**
+ * @constant
+ * @type {Object<String, Number>}
+ * @default
+ */
+mindplot.Topic.OUTER_SHAPE_ATTRIBUTES = {fillColor: 'rgb(252,235,192)', stroke: '1 dot rgb(241,163,39)', x: 0, y: 0};
+/**
+ * @constant
+ * @type {Object<String, Number>}
+ * @default
+ */
+mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS = {fillColor: 'rgb(244,184,45)', x: 0, y: 0};
+/**
+ * @constant
+ * @type {Object<String>}
+ * @default
+ * */
+mindplot.Topic.INNER_RECT_ATTRIBUTES = {stroke: '2 solid'};
 
 
 

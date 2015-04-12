@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,13 +16,27 @@
  *   limitations under the License.
  */
 
-mindplot.IconGroup = new Class({
-    initialize:function (topicId, iconSize) {
+mindplot.IconGroup = new Class(/**@lends IconGroup */{
+    /**
+     * @constructs
+     * @param topicId
+     * @param iconSize
+     * @throws will throw an error if topicId is null or undefined
+     * @throws will throw an error if iconSize is null or undefined
+     */
+    initialize: function (topicId, iconSize) {
         $assert($defined(topicId), "topicId can not be null");
         $assert($defined(iconSize), "iconSize can not be null");
 
         this._icons = [];
-        this._group = new web2d.Group({width:0, height:iconSize, x:0, y:0, coordSizeWidth:0, coordSizeHeight:100});
+        this._group = new web2d.Group({
+            width: 0,
+            height: iconSize,
+            x: 0,
+            y: 0,
+            coordSizeWidth: 0,
+            coordSizeHeight: 100
+        });
         this._removeTip = new mindplot.IconGroup.RemoveTip(this._group, topicId);
         this.seIconSize(iconSize, iconSize);
 
@@ -30,28 +44,38 @@ mindplot.IconGroup = new Class({
 
     },
 
-    setPosition:function (x, y) {
+    /** */
+    setPosition: function (x, y) {
         this._group.setPosition(x, y);
     },
 
-    getPosition:function () {
+    /** */
+    getPosition: function () {
         return this._group.getPosition();
     },
 
-    getNativeElement:function () {
+    /** */
+    getNativeElement: function () {
         return this._group;
     },
 
-    getSize:function () {
+    /** */
+    getSize: function () {
         return this._group.getSize();
     },
 
-    seIconSize:function (width, height) {
-        this._iconSize = {width:width, height:height};
+    /** */
+    seIconSize: function (width, height) {
+        this._iconSize = {width: width, height: height};
         this._resize(this._icons.length);
     },
 
-    addIcon:function (icon, remove) {
+    /**
+     * @param icon the icon to be added to the icon group
+     * @param {Boolean} remove
+     * @throws will throw an error if icon is not defined
+     */
+    addIcon: function (icon, remove) {
         $defined(icon, "icon is not defined");
 
         icon.setGroup(this);
@@ -70,7 +94,7 @@ mindplot.IconGroup = new Class({
         }
     },
 
-    _findIconFromModel:function (iconModel) {
+    _findIconFromModel: function (iconModel) {
         var result = null;
         _.each(this._icons, function (icon) {
             var elModel = icon.getModel();
@@ -82,7 +106,8 @@ mindplot.IconGroup = new Class({
         return result;
     },
 
-    removeIconByModel:function (featureModel) {
+    /** */
+    removeIconByModel: function (featureModel) {
         $assert(featureModel, "featureModel can not be null");
 
         var icon = this._findIconFromModel(featureModel);
@@ -91,7 +116,7 @@ mindplot.IconGroup = new Class({
         }
     },
 
-    _removeIcon:function (icon) {
+    _removeIcon: function (icon) {
         $assert(icon, "icon can not be null");
 
         this._removeTip.close(0);
@@ -106,11 +131,12 @@ mindplot.IconGroup = new Class({
         });
     },
 
-    moveToFront:function () {
+    /** */
+    moveToFront: function () {
         this._group.moveToFront();
     },
 
-    _registerListeners:function () {
+    _registerListeners: function () {
         this._group.addEvent('click', function (event) {
             // Avoid node creation ...
             event.stopPropagation();
@@ -123,29 +149,45 @@ mindplot.IconGroup = new Class({
         });
     },
 
-    _resize:function (iconsLength) {
+    _resize: function (iconsLength) {
         this._group.setSize(iconsLength * this._iconSize.width, this._iconSize.height);
 
         var iconSize = mindplot.Icon.SIZE + (mindplot.IconGroup.ICON_PADDING * 2);
         this._group.setCoordSize(iconsLength * iconSize, iconSize);
     },
 
-    _positionIcon:function (icon, order) {
+    _positionIcon: function (icon, order) {
 
         var iconSize = mindplot.Icon.SIZE + (mindplot.IconGroup.ICON_PADDING * 2);
         icon.getImage().setPosition(iconSize * order + mindplot.IconGroup.ICON_PADDING, mindplot.IconGroup.ICON_PADDING);
     }
 });
+
+/**
+ * @constant
+ * @type {Number}
+ * @default
+ */
 mindplot.IconGroup.ICON_PADDING = 5;
 
-mindplot.IconGroup.RemoveTip = new Class({
-    initialize:function (container) {
+mindplot.IconGroup.RemoveTip = new Class(/** @lends IconGroup.RemoveTip */{
+    /**
+     * @classdesc inner class of IconGroup
+     * @constructs
+     * @param container
+     */
+    initialize: function (container) {
         $assert(container, "group can not be null");
         this._fadeElem = container;
     },
 
 
-    show:function (topicId, icon) {
+    /**
+     * @param topicId
+     * @param icon
+     * @throws will throw an error if icon is null or undefined
+     */
+    show: function (topicId, icon) {
         $assert(icon, 'icon can not be null');
 
         // Nothing to do ...
@@ -186,11 +228,15 @@ mindplot.IconGroup.RemoveTip = new Class({
         }
     },
 
-    hide:function () {
+    /** */
+    hide: function () {
         this.close(200);
     },
 
-    close:function (delay) {
+    /**
+     * @param delay
+     */
+    close: function (delay) {
 
         // This is not ok, trying to close the same dialog twice ?
         if (this._closeTimeoutId) {
@@ -216,43 +262,43 @@ mindplot.IconGroup.RemoveTip = new Class({
         }
     },
 
-    _buildWeb2d:function () {
+    _buildWeb2d: function () {
         var result = new web2d.Group({
-            width:10,
-            height:10,
-            x:0,
-            y:0,
-            coordSizeWidth:10,
-            coordSizeHeight:10
+            width: 10,
+            height: 10,
+            x: 0,
+            y: 0,
+            coordSizeWidth: 10,
+            coordSizeHeight: 10
         });
 
         var outerRect = new web2d.Rect(0, {
-            x:0,
-            y:0,
-            width:10,
-            height:10,
-            stroke:'0',
-            fillColor:'black'
+            x: 0,
+            y: 0,
+            width: 10,
+            height: 10,
+            stroke: '0',
+            fillColor: 'black'
         });
         result.append(outerRect);
         outerRect.setCursor('pointer');
 
         var innerRect = new web2d.Rect(0, {
-            x:1,
-            y:1,
-            width:8,
-            height:8,
-            stroke:'1 solid white',
-            fillColor:'gray'
+            x: 1,
+            y: 1,
+            width: 8,
+            height: 8,
+            stroke: '1 solid white',
+            fillColor: 'gray'
         });
         result.append(innerRect);
 
-        var line = new web2d.Line({stroke:'1 solid white'});
+        var line = new web2d.Line({stroke: '1 solid white'});
         line.setFrom(1, 1);
         line.setTo(9, 9);
         result.append(line);
 
-        var line2 = new web2d.Line({stroke:'1 solid white'});
+        var line2 = new web2d.Line({stroke: '1 solid white'});
         line2.setFrom(1, 9);
         line2.setTo(9, 1);
         result.append(line2);
@@ -269,7 +315,11 @@ mindplot.IconGroup.RemoveTip = new Class({
         return result;
     },
 
-    decorate:function (topicId, icon) {
+    /**
+     * @param topicId
+     * @param icon
+     */
+    decorate: function (topicId, icon) {
 
         var me = this;
 

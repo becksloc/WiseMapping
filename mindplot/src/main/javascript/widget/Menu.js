@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -359,6 +359,7 @@ mindplot.widget.Menu = new Class({
                         closeButton: true,
                         cancelButton: true
                 });
+                designer.onObjectFocusEvent();
             });
             this._registerTooltip('shareIt', $msg('COLLABORATE'));
 
@@ -371,6 +372,7 @@ mindplot.widget.Menu = new Class({
                         closeButton: true,
                         cancelButton: true
                 });
+                designer.onObjectFocusEvent();
             });
             this._registerTooltip('publishIt', $msg('PUBLISH'));
         }
@@ -383,6 +385,7 @@ mindplot.widget.Menu = new Class({
                     closeButton: true,
                     cancelButton: true
                 });
+                designer.onObjectFocusEvent();
             });
             this._registerTooltip('history', $msg('HISTORY'));
         }
@@ -398,6 +401,7 @@ mindplot.widget.Menu = new Class({
                     closeButton: true,
                     cancelButton: true
                 });
+                designer.onObjectFocusEvent();
                 event.preventDefault();
             });
         }

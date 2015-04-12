@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -17,7 +17,7 @@
  */
 mindplot.TextEditorFactory = {};
 
-mindplot.TextEditorFactory.getTextEditorFromName = function(name) {
+mindplot.TextEditorFactory.getTextEditorFromName = function (name) {
     var editorClass = null;
     if (name == "RichTextEditor") {
         editorClass = mindplot.RichTextEditor;

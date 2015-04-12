@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2015] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -37,10 +37,12 @@ import javax.xml.bind.annotation.XmlRootElement;
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestCollaboration {
 
+    private long id;
     private String email;
     private String role;
 
     public RestCollaboration(@NotNull Collaboration collaboration) {
+        this.id = collaboration.getId();
         this.email = collaboration.getCollaborator().getEmail();
         this.role = collaboration.getRole().getLabel();
     }
@@ -57,6 +59,10 @@ public class RestCollaboration {
         CollaborationRole.valueOf(value.toUpperCase());
         role = value;
 
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getRole() {

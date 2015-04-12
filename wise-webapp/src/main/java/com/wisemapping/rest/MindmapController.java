@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2015] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -158,7 +158,7 @@ public class MindmapController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "maps/{id}/history/{hid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/maps/{id}/history/{hid}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
         final Mindmap mindmap = findMindmapById(id);
@@ -378,15 +378,15 @@ public class MindmapController extends BaseController {
                 throw new IllegalArgumentException(roleStr + " is not a valid role");
             }
 
+            // Remove from the list of pendings to remove ...
+            if (collaboration != null) {
+                collabsToRemove.remove(collaboration);
+            }
+
             // Is owner ?
             final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
             if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
-            }
-
-            // Remove from the list of pendings to remove ...
-            if (collaboration != null) {
-                collabsToRemove.remove(collaboration);
             }
 
         }

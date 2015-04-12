@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2015] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -20,7 +20,6 @@ package com.wisemapping.exporter;
 
 public class ExportProperties {
     private ExportFormat format;
-    private String baseImgPath;
     private String version;
 
     public ExportFormat getFormat() {

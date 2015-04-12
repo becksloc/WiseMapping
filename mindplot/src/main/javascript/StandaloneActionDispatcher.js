@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,40 +16,53 @@
  *   limitations under the License.
  */
 
-mindplot.StandaloneActionDispatcher = new Class({
-    Extends:mindplot.ActionDispatcher,
-    initialize:function (commandContext) {
+mindplot.StandaloneActionDispatcher = new Class(/** @lends StandaloneActionDispatcher */{
+    Extends: mindplot.ActionDispatcher,
+    /**
+     * @extends mindplot.ActionDispatcher
+     * @constructs
+     * @param {mindplot.CommandContext} commandContext
+     */
+    initialize: function (commandContext) {
         this.parent(commandContext);
         this._actionRunner = new mindplot.DesignerActionRunner(commandContext, this);
     },
 
-    addTopics:function (models, parentTopicsId) {
+    /** */
+    addTopics: function (models, parentTopicsId) {
         var command = new mindplot.commands.AddTopicCommand(models, parentTopicsId);
         this.execute(command);
     },
 
-    addRelationship:function (model) {
+    /** */
+    addRelationship: function (model) {
         var command = new mindplot.commands.AddRelationshipCommand(model);
         this.execute(command);
     },
 
-    deleteEntities:function (topicsIds, relIds) {
+    /** */
+    deleteEntities: function (topicsIds, relIds) {
         var command = new mindplot.commands.DeleteCommand(topicsIds, relIds);
         this.execute(command);
     },
 
-    dragTopic:function (topicId, position, order, parentTopic) {
+    /** */
+    dragTopic: function (topicId, position, order, parentTopic) {
         var command = new mindplot.commands.DragTopicCommand(topicId, position, order, parentTopic);
         this.execute(command);
     },
 
-    moveTopic:function (topicId, position) {
+    /** */
+    moveTopic: function (topicId, position) {
         $assert($defined(topicId), "topicsId can not be null");
         $assert($defined(position), "position can not be null");
 
         var commandFunc = function (topic, value) {
             var result = topic.getPosition();
-            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(), position:value});
+            mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {
+                node: topic.getModel(),
+                position: value
+            });
             return result;
         };
 
@@ -57,12 +70,14 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    moveControlPoint:function (ctrlPoint, point) {
+    /** */
+    moveControlPoint: function (ctrlPoint, point) {
         var command = new mindplot.commands.MoveControlPointCommand(ctrlPoint, point);
         this.execute(command);
     },
 
-    changeFontStyleToTopic:function (topicsIds) {
+    /** */
+    changeFontStyleToTopic: function (topicsIds) {
 
         var commandFunc = function (topic) {
             var result = topic.getFontStyle();
@@ -75,7 +90,8 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     },
 
-    changeTextToTopic:function (topicsIds, text) {
+    /** */
+    changeTextToTopic: function (topicsIds, text) {
         $assert($defined(topicsIds), "topicsIds can not be null");
 
         var commandFunc = function (topic, value) {
@@ -83,13 +99,14 @@ mindplot.StandaloneActionDispatcher = new Class({
             topic.setText(value);
             return result;
         };
-        commandFunc.commandType =  "changeTextToTopic";
+        commandFunc.commandType = "changeTextToTopic";
 
         var command = new mindplot.commands.GenericFunctionCommand(commandFunc, topicsIds, text);
         this.execute(command);
     },
 
-    changeFontFamilyToTopic:function (topicIds, fontFamily) {
+    /** */
+    changeFontFamilyToTopic: function (topicIds, fontFamily) {
         $assert(topicIds, "topicIds can not be null");
         $assert(fontFamily, "fontFamily can not be null");
 
@@ -106,7 +123,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontColorToTopic:function (topicsIds, color) {
+    /** */
+    changeFontColorToTopic: function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "color can not be null");
 
@@ -121,7 +139,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeBackgroundColorToTopic:function (topicsIds, color) {
+    /** */
+    changeBackgroundColorToTopic: function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "color can not be null");
 
@@ -136,7 +155,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeBorderColorToTopic:function (topicsIds, color) {
+    /** */
+    changeBorderColorToTopic: function (topicsIds, color) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(color, "topicIds can not be null");
 
@@ -151,7 +171,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeFontSizeToTopic:function (topicsIds, size) {
+    /** */
+    changeFontSizeToTopic: function (topicsIds, size) {
         $assert(topicsIds, "topicIds can not be null");
         $assert(size, "size can not be null");
 
@@ -167,7 +188,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    changeShapeTypeToTopic:function (topicsIds, shapeType) {
+    /** */
+    changeShapeTypeToTopic: function (topicsIds, shapeType) {
         $assert(topicsIds, "topicsIds can not be null");
         $assert(shapeType, "shapeType can not be null");
 
@@ -182,6 +204,7 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
+    /** */
     removeImgShapeTypeToTopic:function (topicsIds) {
         var me = this;
         var commandFunc = function (topic) {
@@ -200,7 +223,8 @@ mindplot.StandaloneActionDispatcher = new Class({
 
     },
 
-    changeFontWeightToTopic:function (topicsIds) {
+    /** */
+    changeFontWeightToTopic: function (topicsIds) {
         $assert(topicsIds, "topicsIds can not be null");
 
         var commandFunc = function (topic) {
@@ -216,7 +240,8 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command);
     },
 
-    shrinkBranch:function (topicsIds, collapse) {
+    /** */
+    shrinkBranch: function (topicsIds, collapse) {
         $assert(topicsIds, "topicsIds can not be null");
 
         var commandFunc = function (topic, isShrink) {
@@ -228,34 +253,43 @@ mindplot.StandaloneActionDispatcher = new Class({
         this.execute(command, false);
     },
 
-    addFeatureToTopic:function (topicId, featureType, attributes) {
+    /** */
+    addFeatureToTopic: function (topicId, featureType, attributes) {
         var command = new mindplot.commands.AddFeatureToTopicCommand(topicId, featureType, attributes);
         this.execute(command);
     },
 
-    changeFeatureToTopic:function (topicId, featureId, attributes) {
+    /** */
+    changeFeatureToTopic: function (topicId, featureId, attributes) {
         var command = new mindplot.commands.ChangeFeatureToTopicCommand(topicId, featureId, attributes);
         this.execute(command);
     },
 
-    removeFeatureFromTopic:function (topicId, featureId) {
+    /** */
+    removeFeatureFromTopic: function (topicId, featureId) {
         var command = new mindplot.commands.RemoveFeatureFromTopicCommand(topicId, featureId);
         this.execute(command);
     },
 
-    execute:function (command) {
+    /** */
+    execute: function (command) {
         this._actionRunner.execute(command);
     }
 
 });
 
-mindplot.CommandContext = new Class({
-    initialize:function (designer) {
+mindplot.CommandContext = new Class(/** @lends CommandContext */{
+    /**
+     * @constructs
+     * @param {mindplot.Designer} designer
+     */
+    initialize: function (designer) {
         $assert(designer, "designer can not be null");
         this._designer = designer;
     },
 
-    findTopics:function (topicsIds) {
+    /** */
+    findTopics: function (topicsIds) {
         $assert($defined(topicsIds), "topicsIds can not be null");
         if (!(topicsIds instanceof Array)) {
             topicsIds = [topicsIds];
@@ -275,58 +309,71 @@ mindplot.CommandContext = new Class({
         return result;
     },
 
-    deleteTopic:function (topic) {
-        this._designer._removeTopic(topic);
+    /** */
+    deleteTopic: function (topic) {
+        this._designer.removeTopic(topic);
     },
 
-    createTopic:function (model) {
+    /** */
+    createTopic: function (model) {
         $assert(model, "model can not be null");
-        return  this._designer._nodeModelToNodeGraph(model);
+        return this._designer.nodeModelToNodeGraph(model);
     },
 
-    createModel:function () {
+    /** */
+    createModel: function () {
         var mindmap = this._designer.getMindmap();
         return mindmap.createNode(mindplot.NodeModel.MAIN_TOPIC_TYPE);
     },
 
-    addTopic:function (topic) {
+    /** */
+    addTopic: function (topic) {
         var mindmap = this._designer.getMindmap();
         return mindmap.addBranch(topic.getModel());
     },
 
-    connect:function (childTopic, parentTopic) {
+    /** */
+    connect: function (childTopic, parentTopic) {
         childTopic.connectTo(parentTopic, this._designer._workspace);
     },
 
-    disconnect:function (topic) {
+    /** */
+    disconnect: function (topic) {
         topic.disconnect(this._designer._workspace);
     },
 
-    addRelationship:function (model) {
+    /** */
+    addRelationship: function (model) {
         $assert(model, "model cannot be null");
-        return this._designer._addRelationship(model);
+        return this._designer.addRelationship(model);
     },
 
-    deleteRelationship:function (relationship) {
-        this._designer._deleteRelationship(relationship);
+    /** */
+    deleteRelationship: function (relationship) {
+        this._designer.deleteRelationship(relationship);
     },
 
-    findRelationships:function (relIds) {
+    /** */
+    findRelationships: function (relIds) {
         $assert($defined(relIds), "relId can not be null");
         if (!(relIds instanceof Array)) {
             relIds = [relIds];
         }
 
         var designerRel = this._designer.getModel().getRelationships();
-        return  designerRel.filter(function (rel) {
+        return designerRel.filter(function (rel) {
             return relIds.contains(rel.getId());
         });
     },
 
-    moveTopic:function (topic, position) {
+    /** */
+    moveTopic: function (topic, position) {
         $assert(topic, "topic cannot be null");
         $assert(position, "position cannot be null");
-        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {node:topic.getModel(), position:position});
+        mindplot.EventBus.instance.fireEvent(mindplot.EventBus.events.NodeMoveEvent, {
+            node: topic.getModel(),
+            position: position
+        });
     }
 });
 

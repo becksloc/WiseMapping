@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -18,14 +18,14 @@
 
 mindplot.Keyboard = new Class({
 
-    initialize:function () {
+    initialize: function () {
     },
 
-    addShortcut: function(shortcuts, callback) {
+    addShortcut: function (shortcuts, callback) {
         if (!$.isArray(shortcuts)) {
             shortcuts = [shortcuts];
         }
-        _.each(shortcuts, function(shortcut) {
+        _.each(shortcuts, function (shortcut) {
             $(document).bind('keydown', shortcut, callback);
         });
     }

@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,6 +16,12 @@
  *   limitations under the License.
  */
 
+/**
+ * This serializer works exactly the same way as for the former version Pela 
+ * {@link mindplot.persistence.XMLSerializer_Pela}
+ * @class
+ * @extends mindplot.persistence.XMLSerializer_Pela
+ */
 mindplot.persistence.XMLSerializer_Tango = new Class({
     Extends: mindplot.persistence.XMLSerializer_Pela
 });

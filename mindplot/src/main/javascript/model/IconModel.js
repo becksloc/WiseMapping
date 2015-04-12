@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,20 +16,33 @@
  *   limitations under the License.
  */
 
-mindplot.model.IconModel = new Class({
+mindplot.model.IconModel = new Class(/** @lends IconModel */{
     Extends:mindplot.model.FeatureModel,
+    /**
+     * @constructs
+     * @param attributes
+     * @extends mindplot.model.FeatureModel
+     */
     initialize:function (attributes) {
         this.parent(mindplot.model.IconModel.FEATURE_TYPE);
         this.setIconType(attributes.id);
     },
 
+    /** @return the icon type id */
     getIconType:function () {
         return this.getAttribute('id');
     },
 
+    /** @param {String} iconType the icon type id*/
     setIconType:function (iconType) {
         $assert(iconType, 'iconType id can not be null');
         this.setAttribute('id', iconType);
     }
 });
+
+/**
+ * @constant
+ * @type {String}
+ * @default
+ */
 mindplot.model.IconModel.FEATURE_TYPE = "icon";

@@ -1,5 +1,5 @@
 /*
-*    Copyright [2012] [wisemapping]
+*    Copyright [2015] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -99,5 +99,29 @@ public class Collaboration {
     public boolean hasPermissions(@NotNull CollaborationRole role) {
         return this.getRole().ordinal() <= role.ordinal();
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Collaboration that = (Collaboration) o;
+
+        if (id != that.id) return false;
+        if (collaborator != null ? !collaborator.equals(that.collaborator) : that.collaborator != null) return false;
+        if (mindMap != null ? !mindMap.equals(that.mindMap) : that.mindMap != null) return false;
+        if (role != that.role) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (mindMap != null ? mindMap.hashCode() : 0);
+        result = 31 * result + (collaborator != null ? collaborator.hashCode() : 0);
+        return result;
     }
 }

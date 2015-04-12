@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -15,39 +15,51 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-mindplot.layout.ChildrenSorterStrategy = new Class({
+
+mindplot.layout.ChildrenSorterStrategy = new Class(/** @lends ChildrenSorterStrategy */{
+    /** 
+     * @constructs
+     */
     initialize:function() {
 
     },
 
+    /** @abstract */
     computeChildrenIdByHeights: function(treeSet, node) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     computeOffsets:function(treeSet, node) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     insert: function(treeSet, parent, child, order) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     detach:function(treeSet, node) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     predict:function(treeSet, parent, node, position, free) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     verify:function(treeSet, node) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     getChildDirection: function(treeSet, node) {
         throw "Method must be implemented";
     },
 
+    /** @abstract */
     toString:function() {
         throw "Method must be implemented: print name";
     }

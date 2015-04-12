@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -16,37 +16,54 @@
  *   limitations under the License.
  */
 
+/** */
 mindplot.TopicFeature = {
-    Icon:{
-        id:mindplot.model.IconModel.FEATURE_TYPE,
-        model:mindplot.model.IconModel,
-        icon:mindplot.ImageIcon
+    /** the icon object */
+    Icon: {
+        id: mindplot.model.IconModel.FEATURE_TYPE,
+        model: mindplot.model.IconModel,
+        icon: mindplot.ImageIcon
     },
 
-    Link:{
-        id:mindplot.model.LinkModel.FEATURE_TYPE,
-        model:mindplot.model.LinkModel,
-        icon:mindplot.LinkIcon
+    /** the link object */
+    Link: {
+        id: mindplot.model.LinkModel.FEATURE_TYPE,
+        model: mindplot.model.LinkModel,
+        icon: mindplot.LinkIcon
     },
 
-    Note:{
-        id:mindplot.model.NoteModel.FEATURE_TYPE,
-        model:mindplot.model.NoteModel,
-        icon:mindplot.NoteIcon
+    /** the note object */
+    Note: {
+        id: mindplot.model.NoteModel.FEATURE_TYPE,
+        model: mindplot.model.NoteModel,
+        icon: mindplot.NoteIcon
     },
 
+    /** the image object */
     Image:{
         id:mindplot.model.ImageModel.FEATURE_TYPE,
         model:mindplot.model.ImageModel
     },
 
-    isSupported:function (id) {
+    /**
+     * @param id the feature metadata id
+     * @return {Boolean} returns true if the given id is contained in the metadata array
+     */
+    isSupported: function (id) {
         return mindplot.TopicFeature._featuresMetadataById.some(function (elem) {
             return elem.id == id;
         });
     },
 
-    createModel:function (type, attributes) {
+    /**
+     * @param type
+     * @param attributes
+     * @throws will throw an error if type is null or undefined
+     * @throws will throw an error if attributes is null or undefined
+     * @return {mindplot.model.FeatureModel} a new instance of the feature model subclass matching
+     * the topic feature
+     */
+    createModel: function (type, attributes) {
         $assert(type, 'type can not be null');
         $assert(attributes, 'attributes can not be null');
 
@@ -56,7 +73,15 @@ mindplot.TopicFeature = {
         return new model(attributes);
     },
 
-    createIcon:function (topic, model, readOnly) {
+    /**
+     * @param {mindplot.Topic} topic
+     * @param {mindplot.model.FeatureModel} model
+     * @param {Boolean} readOnly true if the editor is running in read-only mode
+     * @throws will throw an error if topic is null or undefined
+     * @throws will throw an error if model is null or undefined
+     * @return {mindplot.Icon} a new instance of the icon subclass matching the topic feature
+     */
+    createIcon: function (topic, model, readOnly) {
         $assert(topic, 'topic can not be null');
         $assert(model, 'model can not be null');
 

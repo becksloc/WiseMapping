@@ -1,5 +1,5 @@
 /*
- *    Copyright [2012] [wisemapping]
+ *    Copyright [2015] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -17,8 +17,8 @@
  */
 
 mindplot.Messages = new Class({
-    Static:{
-        init:function (locale) {
+    Static: {
+        init: function (locale) {
             locale = $defined(locale) ? locale : 'en';
             var bundle = mindplot.Messages.BUNDLES[locale];
             if (bundle == null && locale.indexOf("_") != -1) {
