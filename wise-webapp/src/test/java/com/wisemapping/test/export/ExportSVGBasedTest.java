@@ -18,8 +18,11 @@ public class ExportSVGBasedTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
 
     @Test(dataProvider = "Data-Provider-Function")
-    public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile, @NotNull final File pdfFile, @NotNull final File svgExpFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
-
+    public void exportPngTest(@NotNull final File svgFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
+        final String name = svgFile.getName();
+        final File pngFile = new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".png");
+        final File pdfFile = new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".pdf");
+        final File svgExpFile = new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + "-exp.svg");
         final String svgXml = FileUtils.readFileToString(svgFile, "UTF-8");
 
         exportPng(svgFile, pngFile, svgXml);
@@ -27,7 +30,7 @@ public class ExportSVGBasedTest {
         exportSvg(svgFile, svgExpFile, svgXml);
 
     }
-
+    
     private void exportSvg(File svgFile, File pdfFile, String svgXml) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
         final ExportFormat format = ExportFormat.SVG;
         final ExportProperties properties = ExportProperties.create(format);
@@ -103,8 +106,7 @@ public class ExportSVGBasedTest {
         final Object[][] result = new Object[svgFile.length][4];
         for (int i = 0; i < svgFile.length; i++) {
             File freeMindFile = svgFile[i];
-            final String name = freeMindFile.getName();
-            result[i] = new Object[]{freeMindFile, new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".png"), new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + ".pdf"), new File(DATA_DIR_PATH, name.substring(0, name.lastIndexOf(".")) + "-exp.svg")};
+            result[i] = new Object[]{freeMindFile};
         }
 
         return result;
