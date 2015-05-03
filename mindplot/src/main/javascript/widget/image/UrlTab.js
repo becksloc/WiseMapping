@@ -36,6 +36,10 @@ mindplot.widget.image.UrlTab = new Class({
             'class': 'form-control'
         });
 
+        this.input.on("keypress", function(event) {
+            event.stopPropagation();
+        });
+
         this.form.append(this.input);
         this.imagePreview.appendTo(this.form);
 
