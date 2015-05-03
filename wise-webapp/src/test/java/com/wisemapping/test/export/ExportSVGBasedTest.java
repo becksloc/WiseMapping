@@ -25,7 +25,7 @@ public class ExportSVGBasedTest {
         exportSvg(svgFile, svgExpFile, svgXml);
 
     }
-    @Test(dataProvider = "Data-Provider-Function")
+
     public void exportPdfTest(@NotNull final File svgFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
         final String name = svgFile.getName();
 
@@ -34,7 +34,7 @@ public class ExportSVGBasedTest {
         exportPdf(svgFile, pdfFile, svgXml);
 
     }
-    @Test(dataProvider = "Data-Provider-Function")
+
     public void exportPngTest(@NotNull final File svgFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
         final String name = svgFile.getName();
 
@@ -115,7 +115,7 @@ public class ExportSVGBasedTest {
             throw new IllegalArgumentException("Wrong based path specified. Change based path...");
         }
 
-        final Object[][] result = new Object[svgFile.length][4];
+        final Object[][] result = new Object[svgFile.length][];
         for (int i = 0; i < svgFile.length; i++) {
             File freeMindFile = svgFile[i];
             result[i] = new Object[]{freeMindFile};
