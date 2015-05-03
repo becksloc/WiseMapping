@@ -184,9 +184,7 @@ public class ExporterFactory {
             } catch (SAXException e) {
                 // It must be a corrupted SVG format. Try to hack it and try again ...
                 svgXml = svgXml.replaceAll("<image([^>]+)>", "<image$1/>");
-                if (e.getMessage().startsWith("An invalid XML character")) {
-                    svgXml = svgXml.replaceAll("\u001B", "");
-                }
+                svgXml = svgXml.replaceAll("\u001B", "");
                 final Reader in = new CharArrayReader(svgXml.toCharArray());
                 final InputSource is = new InputSource(in);
                 document = documentBuilder.parse(is);
