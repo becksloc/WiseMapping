@@ -178,6 +178,7 @@ public class ExporterFactory {
             try {
                 final Reader in = new CharArrayReader(svgXml.toCharArray());
                 final InputSource is = new InputSource(in);
+                documentBuilder.setErrorHandler(null);
 
                 document = documentBuilder.parse(is);
             } catch (SAXException e) {
