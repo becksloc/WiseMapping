@@ -17,7 +17,7 @@ import java.io.*;
 public class ExportSVGBasedTest {
     private static final String DATA_DIR_PATH = "src/test/resources/data/svg/";
 
-    @Test(dataProvider = "Data-Provider-Function")
+    @Test(dataProvider = "Data-Provider-Function", enabled = false)
     public void exportSvgTest(@NotNull final File svgFile, @NotNull final File pngFile, @NotNull final File pdfFile, @NotNull final File svgExpFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
 
         final String svgXml = FileUtils.readFileToString(svgFile, "UTF-8");
