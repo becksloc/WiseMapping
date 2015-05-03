@@ -20,7 +20,7 @@ public class ExportXsltBasedTest {
     private static final String ENC_UTF_8 = "UTF-8";
 
 
-    @Test(dataProvider = "Data-Provider-Function")
+    @Test(dataProvider = "Data-Provider-Function", enabled = false)
     public void exportImportExportTest(@NotNull XSLTExporter.Type type, @NotNull final File wisemap, @NotNull final File recFile) throws ImporterException, IOException, ExportException {
 
         final Exporter exporter = XSLTExporter.create(type);
