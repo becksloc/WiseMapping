@@ -69,91 +69,101 @@ public class ExporterFactory {
     public void export(@NotNull ExportProperties properties, @Nullable String xml, @NotNull OutputStream output, @Nullable String mapSvg) throws ExportException, IOException, TranscoderException {
         final ExportFormat format = properties.getFormat();
 
-        switch (format) {
-            case PNG: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new PNGTranscoder();
-                final ExportProperties.ImageProperties imageProperties =
-                        (ExportProperties.ImageProperties) properties;
-                final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
-                transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
+        try {
+            switch (format) {
+                case PNG: {
+                    // Create a JPEG transcoder
+                    final Transcoder transcoder = new PNGTranscoder();
+                    final ExportProperties.ImageProperties imageProperties =
+                            (ExportProperties.ImageProperties) properties;
+                    final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
+                    transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                    // Create the transcoder input.
+                    final String svgString = normalizeSvg(mapSvg);
+                    final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                    final TranscoderInput input = new TranscoderInput(reader);
 
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
+                    TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
-                // Save the image.
-                transcoder.transcode(input, trascoderOutput);
-                break;
-            }
-            case JPG: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new JPEGTranscoder();
-                transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.99));
+                    // Save the image.
+                    transcoder.transcode(input, trascoderOutput);
+                    reader.close();
+                    break;
+                }
+                case JPG: {
+                    // Create a JPEG transcoder
+                    final Transcoder transcoder = new JPEGTranscoder();
+                    transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.99));
 
-                final ExportProperties.ImageProperties imageProperties =
-                        (ExportProperties.ImageProperties) properties;
-                final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
-                transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
+                    final ExportProperties.ImageProperties imageProperties =
+                            (ExportProperties.ImageProperties) properties;
+                    final ExportProperties.ImageProperties.Size size = imageProperties.getSize();
+                    transcoder.addTranscodingHint(ImageTranscoder.KEY_WIDTH, size.getWidth());
 
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
+                    // Create the transcoder input.
+                    final String svgString = normalizeSvg(mapSvg);
+                    final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                    final TranscoderInput input = new TranscoderInput(reader);
 
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
+                    TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
-                // Save the image.
-                transcoder.transcode(input, trascoderOutput);
-                break;
-            }
-            case PDF: {
-                // Create a JPEG transcoder
-                final Transcoder transcoder = new PDFTranscoder();
+                    // Save the image.
+                    transcoder.transcode(input, trascoderOutput);
+                    reader.close();
+                    break;
+                }
+                case PDF: {
+                    // Create a JPEG transcoder
+                    final Transcoder transcoder = new PDFTranscoder();
 
-                // Create the transcoder input.
-                final String svgString = normalizeSvg(mapSvg);
-                final TranscoderInput input = new TranscoderInput(new CharArrayReader(svgString.toCharArray()));
-                TranscoderOutput trascoderOutput = new TranscoderOutput(output);
+                    // Create the transcoder input.
+                    final String svgString = normalizeSvg(mapSvg);
+                    final CharArrayReader reader = new CharArrayReader(svgString.toCharArray());
+                    final TranscoderInput input = new TranscoderInput(reader);
+                    TranscoderOutput trascoderOutput = new TranscoderOutput(output);
 
-                // Save the image.
-                transcoder.transcode(input, trascoderOutput);
-                break;
+                    // Save the image.
+                    transcoder.transcode(input, trascoderOutput);
+                    reader.close();
+                    break;
+                }
+                case SVG: {
+                    final String svgString = normalizeSvg(mapSvg);
+                    output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
+                    break;
+                }
+                case TEXT: {
+                    final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
+                    exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                    break;
+                }
+                case OPEN_OFFICE_WRITER: {
+                    final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
+                    exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                    break;
+                }
+                case MICROSOFT_EXCEL: {
+                    final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
+                    exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                    break;
+                }
+                case FREEMIND: {
+                    final FreemindExporter exporter = new FreemindExporter();
+                    exporter.setVersion(new VersionNumber(properties.getVersion()));
+                    exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                    break;
+                }
+                case MINDJET: {
+                    final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MINDJET);
+                    exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
+                    break;
+                }
+                default:
+                    throw new UnsupportedOperationException("Export method not supported.");
             }
-            case SVG: {
-                final String svgString = normalizeSvg(mapSvg);
-                output.write(svgString.getBytes(UTF_8_CHARSET_NAME));
-                break;
-            }
-            case TEXT: {
-                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.TEXT);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
-                break;
-            }
-            case OPEN_OFFICE_WRITER: {
-                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.OPEN_OFFICE);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
-                break;
-            }
-            case MICROSOFT_EXCEL: {
-                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MICROSOFT_EXCEL);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
-                break;
-            }
-            case FREEMIND: {
-                final FreemindExporter exporter = new FreemindExporter();
-                exporter.setVersion(new VersionNumber(properties.getVersion()));
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
-                break;
-            }
-            case MINDJET: {
-                final Exporter exporter = XSLTExporter.create(XSLTExporter.Type.MINDJET);
-                exporter.export(xml.getBytes(UTF_8_CHARSET_NAME), output);
-                break;
-            }
-            default:
-                throw new UnsupportedOperationException("Export method not supported.");
+        } finally {
+            output.close();
         }
     }
 
