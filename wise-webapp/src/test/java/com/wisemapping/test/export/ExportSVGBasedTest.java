@@ -25,7 +25,7 @@ public class ExportSVGBasedTest {
         exportSvg(svgFile, svgExpFile, svgXml);
 
     }
-    @Test(dataProvider = "Data-Provider-Function", enabled = false)
+    @Test(dataProvider = "Data-Provider-Function")
     public void exportPdfTest(@NotNull final File svgFile) throws IOException, ExportException, TranscoderException, ParserConfigurationException {
         final String name = svgFile.getName();
 
