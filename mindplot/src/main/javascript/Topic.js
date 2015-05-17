@@ -54,6 +54,9 @@ mindplot.Topic = new Class(/** @lends Topic */{
         });
         var me = this;
         this.addEvent('dblclick', function (event) {
+            if (me.getShapeType() == mindplot.model.TopicShape.IMAGE){
+                me.showImageEditor();
+            }
             me._getTopicEventDispatcher().show(me);
             event.stopPropagation();
         });
