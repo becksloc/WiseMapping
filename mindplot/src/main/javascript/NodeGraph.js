@@ -138,23 +138,13 @@ mindplot.NodeGraph = new Class(/** @lends NodeGraph */{
 
             this._onFocus = focus;
             var outerShape = this.getOuterShape();
-            var imageShape = this.getShapeType() == mindplot.model.TopicShape.IMAGE;
             if (focus) {
-                if (imageShape) {
-                    outerShape.previousFill = outerShape.getFill();                    
-                }
-                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor, 1);
-                outerShape.setStroke(null,null,mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor, 1);
+                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES_FOCUS.fillColor);
+                outerShape.setOpacity(1);
 
             } else {
-                if (imageShape) {
-                    outerShape.setFill(outerShape.previousFill.color, outerShape.previousFill.opacity);
-                    outerShape.setStroke(null, null, outerShape.previousFill.color, outerShape.previousFill.opacity);
-                } else {
-                    outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
-                    outerShape.setOpacity(0);
-                }
-                
+                outerShape.setFill(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES.fillColor);
+                outerShape.setOpacity(0);
             }
             this.setCursor('move');
 
@@ -162,7 +152,7 @@ mindplot.NodeGraph = new Class(/** @lends NodeGraph */{
             this.closeEditors();
 
             // Fire event ...
-            this.fireEvent(focus ? 'ontfocus' : 'ontblur', this);
+            this.fireEvent(focus ? 'ontfocus' : 'ontblur',this);
 
         }
     },

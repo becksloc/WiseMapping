@@ -238,18 +238,11 @@ mindplot.Topic = new Class(/** @lends Topic */{
     getOuterShape: function () {
         if (!$defined(this._outerShape)) {
             var rect = this._buildShape(mindplot.Topic.OUTER_SHAPE_ATTRIBUTES, mindplot.model.TopicShape.ROUNDED_RECT);
-            var shapeType = this.getShapeType();
-            if (shapeType == mindplot.model.TopicShape.IMAGE) {
-                rect.setOpacity(1);
-                rect.setFill("rgb(73, 88, 121)");
-                rect.setStroke(null, null, "rgb(73, 88, 121)");
-
-            } else {
-                rect.setOpacity(0);
-            }
             rect.setPosition(-2, -3);
+            rect.setOpacity(0);
             this._outerShape = rect;
         }
+
         return this._outerShape;
     },
 
