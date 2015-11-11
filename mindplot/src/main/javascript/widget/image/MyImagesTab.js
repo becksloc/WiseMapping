@@ -75,7 +75,7 @@ mindplot.widget.image.MyImagesTab = new Class({
     },
 
     _createThumbnail: function(value) {
-        var container = $('<div class="col-xs-6 col-sm-4"></div>');
+        var container = $('<div class="col-md-4"></div>');
         container.attr('id', 'imageContainer' + value.id);
         var thumbnailBorder = this._createThumbnailBorder();
         var remover = this._createRemover();
