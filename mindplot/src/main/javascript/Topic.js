@@ -714,7 +714,9 @@ mindplot.Topic = new Class(/** @lends Topic */{
     /** */
     handleMouseOver: function () {
         var outerShape = this.getOuterShape();
-        outerShape.setOpacity(1);
+        if (!this.isOnFocus() && this.getShapeType() != mindplot.model.TopicShape.IMAGE) {
+            outerShape.setOpacity(1);
+        }
     },
 
     /** */
